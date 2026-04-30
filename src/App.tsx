@@ -1376,14 +1376,6 @@ const Header = ({ currentPath, onNavigate }: { currentPath: ViewPath, onNavigate
             </div>
           ))}
           
-          <button 
-            onClick={() => onNavigate('/admin')}
-            className={`p-2 rounded-full transition-colors ${currentPath === '/admin' ? 'text-[#2368D6] bg-blue-50' : 'text-slate-400 hover:text-[#0A192F] hover:bg-slate-100'}`}
-            title="Admin Panel"
-          >
-            <Settings size={20} />
-          </button>
-
           <button
             onClick={() => onNavigate('/contact')}
             className="bg-[#0A192F] hover:bg-slate-800 text-white px-8 py-3.5 rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all shadow-md ml-4"
