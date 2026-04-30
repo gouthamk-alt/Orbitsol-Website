@@ -10,9 +10,21 @@ import {
   X,
   Mail,
   MapPin,
-  Phone
+  Phone,
+  Settings,
+  Plus,
+  Trash2,
+  Edit,
+  Save,
+  LogOut,
+  LogIn,
+  Eye,
+  EyeOff
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { adminService, Insight } from './services/adminService';
+import { auth, signInWithGoogle } from './lib/firebase';
+import { onAuthStateChanged, User } from 'firebase/auth';
 
 // --- Types ---
 type ViewPath = 
@@ -37,6 +49,7 @@ type ViewPath =
   | '/about' 
   | '/contact' 
   | '/insights' 
+  | '/admin'
   | string;
 
 // --- Components ---
@@ -1153,68 +1166,99 @@ const PropertyRealEstateView = ({ onNavigate }: { onNavigate: (path: ViewPath) =
   </>
 );
 
-const InsightsView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => (
-  <>
-    {/* Section 1 - Hero */}
-    <section className="relative bg-[#0A192F] text-white pt-32 pb-24 overflow-hidden font-sans border-b border-white/5">
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
-        <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-8">
-          Insights on managed operations, remote teams, and practical automation.
-        </h1>
-        <p className="text-lg md:text-xl text-blue-100/60 leading-relaxed max-w-3xl">
-          Practical thinking for professional firms looking to build more scalable, resilient, and accurate operational layers.
-        </p>
-      </div>
-    </section>
+const InsightsView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => {
+  const [insights, setInsights] = useState<Insight[]>([]);
+  const [loading, setLoading] = useState(true);
 
-    {/* Section 2 - Feed */}
-    <section className="py-24 bg-white font-sans">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-12">
-          {[
-            { tag: "Operations", t: "The difference between 'Task Outsourcing' and 'Workflow Management'", d: "Why most firms fail at scaling their remote team by focusing on tasks instead of repeatable systems." },
-            { tag: "Automation", t: "Where AI fits in professional document production", d: "How to use machine intelligence to speed up transcription and reporting without losing human accountability." },
-            { tag: "Growth", t: "Scaling your inspection business past the 1,000 reports/month ceiling", d: "The structural changes needed to handle high-volume property documentation without a burnout culture." },
-            { tag: "Strata", t: "Reducing the admin burden on strata managers", d: "A blueprint for moving repetitive invoice and correspondence work into a dedicated offshore desk." },
-            { tag: "Case Study", t: "How a UK property clerk reduced lead times by 60%", d: "A deep dive into the transition from in-house typing to a managed OrbitSol production workflow." },
-            { tag: "Remote Teams", t: "Building culture across Kochi and Australia", d: "How shared standards and clear documentation bridge the distance between distributed operational teams." }
-          ].map((post, idx) => (
-            <div key={idx} className="group cursor-pointer">
-               <div className="aspect-[16/9] bg-[#F8FAFC] rounded-2xl mb-6 border border-slate-100 group-hover:border-blue-200 transition-all shadow-sm group-hover:shadow-md"></div>
-               <span className="text-[#2368D6] font-bold text-[10px] uppercase tracking-widest block mb-3">{post.tag}</span>
-               <h3 className="font-serif text-xl font-bold text-[#0A192F] mb-4 group-hover:text-[#2368D6] transition-colors leading-snug">{post.t}</h3>
-               <p className="text-slate-500 text-sm leading-relaxed">{post.d}</p>
-            </div>
-          ))}
+  useEffect(() => {
+    const fetchInsights = async () => {
+      try {
+        const data = await adminService.getInsights();
+        setInsights(data || []);
+      } catch (error) {
+        console.error("Failed to fetch insights", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchInsights();
+  }, []);
+
+  return (
+    <>
+      {/* Section 1 - Hero */}
+      <section className="relative bg-[#0A192F] text-white pt-32 pb-24 overflow-hidden font-sans border-b border-white/5">
+        <div className="max-w-7xl mx-auto px-6 relative z-10">
+          <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-8">
+            Insights on managed operations, remote teams, and practical automation.
+          </h1>
+          <p className="text-lg md:text-xl text-blue-100/60 leading-relaxed max-w-3xl">
+            Practical thinking for professional firms looking to build more scalable, resilient, and accurate operational layers.
+          </p>
         </div>
-      </div>
-    </section>
+      </section>
 
-    {/* Section 3 - Newsletter */}
-    <section className="bg-[#F8FAFC] py-20 px-6 font-sans border-y border-slate-200">
-      <div className="max-w-3xl mx-auto text-center">
-         <h2 className="font-serif text-3xl font-bold text-[#0A192F] mb-6">Brief monthly updates on operational excellence.</h2>
-         <p className="text-slate-500 mb-10">Join 500+ professionals getting our latest thinking once a month. No spam.</p>
-         <form className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto" onSubmit={(e) => e.preventDefault()}>
-            <input type="email" placeholder="Email address" className="flex-grow p-4 bg-white border border-slate-200 rounded-xl outline-none focus:border-[#2368D6] shadow-sm" required />
-            <button type="submit" className="bg-[#0A192F] hover:bg-slate-800 text-white px-8 py-4 rounded-xl font-bold uppercase tracking-widest text-xs transition-all shadow-md">
-               Subscribe
+      {/* Section 2 - Feed */}
+      <section className="py-24 bg-white font-sans min-h-[400px]">
+        <div className="max-w-7xl mx-auto px-6">
+          {loading ? (
+            <div className="flex justify-center items-center py-20">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#2368D6]"></div>
+            </div>
+          ) : insights.length > 0 ? (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-12">
+              {insights.map((post) => (
+                <div key={post.id} className="group cursor-pointer">
+                  {post.image ? (
+                    <img 
+                      src={post.image} 
+                      alt={post.title} 
+                      className="aspect-[16/9] w-full object-cover rounded-2xl mb-6 border border-slate-100 group-hover:border-blue-200 transition-all shadow-sm group-hover:shadow-md"
+                      referrerPolicy="no-referrer"
+                    />
+                  ) : (
+                    <div className="aspect-[16/9] bg-[#F8FAFC] rounded-2xl mb-6 border border-slate-100 group-hover:border-blue-200 transition-all shadow-sm group-hover:shadow-md"></div>
+                  )}
+                  <span className="text-[#2368D6] font-bold text-[10px] uppercase tracking-widest block mb-3">{post.tag}</span>
+                  <h3 className="font-serif text-xl font-bold text-[#0A192F] mb-4 group-hover:text-[#2368D6] transition-colors leading-snug">{post.title}</h3>
+                  <p className="text-slate-500 text-sm leading-relaxed">{post.summary}</p>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-20">
+              <p className="text-slate-400">No insights published yet. Check back soon.</p>
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* Section 3 - Newsletter */}
+      <section className="bg-[#F8FAFC] py-20 px-6 font-sans border-y border-slate-200">
+        <div className="max-w-3xl mx-auto text-center">
+           <h2 className="font-serif text-3xl font-bold text-[#0A192F] mb-6">Brief monthly updates on operational excellence.</h2>
+           <p className="text-slate-500 mb-10">Join 500+ professionals getting our latest thinking once a month. No spam.</p>
+           <form className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto" onSubmit={(e) => e.preventDefault()}>
+              <input type="email" placeholder="Email address" className="flex-grow p-4 bg-white border border-slate-200 rounded-xl outline-none focus:border-[#2368D6] shadow-sm" required />
+              <button type="submit" className="bg-[#0A192F] hover:bg-slate-800 text-white px-8 py-4 rounded-xl font-bold uppercase tracking-widest text-xs transition-all shadow-md">
+                 Subscribe
+              </button>
+           </form>
+        </div>
+      </section>
+
+      {/* Section 4 - CTA */}
+      <section className="bg-white py-24 text-center font-sans">
+         <div className="max-w-3xl mx-auto px-6">
+            <h2 className="font-serif text-3xl font-bold text-[#0A192F] mb-8">Have a specific workflow question?</h2>
+            <button onClick={() => onNavigate('/contact')} className="bg-[#2368D6] hover:bg-blue-500 text-white px-10 py-4 rounded font-bold uppercase tracking-widest text-xs shadow-xl transition-all">
+               Ask our operations team
             </button>
-         </form>
-      </div>
-    </section>
-
-    {/* Section 4 - CTA */}
-    <section className="bg-white py-24 text-center font-sans">
-       <div className="max-w-3xl mx-auto px-6">
-          <h2 className="font-serif text-3xl font-bold text-[#0A192F] mb-8">Have a specific workflow question?</h2>
-          <button onClick={() => onNavigate('/contact')} className="bg-[#2368D6] hover:bg-blue-500 text-white px-10 py-4 rounded font-bold uppercase tracking-widest text-xs shadow-xl transition-all">
-             Ask our operations team
-          </button>
-       </div>
-    </section>
-  </>
-);
+         </div>
+      </section>
+    </>
+  );
+};
 
 const Header = ({ currentPath, onNavigate }: { currentPath: ViewPath, onNavigate: (path: ViewPath) => void }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -1299,12 +1343,12 @@ const Header = ({ currentPath, onNavigate }: { currentPath: ViewPath, onNavigate
                     >
                       {item.dropdown.map((subItem) => (
                         <button
-                          key={subItem.path}
+                          key={subItem.label}
                           onClick={() => {
                             onNavigate(subItem.path as ViewPath);
                             setActiveDropdown(null);
                           }}
-                          className="w-full text-left px-6 py-3 text-[13px] text-slate-600 hover:bg-slate-50 hover:text-[#2368D6] transition-colors"
+                          className="w-full text-left px-8 py-3 text-xs font-bold text-slate-500 hover:text-[#2368D6] hover:bg-slate-50 transition-all uppercase tracking-widest border-l-2 border-transparent hover:border-[#2368D6]"
                         >
                           {subItem.label}
                         </button>
@@ -1315,11 +1359,20 @@ const Header = ({ currentPath, onNavigate }: { currentPath: ViewPath, onNavigate
               )}
             </div>
           ))}
+          
+          <button 
+            onClick={() => onNavigate('/admin')}
+            className={`p-2 rounded-full transition-colors ${currentPath === '/admin' ? 'text-[#2368D6] bg-blue-50' : 'text-slate-400 hover:text-[#0A192F] hover:bg-slate-100'}`}
+            title="Admin Panel"
+          >
+            <Settings size={20} />
+          </button>
+
           <button
             onClick={() => onNavigate('/contact')}
-            className="bg-[#2368D6] text-white hover:bg-blue-700 px-8 py-3 rounded-xl text-[13px] font-bold transition-all ml-4 shadow-md hover:shadow-lg"
+            className="bg-[#0A192F] hover:bg-slate-800 text-white px-8 py-3.5 rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all shadow-md ml-4"
           >
-            Contact Us
+            Get a Quote
           </button>
         </nav>
 
@@ -2048,6 +2101,379 @@ const SpeechContentDataView = ({ onNavigate }: { onNavigate: (path: ViewPath) =>
   </>
 );
 
+const AdminView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => {
+  const [user, setUser] = useState<User | null>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [insights, setInsights] = useState<Insight[]>([]);
+  const [editingInsight, setEditingInsight] = useState<Insight | null>(null);
+  const [isFormOpen, setIsFormOpen] = useState(false);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (u) => {
+      setUser(u);
+      if (u) {
+        const adminStatus = await adminService.checkIfAdmin(u.uid);
+        setIsAdmin(adminStatus || u.email === 'gouthamk@orbitsol.com');
+      } else {
+        setIsAdmin(false);
+      }
+      setLoading(false);
+    });
+    return unsubscribe;
+  }, []);
+
+  useEffect(() => {
+    if (isAdmin) {
+      fetchInsights();
+    }
+  }, [isAdmin]);
+
+  const fetchInsights = async () => {
+    const data = await adminService.getInsights(true);
+    setInsights(data || []);
+  };
+
+  const handleLogin = async () => {
+    try {
+      await signInWithGoogle();
+    } catch (error) {
+      console.error("Login failed", error);
+    }
+  };
+
+  const handleSaveInsight = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const insightData: Omit<Insight, 'id'> = {
+      title: formData.get('title') as string,
+      summary: formData.get('summary') as string,
+      content: formData.get('content') as string,
+      author: formData.get('author') as string,
+      date: formData.get('date') as string || new Date().toISOString(),
+      image: formData.get('image') as string,
+      tag: formData.get('tag') as string,
+      status: formData.get('status') as 'draft' | 'published'
+    };
+
+    try {
+      if (editingInsight?.id) {
+        await adminService.updateInsight(editingInsight.id, insightData);
+      } else {
+        await adminService.createInsight(insightData);
+      }
+      setIsFormOpen(false);
+      setEditingInsight(null);
+      fetchInsights();
+    } catch (error) {
+      alert("Failed to save insight. Check console for details.");
+    }
+  };
+
+  const handleDeleteInsight = async (id: string) => {
+    if (window.confirm("Are you sure you want to delete this insight?")) {
+      await adminService.deleteInsight(id);
+      fetchInsights();
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-slate-50">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#2368D6]"></div>
+      </div>
+    );
+  }
+
+  if (!isAdmin) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-slate-50 font-sans p-6">
+        <div className="max-w-md w-full bg-white p-10 rounded-2xl shadow-xl text-center border border-slate-100">
+           <Settings size={48} className="mx-auto text-slate-300 mb-6" />
+           <h1 className="text-2xl font-serif font-bold text-[#0A192F] mb-4">Admin Access</h1>
+           <p className="text-slate-500 mb-8">This area is restricted to administrators only. Please sign in with an authorized account.</p>
+           {!user ? (
+             <button 
+               onClick={handleLogin}
+               className="w-full bg-[#0A192F] hover:bg-slate-800 text-white px-8 py-4 rounded-xl font-bold uppercase tracking-widest text-xs transition-all shadow-md flex items-center justify-center gap-3"
+             >
+               <LogIn size={16} /> Sign in with Google
+             </button>
+           ) : (
+             <div className="space-y-4">
+                <p className="text-red-500 text-sm font-medium">Account {user.email} is not authorized.</p>
+                <button 
+                  onClick={() => auth.signOut()}
+                  className="text-slate-400 hover:text-[#0A192F] font-bold text-xs uppercase tracking-widest"
+                >
+                  Sign Out
+                </button>
+             </div>
+           )}
+        </div>
+      </div>
+    );
+  }
+
+  const [activeTab, setActiveTab] = useState<'insights' | 'settings'>('insights');
+
+  return (
+    <div className="min-h-screen bg-slate-50 font-sans pt-20">
+      {/* Sidebar/Nav */}
+      <div className="max-w-7xl mx-auto px-6 py-12">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
+          <div>
+            <h1 className="font-serif text-3xl font-bold text-[#0A192F]">OrbitSol Admin</h1>
+            <p className="text-slate-500 text-sm">Manage website content and insights.</p>
+          </div>
+          <div className="flex items-center gap-4">
+            <div className="flex bg-white rounded-xl p-1 border border-slate-100 shadow-sm mr-4">
+              <button 
+                onClick={() => setActiveTab('insights')}
+                className={`px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-widest transition-all ${activeTab === 'insights' ? 'bg-[#0A192F] text-white shadow-md' : 'text-slate-400 hover:text-[#0A192F]'}`}
+              >
+                Insights
+              </button>
+              <button 
+                onClick={() => setActiveTab('settings')}
+                className={`px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-widest transition-all ${activeTab === 'settings' ? 'bg-[#0A192F] text-white shadow-md' : 'text-slate-400 hover:text-[#0A192F]'}`}
+              >
+                Settings
+              </button>
+            </div>
+            {activeTab === 'insights' && (
+              <button 
+                onClick={() => { setEditingInsight(null); setIsFormOpen(true); }}
+                className="bg-[#2368D6] hover:bg-blue-500 text-white px-6 py-3 rounded-xl font-bold flex items-center gap-2 text-xs uppercase tracking-widest shadow-lg transition-all"
+              >
+                <Plus size={16} /> New Insight
+              </button>
+            )}
+            <button 
+              onClick={() => auth.signOut()}
+              className="text-slate-400 hover:text-red-500 transition-colors p-2"
+              title="Sign Out"
+            >
+              <LogOut size={20} />
+            </button>
+          </div>
+        </div>
+
+        {activeTab === 'insights' ? (
+          <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+             <div className="border-b border-slate-100 bg-slate-50/50 px-8 py-4">
+                <h2 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Recent insights</h2>
+             </div>
+             <div className="overflow-x-auto">
+               <table className="w-full text-left">
+                 <thead>
+                   <tr className="border-b border-slate-100 text-[10px] uppercase tracking-widest font-bold text-slate-400">
+                     <th className="px-8 py-4">Title</th>
+                     <th className="px-8 py-4">Tag</th>
+                     <th className="px-8 py-4">Status</th>
+                     <th className="px-8 py-4">Date</th>
+                     <th className="px-8 py-4 text-right">Actions</th>
+                   </tr>
+                 </thead>
+                 <tbody className="divide-y divide-slate-50">
+                   {insights.map((insight) => (
+                     <tr key={insight.id} className="hover:bg-slate-50/50 transition-colors">
+                       <td className="px-8 py-5">
+                         <div className="font-bold text-[#0A192F] text-sm">{insight.title}</div>
+                         <div className="text-slate-400 text-[10px] mt-1 truncate max-w-[300px]">{insight.summary}</div>
+                       </td>
+                       <td className="px-8 py-5">
+                         <span className="px-2 py-1 bg-blue-50 text-[#2368D6] text-[9px] font-bold rounded uppercase tracking-widest">{insight.tag}</span>
+                       </td>
+                       <td className="px-8 py-5">
+                         <span className={`px-2 py-1 rounded text-[9px] font-bold uppercase tracking-widest ${insight.status === 'published' ? 'bg-green-50 text-green-600' : 'bg-orange-50 text-orange-600'}`}>
+                           {insight.status}
+                         </span>
+                       </td>
+                       <td className="px-8 py-5 text-slate-400 text-xs">
+                         {new Date(insight.date).toLocaleDateString()}
+                       </td>
+                       <td className="px-8 py-5 text-right">
+                         <div className="flex justify-end gap-2">
+                           <button 
+                              onClick={() => { setEditingInsight(insight); setIsFormOpen(true); }}
+                              className="p-2 text-slate-400 hover:text-[#2368D6] transition-colors"
+                           >
+                             <Edit size={16} />
+                           </button>
+                           <button 
+                              onClick={() => handleDeleteInsight(insight.id!)}
+                              className="p-2 text-slate-400 hover:text-red-500 transition-colors"
+                           >
+                             <Trash2 size={16} />
+                           </button>
+                         </div>
+                       </td>
+                     </tr>
+                   ))}
+                 </tbody>
+               </table>
+             </div>
+          </div>
+        ) : (
+          <div className="grid md:grid-cols-2 gap-8">
+            <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-100">
+               <h3 className="font-serif text-xl font-bold text-[#0A192F] mb-6">General Settings</h3>
+               <div className="space-y-6">
+                 <div className="space-y-2">
+                    <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Site Name</label>
+                    <input className="w-full p-4 bg-slate-50 border border-slate-100 rounded-xl" defaultValue="OrbitSol" />
+                 </div>
+                 <div className="space-y-2">
+                    <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Contact Email</label>
+                    <input className="w-full p-4 bg-slate-50 border border-slate-100 rounded-xl" defaultValue="contact@orbitsol.com" />
+                 </div>
+                 <button className="bg-[#0A192F] text-white px-8 py-3 rounded-xl font-bold text-xs uppercase tracking-widest shadow-md">
+                   Update Settings
+                 </button>
+               </div>
+            </div>
+            <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-100">
+               <h3 className="font-serif text-xl font-bold text-[#0A192F] mb-6">Navigation & Footer</h3>
+               <p className="text-slate-500 text-sm">Site navigation and footer content management coming soon.</p>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Editor Modal */}
+      <AnimatePresence>
+        {isFormOpen && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 sm:p-10">
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsFormOpen(false)}
+              className="absolute inset-0 bg-[#0A192F]/80 backdrop-blur-sm"
+            />
+            <motion.div 
+              initial={{ scale: 0.9, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 20 }}
+              className="relative w-full max-w-4xl bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]"
+            >
+              <form onSubmit={handleSaveInsight} className="flex flex-col h-full">
+                <div className="px-8 py-6 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
+                  <h3 className="font-serif text-xl font-bold text-[#0A192F]">
+                    {editingInsight ? 'Edit Insight' : 'Create New Insight'}
+                  </h3>
+                  <button type="button" onClick={() => setIsFormOpen(false)} className="text-slate-400 hover:text-[#0A192F] transition-colors">
+                    <X size={24} />
+                  </button>
+                </div>
+                
+                <div className="flex-grow overflow-y-auto p-8 space-y-6">
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Title</label>
+                      <input 
+                        name="title" 
+                        defaultValue={editingInsight?.title} 
+                        required 
+                        className="w-full p-4 bg-slate-50 border border-slate-100 rounded-xl outline-none focus:border-[#2368D6] transition-all"
+                        placeholder="Post title"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Tag / Category</label>
+                      <input 
+                        name="tag" 
+                        defaultValue={editingInsight?.tag} 
+                        required 
+                        className="w-full p-4 bg-slate-50 border border-slate-100 rounded-xl outline-none focus:border-[#2368D6] transition-all"
+                        placeholder="e.g. Operations"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Summary</label>
+                    <textarea 
+                      name="summary" 
+                      defaultValue={editingInsight?.summary} 
+                      required 
+                      rows={2}
+                      className="w-full p-4 bg-slate-50 border border-slate-100 rounded-xl outline-none focus:border-[#2368D6] transition-all"
+                      placeholder="Brief overview for the feed"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Content (Markdown)</label>
+                    <textarea 
+                      name="content" 
+                      defaultValue={editingInsight?.content} 
+                      required 
+                      rows={10}
+                      className="w-full p-4 bg-slate-50 border border-slate-100 rounded-xl outline-none focus:border-[#2368D6] transition-all font-mono text-sm"
+                      placeholder="Post body..."
+                    />
+                  </div>
+
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Author</label>
+                      <input 
+                        name="author" 
+                        defaultValue={editingInsight?.author || 'OrbitSol Team'} 
+                        required 
+                        className="w-full p-4 bg-slate-50 border border-slate-100 rounded-xl outline-none focus:border-[#2368D6] transition-all"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Status</label>
+                      <select 
+                        name="status" 
+                        defaultValue={editingInsight?.status || 'draft'} 
+                        className="w-full p-4 bg-slate-50 border border-slate-100 rounded-xl outline-none focus:border-[#2368D6] transition-all appearance-none"
+                      >
+                        <option value="draft">Draft</option>
+                        <option value="published">Published</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Featured Image URL</label>
+                    <input 
+                      name="image" 
+                      defaultValue={editingInsight?.image} 
+                      className="w-full p-4 bg-slate-50 border border-slate-100 rounded-xl outline-none focus:border-[#2368D6] transition-all"
+                      placeholder="https://..."
+                    />
+                  </div>
+                </div>
+
+                <div className="px-8 py-6 border-t border-slate-100 bg-slate-50/50 flex justify-end gap-4">
+                  <button 
+                    type="button" 
+                    onClick={() => setIsFormOpen(false)}
+                    className="px-6 py-3 text-slate-400 font-bold uppercase tracking-[0.1em] text-[10px] hover:text-[#0A192F] transition-colors"
+                  >
+                    Cancel
+                  </button>
+                  <button 
+                    type="submit"
+                    className="bg-[#0A192F] hover:bg-slate-800 text-white px-8 py-3 rounded-xl font-bold uppercase tracking-[0.1em] text-[10px] shadow-lg transition-all flex items-center gap-2"
+                  >
+                    <Save size={14} /> Save Changes
+                  </button>
+                </div>
+              </form>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
+
 const PropertyInspectionView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => (
   <>
     {/* Section 1 - Hero */}
@@ -2391,8 +2817,10 @@ export default function App() {
         return <AboutView onNavigate={onNavigate} />;
       case '/insights':
         return <InsightsView onNavigate={onNavigate} />;
+      case '/admin':
+        return <AdminView onNavigate={onNavigate} />;
       case '/contact':
-        return <ContactView />;
+        return <ContactView onNavigate={onNavigate} />;
       default:
         return (
           <div className="py-32 text-center max-w-2xl mx-auto min-h-[60vh]">

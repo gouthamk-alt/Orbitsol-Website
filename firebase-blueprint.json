@@ -1,0 +1,57 @@
+{
+  "entities": {
+    "insight": {
+      "title": "Insight Post",
+      "description": "A blog post or insight article.",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string", "description": "The title of the post." },
+        "summary": { "type": "string", "description": "A short summary for the feed." },
+        "content": { "type": "string", "description": "The full body content (markdown)." },
+        "author": { "type": "string", "description": "The author name." },
+        "date": { "type": "string", "format": "date-time", "description": "Publication date." },
+        "image": { "type": "string", "description": "URL to the featured image." },
+        "tag": { "type": "string", "description": "Primary tag/category label." },
+        "status": { "type": "string", "enum": ["draft", "published"], "description": "Status of the post." },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["title", "summary", "content", "status"]
+    },
+    "siteSetting": {
+      "title": "Site Setting",
+      "description": "General site content or configuration.",
+      "type": "object",
+      "properties": {
+        "key": { "type": "string", "description": "Unique key for the setting." },
+        "value": { "type": "object", "description": "The setting data." },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["key", "value"]
+    },
+    "admin": {
+      "title": "Admin User",
+      "description": "Users with admin access.",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string" },
+        "role": { "type": "string", "enum": ["admin"] }
+      },
+      "required": ["email", "role"]
+    }
+  },
+  "firestore": {
+    "insights": {
+      "schema": "insight",
+      "description": "Collection of insight posts."
+    },
+    "siteSettings": {
+      "schema": "siteSetting",
+      "description": "Key-value pair settings for site content."
+    },
+    "admins": {
+      "schema": "admin",
+      "description": "Admin users list."
+    }
+  }
+}
