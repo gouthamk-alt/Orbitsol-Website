@@ -27,6 +27,18 @@ import { auth, signInWithGoogle } from './lib/firebase';
 import { onAuthStateChanged, User } from 'firebase/auth';
 
 // --- Types ---
+type SiteSettings = {
+  [key: string]: any;
+};
+
+const SiteSettingsContext = React.createContext<{
+  settings: SiteSettings;
+  getContent: (path: string, defaultValue: string) => string;
+}>({
+  settings: {},
+  getContent: (p, d) => d,
+});
+
 type ViewPath = 
   | '/' 
   | '/property-real-estate' 
@@ -1261,8 +1273,8 @@ const InsightsView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) 
 };
 
 const Header = ({ currentPath, onNavigate }: { currentPath: ViewPath, onNavigate: (path: ViewPath) => void }) => {
+  const { getContent } = React.useContext(SiteSettingsContext);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
 
   const whoWeServe = [
@@ -1298,8 +1310,12 @@ const Header = ({ currentPath, onNavigate }: { currentPath: ViewPath, onNavigate
         {/* Logo */}
         <div className="flex items-center cursor-pointer" onClick={() => onNavigate('/')}>
           <div className="flex flex-col">
-            <div className="font-serif text-2xl font-black text-[#0A192F] leading-none tracking-tight">OrbitSol</div>
-            <div className="text-[9px] font-bold tracking-[0.25em] text-slate-400 uppercase mt-1.5">BRINGING WORLDS TOGETHER</div>
+            <div className="font-serif text-2xl font-black text-[#0A192F] leading-none tracking-tight">
+              {getContent('global.siteName', 'OrbitSol')}
+            </div>
+            <div className="text-[9px] font-bold tracking-[0.25em] text-slate-400 uppercase mt-1.5">
+              {getContent('global.tagline', 'BRINGING WORLDS TOGETHER')}
+            </div>
           </div>
         </div>
 
@@ -1440,19 +1456,21 @@ const Header = ({ currentPath, onNavigate }: { currentPath: ViewPath, onNavigate
   );
 };
 
-const AboutView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => (
-  <>
-    {/* Section 1 - Hero */}
-    <section className="relative bg-white pt-32 pb-24 overflow-hidden font-sans border-b border-slate-100">
-      <div className="max-w-7xl mx-auto px-6 relative z-10 text-center">
-        <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-8 text-[#0A192F]">
-          A decade as the behind-the-scenes engine for businesses around the world.
-        </h1>
-        <p className="text-lg md:text-xl text-slate-600 leading-relaxed max-w-4xl mx-auto">
-          OrbitSol began in 2015 with property report production and grew by solving adjacent workflow problems for the same kinds of clients. We use technology to support delivery, but accountability stays with people.
-        </p>
-      </div>
-    </section>
+const AboutView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => {
+  const { getContent } = React.useContext(SiteSettingsContext);
+  return (
+    <>
+      {/* Section 1 - Hero */}
+      <section className="relative bg-white pt-32 pb-24 overflow-hidden font-sans border-b border-slate-100">
+        <div className="max-w-7xl mx-auto px-6 relative z-10 text-center">
+          <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-8 text-[#0A192F]">
+            {getContent('about.heroTitle', 'A decade as the behind-the-scenes engine for businesses around the world.')}
+          </h1>
+          <p className="text-lg md:text-xl text-slate-600 leading-relaxed max-w-4xl mx-auto">
+            {getContent('about.heroDesc', 'OrbitSol began in 2015 with property report production and grew by solving adjacent workflow problems for the same kinds of clients. We use technology to support delivery, but accountability stays with people.')}
+          </p>
+        </div>
+      </section>
 
     {/* Section 2 - Our Story */}
     <section className="py-24 bg-[#F8FAFC] font-sans">
@@ -1546,7 +1564,8 @@ const AboutView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
       </div>
     </section>
   </>
-);
+  );
+};
 
 const ContactView = () => (
   <>
@@ -1620,15 +1639,17 @@ const ContactView = () => (
 );
 
 const Footer = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => {
+  const { getContent } = React.useContext(SiteSettingsContext);
+
   return (
     <footer className="bg-[#0A192F] text-blue-50/70 pt-20 pb-10 mt-auto">
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 mb-16">
           <div className="lg:col-span-1">
-            <div className="font-serif text-2xl font-bold text-white mb-2">OrbitSol</div>
-            <div className="text-sm text-blue-300 mb-6">Bringing Worlds Together.</div>
+            <div className="font-serif text-2xl font-bold text-white mb-2">{getContent('global.siteName', 'OrbitSol')}</div>
+            <div className="text-sm text-blue-300 mb-6">{getContent('global.tagline', 'Bringing Worlds Together.')}</div>
             <p className="text-sm leading-relaxed">
-              Managed offshore workflows for property, strata, transcription, remote operations, marketing production, and process automation.
+              {getContent('global.footerDesc', 'Managed offshore workflows for property, strata, transcription, remote operations, marketing production, and process automation.')}
             </p>
           </div>
           <div>
@@ -1722,27 +1743,30 @@ const FAQItem = ({ question, answer }: { question: string; answer: string }) => 
 
 // --- Page Views ---
 
-const HomeView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => (
-  <>
-    <section className="relative bg-gradient-to-br from-[#0A192F] to-[#112240] text-white pt-32 pb-24 overflow-hidden">
-      <div className="absolute top-0 right-0 w-1/2 h-full opacity-10 pointer-events-none">
-        <svg viewBox="0 0 100 100" className="w-full h-full fill-current" preserveAspectRatio="none">
-          <circle cx="80" cy="50" r="40" stroke="white" strokeWidth="0.5" fill="none" />
-          <circle cx="80" cy="50" r="30" stroke="white" strokeWidth="0.5" fill="none" strokeDasharray="2 2" />
-          <circle cx="80" cy="50" r="20" stroke="white" strokeWidth="0.5" fill="none" />
-        </svg>
-      </div>
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
-        <div className="max-w-4xl">
-          <p className="text-blue-300/80 font-medium tracking-widest uppercase text-xs mb-6">
-            Managed offshore operations / Powered by Practical AI
-          </p>
-          <h1 className="font-serif text-5xl md:text-6xl font-bold leading-tight mb-8">
-            Turn recurring work into managed workflows your team can rely on.
-          </h1>
-          <p className="text-lg md:text-xl text-blue-100/70 leading-relaxed mb-12 max-w-3xl">
-            OrbitSol helps property, strata, lettings, legal, and professional services firms move reporting, transcription, and admin work into a managed offshore operating layer.
-          </p>
+const HomeView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => {
+  const { getContent } = React.useContext(SiteSettingsContext);
+
+  return (
+    <>
+      <section className="relative bg-gradient-to-br from-[#0A192F] to-[#112240] text-white pt-32 pb-24 overflow-hidden">
+        <div className="absolute top-0 right-0 w-1/2 h-full opacity-10 pointer-events-none">
+          <svg viewBox="0 0 100 100" className="w-full h-full fill-current" preserveAspectRatio="none">
+            <circle cx="80" cy="50" r="40" stroke="white" strokeWidth="0.5" fill="none" />
+            <circle cx="80" cy="50" r="30" stroke="white" strokeWidth="0.5" fill="none" strokeDasharray="2 2" />
+            <circle cx="80" cy="50" r="20" stroke="white" strokeWidth="0.5" fill="none" />
+          </svg>
+        </div>
+        <div className="max-w-7xl mx-auto px-6 relative z-10">
+          <div className="max-w-4xl">
+            <p className="text-blue-300/80 font-medium tracking-widest uppercase text-xs mb-6">
+              {getContent('home.heroTag', 'Managed offshore operations / Powered by Practical AI')}
+            </p>
+            <h1 className="font-serif text-5xl md:text-6xl font-bold leading-tight mb-8">
+              {getContent('home.heroTitle', 'Turn recurring work into managed workflows your team can rely on.')}
+            </h1>
+            <p className="text-lg md:text-xl text-blue-100/70 leading-relaxed mb-12 max-w-3xl">
+              {getContent('home.heroDesc', 'OrbitSol helps property, strata, lettings, legal, and professional services firms move reporting, transcription, and admin work into a managed offshore operating layer.')}
+            </p>
           <div className="flex flex-col sm:flex-row gap-4 mb-16">
             <button onClick={() => onNavigate('/contact')} className="bg-[#2368D6] hover:bg-blue-500 text-white px-8 py-3.5 rounded font-bold uppercase tracking-widest text-xs shadow-lg transition-all">
               Send a workflow enquiry
@@ -1859,7 +1883,8 @@ const HomeView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => (
       </div>
     </section>
   </>
-);
+  );
+};
 
 const SpeechContentDataView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => (
   <>
@@ -2108,6 +2133,61 @@ const AdminView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
   const [insights, setInsights] = useState<Insight[]>([]);
   const [editingInsight, setEditingInsight] = useState<Insight | null>(null);
   const [isFormOpen, setIsFormOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState<'insights' | 'settings'>('insights');
+  const [selectedPage, setSelectedPage] = useState('home');
+  const [pageSettings, setPageSettings] = useState<any>({});
+  const [savingSettings, setSavingSettings] = useState(false);
+
+  useEffect(() => {
+    if (activeTab === 'settings') {
+      loadPageSettings(selectedPage);
+    }
+  }, [selectedPage, activeTab]);
+
+  const loadPageSettings = async (page: string) => {
+    const data = await adminService.getSettings(page);
+    setPageSettings(data || {});
+  };
+
+  const handleSettingChange = (field: string, value: string) => {
+    setPageSettings((prev: any) => ({ ...prev, [field]: value }));
+  };
+
+  const saveAllSettings = async () => {
+    setSavingSettings(true);
+    try {
+      await adminService.updateSettings(selectedPage, pageSettings);
+      alert("Settings saved successfully!");
+      // Ideally we'd trigger a refresh in the main app too.
+      // For now, window.location.reload() or just state update is fine.
+    } catch (e) {
+      alert("Failed to save settings");
+    } finally {
+      setSavingSettings(false);
+    }
+  };
+
+  const getFieldsForPage = (page: string) => {
+    switch (page) {
+      case 'home':
+        return [
+          { id: 'heroTag', label: 'Hero Tag', type: 'text' },
+          { id: 'heroTitle', label: 'Hero Title', type: 'text' },
+          { id: 'heroDesc', label: 'Hero Description', type: 'textarea' },
+        ];
+      case 'global':
+        return [
+          { id: 'siteName', label: 'Site Name', type: 'text' },
+          { id: 'tagline', label: 'Tagline / Slogan', type: 'text' },
+          { id: 'footerDesc', label: 'Footer Description', type: 'textarea' },
+          { id: 'contactEmail', label: 'Contact Email', type: 'text' },
+          { id: 'phone', label: 'Contact Phone', type: 'text' },
+          { id: 'address', label: 'Address', type: 'textarea' },
+        ];
+      default:
+        return [];
+    }
+  };
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (u) => {
@@ -2215,8 +2295,6 @@ const AdminView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
     );
   }
 
-  const [activeTab, setActiveTab] = useState<'insights' | 'settings'>('insights');
-
   return (
     <div className="min-h-screen bg-slate-50 font-sans pt-20">
       {/* Sidebar/Nav */}
@@ -2316,26 +2394,63 @@ const AdminView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
              </div>
           </div>
         ) : (
-          <div className="grid md:grid-cols-2 gap-8">
-            <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-100">
-               <h3 className="font-serif text-xl font-bold text-[#0A192F] mb-6">General Settings</h3>
-               <div className="space-y-6">
-                 <div className="space-y-2">
-                    <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Site Name</label>
-                    <input className="w-full p-4 bg-slate-50 border border-slate-100 rounded-xl" defaultValue="OrbitSol" />
-                 </div>
-                 <div className="space-y-2">
-                    <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Contact Email</label>
-                    <input className="w-full p-4 bg-slate-50 border border-slate-100 rounded-xl" defaultValue="contact@orbitsol.com" />
-                 </div>
-                 <button className="bg-[#0A192F] text-white px-8 py-3 rounded-xl font-bold text-xs uppercase tracking-widest shadow-md">
-                   Update Settings
-                 </button>
-               </div>
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="md:col-span-1 space-y-4">
+              <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+                <h3 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-6">Select Page</h3>
+                <div className="space-y-2">
+                  {['global', 'home', 'about', 'contact', 'services'].map(p => (
+                    <button
+                      key={p}
+                      onClick={() => setSelectedPage(p)}
+                      className={`w-full text-left px-4 py-3 rounded-xl text-xs font-bold uppercase tracking-widest transition-all ${selectedPage === p ? 'bg-[#0A192F] text-white' : 'hover:bg-slate-50 text-slate-600'}`}
+                    >
+                      {p}
+                    </button>
+                  ))}
+                </div>
+              </div>
             </div>
-            <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-100">
-               <h3 className="font-serif text-xl font-bold text-[#0A192F] mb-6">Navigation & Footer</h3>
-               <p className="text-slate-500 text-sm">Site navigation and footer content management coming soon.</p>
+
+            <div className="md:col-span-2">
+              <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-100">
+                <div className="flex justify-between items-center mb-8">
+                  <h3 className="font-serif text-xl font-bold text-[#0A192F] capitalize">{selectedPage} Settings</h3>
+                  <button 
+                    onClick={saveAllSettings}
+                    disabled={savingSettings}
+                    className="bg-[#2368D6] hover:bg-blue-600 text-white px-6 py-2 rounded-xl font-bold text-xs uppercase tracking-widest shadow-md disabled:opacity-50 flex items-center gap-2"
+                  >
+                    {savingSettings ? 'Saving...' : <><Save size={14} /> Save Page</>}
+                  </button>
+                </div>
+
+                <div className="space-y-6">
+                  {getFieldsForPage(selectedPage).map(field => (
+                    <div key={field.id} className="space-y-2">
+                      <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{field.label}</label>
+                      {field.type === 'textarea' ? (
+                        <textarea 
+                          rows={4}
+                          className="w-full p-4 bg-slate-50 border border-slate-100 rounded-xl focus:border-[#2368D6] outline-none transition-all"
+                          value={pageSettings[field.id] || ''}
+                          onChange={(e) => handleSettingChange(field.id, e.target.value)}
+                        />
+                      ) : (
+                        <input 
+                          type="text"
+                          className="w-full p-4 bg-slate-50 border border-slate-100 rounded-xl focus:border-[#2368D6] outline-none transition-all"
+                          value={pageSettings[field.id] || ''}
+                          onChange={(e) => handleSettingChange(field.id, e.target.value)}
+                        />
+                      )}
+                    </div>
+                  ))}
+                  {getFieldsForPage(selectedPage).length === 0 && (
+                    <p className="text-slate-400 text-sm italic">No settings defined for this page yet.</p>
+                  )}
+                </div>
+              </div>
             </div>
           </div>
         )}
@@ -2751,6 +2866,31 @@ const LegalProfessionalServicesView = ({ onNavigate }: { onNavigate: (path: View
 
 export default function App() {
   const [currentPath, setCurrentPath] = useState<ViewPath>('/');
+  const [settings, setSettings] = useState<SiteSettings>({});
+
+  useEffect(() => {
+    const fetchAllSettings = async () => {
+      try {
+        const keys = ['global', 'home', 'about', 'contact', 'services'];
+        const settingsMap: SiteSettings = {};
+        for (const key of keys) {
+          const data = await adminService.getSettings(key);
+          if (data) {
+            settingsMap[key] = data;
+          }
+        }
+        setSettings(settingsMap);
+      } catch (error) {
+        console.error("Failed to fetch settings", error);
+      }
+    };
+    fetchAllSettings();
+  }, []);
+
+  const getContent = (path: string, defaultValue: string): string => {
+    const [page, field] = path.split('.');
+    return settings[page]?.[field] || defaultValue;
+  };
 
   useEffect(() => {
     // Handle hash links or initial path
@@ -2833,21 +2973,23 @@ export default function App() {
   };
 
   return (
-    <div className="bg-white selection:bg-[#2368D6] selection:text-white flex flex-col min-h-screen font-sans">
-      <Header currentPath={currentPath} onNavigate={onNavigate} />
-      
-      <main className="flex-grow pt-20">
-        <motion.div
-           key={currentPath}
-           initial={{ opacity: 0 }}
-           animate={{ opacity: 1 }}
-           transition={{ duration: 0.4 }}
-        >
-          {renderView()}
-        </motion.div>
-      </main>
+    <SiteSettingsContext.Provider value={{ settings, getContent }}>
+      <div className="bg-white selection:bg-[#2368D6] selection:text-white flex flex-col min-h-screen font-sans">
+        <Header currentPath={currentPath} onNavigate={onNavigate} />
+        
+        <main className="flex-grow pt-20">
+          <motion.div
+             key={currentPath}
+             initial={{ opacity: 0 }}
+             animate={{ opacity: 1 }}
+             transition={{ duration: 0.4 }}
+          >
+            {renderView()}
+          </motion.div>
+        </main>
 
-      <Footer onNavigate={onNavigate} />
-    </div>
+        <Footer onNavigate={onNavigate} />
+      </div>
+    </SiteSettingsContext.Provider>
   );
 }

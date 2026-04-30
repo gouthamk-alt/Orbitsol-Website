@@ -134,6 +134,35 @@ export const adminService = {
   },
 
   // Admins
+  // Site Settings
+  async getSettings(key: string) {
+    const path = `siteSettings/${key}`;
+    try {
+      const docRef = doc(db, 'siteSettings', key);
+      const snapshot = await getDoc(docRef);
+      if (snapshot.exists()) {
+        return snapshot.data().value;
+      }
+      return null;
+    } catch (error) {
+      handleFirestoreError(error, OperationType.GET, path);
+    }
+  },
+
+  async updateSettings(key: string, value: any) {
+    const path = `siteSettings/${key}`;
+    try {
+      const docRef = doc(db, 'siteSettings', key);
+      await setDoc(docRef, {
+        key,
+        value,
+        updatedAt: Timestamp.now()
+      });
+    } catch (error) {
+      handleFirestoreError(error, OperationType.WRITE, path);
+    }
+  },
+
   async checkIfAdmin(uid: string) {
     const path = `admins/${uid}`;
     try {
