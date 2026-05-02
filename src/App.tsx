@@ -25,7 +25,10 @@ import { motion, AnimatePresence } from 'motion/react';
 import { adminService, Insight } from './services/adminService';
 import { auth, signInWithGoogle, db } from './lib/firebase';
 import { onAuthStateChanged, User } from 'firebase/auth';
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { collection, addDoc, serverTimestamp, query, orderBy, getDocs } from 'firebase/firestore';
+import ReactQuill from 'react-quill-new';
+import 'react-quill-new/dist/quill.snow.css';
+import DOMPurify from 'dompurify';
 
 // --- Types ---
 type SiteSettings = {
@@ -1206,6 +1209,7 @@ const PropertyRealEstateView = ({ onNavigate }: { onNavigate: (path: ViewPath) =
 const InsightsView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => {
   const [insights, setInsights] = useState<Insight[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedInsight, setSelectedInsight] = useState<Insight | null>(null);
 
   useEffect(() => {
     const fetchInsights = async () => {
@@ -1221,77 +1225,175 @@ const InsightsView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) 
     fetchInsights();
   }, []);
 
+  const categories = Array.from(new Set(insights.map(i => i.tag))).filter(Boolean);
+
+  if (selectedInsight) {
+    return (
+      <div className="bg-white min-h-screen pt-32 pb-24 font-sans">
+        <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-12 gap-16">
+          <div className="lg:col-span-8">
+            <button 
+              onClick={() => setSelectedInsight(null)}
+              className="text-[#2368D6] font-bold text-xs uppercase tracking-widest flex items-center gap-2 mb-8 hover:translate-x-[-4px] transition-transform"
+            >
+              <ArrowRight className="rotate-180" size={14} /> Back to Insights
+            </button>
+            
+            {selectedInsight.image && (
+              <img 
+                src={selectedInsight.image} 
+                alt={selectedInsight.title} 
+                className="w-full aspect-[21/9] object-cover rounded-3xl mb-12 shadow-sm"
+                referrerPolicy="no-referrer"
+              />
+            )}
+            
+            <div className="flex items-center gap-4 mb-6">
+              <span className="px-3 py-1 bg-blue-50 text-[#2368D6] text-[10px] font-bold rounded uppercase tracking-widest">
+                {selectedInsight.tag}
+              </span>
+              <span className="text-slate-400 text-xs">{selectedInsight.date}</span>
+            </div>
+
+            <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-[#0A192F] mb-8 leading-tight">
+              {selectedInsight.title}
+            </h1>
+
+            <div 
+              className="prose prose-slate prose-lg max-w-none prose-headings:font-serif prose-headings:text-[#0A192F] prose-h1:text-4xl prose-h2:text-3xl prose-h3:text-2xl prose-p:text-slate-600 prose-p:leading-relaxed prose-a:text-[#2368D6] prose-strong:text-[#0A192F]"
+              dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(selectedInsight.content) }}
+            />
+          </div>
+
+          {/* Sidebar */}
+          <aside className="lg:col-span-4 space-y-12">
+            <div>
+              <h3 className="text-xs font-bold text-[#0A192F] uppercase tracking-widest mb-6 pb-4 border-b border-slate-100">Categories</h3>
+              <ul className="space-y-4">
+                {categories.map(cat => (
+                  <li key={cat}>
+                    <button className="text-slate-500 hover:text-[#2368D6] text-sm transition-colors uppercase tracking-widest font-medium">
+                      {cat}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div>
+              <h3 className="text-xs font-bold text-[#0A192F] uppercase tracking-widest mb-6 pb-4 border-b border-slate-100">Recent Posts</h3>
+              <div className="space-y-8">
+                {insights.filter(i => i.id !== selectedInsight.id).slice(0, 5).map(post => (
+                  <div key={post.id} className="group cursor-pointer" onClick={() => { setSelectedInsight(post); window.scrollTo(0, 0); }}>
+                    <div className="flex gap-4">
+                      {post.image && (
+                        <div className="w-20 h-20 flex-shrink-0">
+                          <img src={post.image} alt="" className="w-full h-full object-cover rounded-lg" referrerPolicy="no-referrer" />
+                        </div>
+                      )}
+                      <div>
+                        <h4 className="text-sm font-bold text-[#0A192F] group-hover:text-[#2368D6] transition-colors leading-snug line-clamp-2">
+                          {post.title}
+                        </h4>
+                        <p className="text-[10px] text-slate-400 mt-2 uppercase tracking-wider">{post.date}</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <>
       {/* Section 1 - Hero */}
       <section className="relative bg-[#0A192F] text-white pt-32 pb-24 overflow-hidden font-sans border-b border-white/5">
         <div className="max-w-7xl mx-auto px-6 relative z-10">
-          <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-8">
-            Insights on managed operations, remote teams, and practical automation.
+          <h1 className="font-serif text-4xl md:text-5xl lg:text-7xl font-bold leading-tight mb-8">
+            The Journal.
           </h1>
           <p className="text-lg md:text-xl text-blue-100/60 leading-relaxed max-w-3xl">
-            Practical thinking for professional firms looking to build more scalable, resilient, and accurate operational layers.
+            Thinking, updates, and observations on managed operations and practical automation.
           </p>
         </div>
       </section>
 
-      {/* Section 2 - Feed */}
       <section className="py-24 bg-white font-sans min-h-[400px]">
-        <div className="max-w-7xl mx-auto px-6">
-          {loading ? (
-            <div className="flex justify-center items-center py-20">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#2368D6]"></div>
-            </div>
-          ) : insights.length > 0 ? (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-12">
-              {insights.map((post) => (
-                <div key={post.id} className="group cursor-pointer">
-                  {post.image ? (
-                    <img 
-                      src={post.image} 
-                      alt={post.title} 
-                      className="aspect-[16/9] w-full object-cover rounded-2xl mb-6 border border-slate-100 group-hover:border-blue-200 transition-all shadow-sm group-hover:shadow-md"
-                      referrerPolicy="no-referrer"
-                    />
-                  ) : (
-                    <div className="aspect-[16/9] bg-[#F8FAFC] rounded-2xl mb-6 border border-slate-100 group-hover:border-blue-200 transition-all shadow-sm group-hover:shadow-md"></div>
-                  )}
-                  <span className="text-[#2368D6] font-bold text-[10px] uppercase tracking-widest block mb-3">{post.tag}</span>
-                  <h3 className="font-serif text-xl font-bold text-[#0A192F] mb-4 group-hover:text-[#2368D6] transition-colors leading-snug">{post.title}</h3>
-                  <p className="text-slate-500 text-sm leading-relaxed">{post.summary}</p>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-20">
-              <p className="text-slate-400">No insights published yet. Check back soon.</p>
-            </div>
-          )}
-        </div>
-      </section>
+        <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-12 gap-16">
+          <div className="lg:col-span-8">
+            {loading ? (
+              <div className="flex justify-center items-center py-20">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#2368D6]"></div>
+              </div>
+            ) : insights.length > 0 ? (
+              <div className="space-y-16">
+                {insights.map((post) => (
+                  <div key={post.id} className="group cursor-pointer pb-16 border-b border-slate-50 last:border-0" onClick={() => setSelectedInsight(post)}>
+                    {post.image && (
+                      <div className="overflow-hidden rounded-3xl mb-8">
+                        <img 
+                          src={post.image} 
+                          alt={post.title} 
+                          className="w-full aspect-[21/9] object-cover mix-blend-multiply group-hover:scale-[1.02] transition-transform duration-700"
+                          referrerPolicy="no-referrer"
+                        />
+                      </div>
+                    )}
+                    <div className="flex items-center gap-4 mb-4">
+                      <span className="text-[#2368D6] font-bold text-[10px] uppercase tracking-widest">{post.tag}</span>
+                      <span className="w-1 h-1 rounded-full bg-slate-300"></span>
+                      <span className="text-slate-400 text-xs font-medium">{post.date}</span>
+                    </div>
+                    <h2 className="font-serif text-3xl md:text-4xl font-bold text-[#0A192F] mb-6 group-hover:text-[#2368D6] transition-colors leading-tight">
+                      {post.title}
+                    </h2>
+                    <p className="text-slate-500 text-lg leading-relaxed mb-8 max-w-3xl">
+                      {post.summary}
+                    </p>
+                    <button className="flex items-center gap-3 text-[#0A192F] font-bold text-xs uppercase tracking-[0.2em] group-hover:gap-5 transition-all">
+                      Read Full Article <ArrowRight size={14} className="text-[#2368D6]" />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-20">
+                <p className="text-slate-400">No signals from the orbit yet. Check back soon.</p>
+              </div>
+            )}
+          </div>
 
-      {/* Section 3 - Newsletter */}
-      <section className="bg-[#F8FAFC] py-20 px-6 font-sans border-y border-slate-200">
-        <div className="max-w-3xl mx-auto text-center">
-           <h2 className="font-serif text-3xl font-bold text-[#0A192F] mb-6">Brief monthly updates on operational excellence.</h2>
-           <p className="text-slate-500 mb-10">Join 500+ professionals getting our latest thinking once a month. No spam.</p>
-           <form className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto" onSubmit={(e) => e.preventDefault()}>
-              <input type="email" placeholder="Email address" className="flex-grow p-4 bg-white border border-slate-200 rounded-xl outline-none focus:border-[#2368D6] shadow-sm" required />
-              <button type="submit" className="bg-[#0A192F] hover:bg-slate-800 text-white px-8 py-4 rounded-xl font-bold uppercase tracking-widest text-xs transition-all shadow-md">
-                 Subscribe
-              </button>
-           </form>
-        </div>
-      </section>
+          {/* Sidebar */}
+          <aside className="lg:col-span-4 space-y-16 pt-4">
+            <div>
+              <h3 className="text-xs font-bold text-[#0A192F] uppercase tracking-widest mb-6 pb-4 border-b border-slate-100">Categories</h3>
+              <ul className="space-y-4">
+                {categories.map(cat => (
+                  <li key={cat}>
+                    <button className="text-slate-500 hover:text-[#2368D6] text-sm transition-colors uppercase tracking-widest font-medium">
+                      {cat}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
 
-      {/* Section 4 - CTA */}
-      <section className="bg-white py-24 text-center font-sans">
-         <div className="max-w-3xl mx-auto px-6">
-            <h2 className="font-serif text-3xl font-bold text-[#0A192F] mb-8">Have a specific workflow question?</h2>
-            <button onClick={() => onNavigate('/contact')} className="bg-[#2368D6] hover:bg-blue-500 text-white px-10 py-4 rounded font-bold uppercase tracking-widest text-xs shadow-xl transition-all">
-               Ask our operations team
-            </button>
-         </div>
+            <div className="bg-[#F8FAFC] p-10 rounded-3xl border border-slate-100">
+              <h3 className="text-xs font-bold text-[#0A192F] uppercase tracking-widest mb-6">Orbit Newsletter</h3>
+              <p className="text-slate-500 text-sm leading-relaxed mb-8">Practical, monthly operational insights delivered to your inbox.</p>
+              <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
+                <input type="email" placeholder="Email" className="w-full p-4 bg-white border border-slate-200 rounded-xl outline-none focus:border-[#2368D6] text-sm" required />
+                <button type="submit" className="w-full bg-[#0A192F] hover:bg-slate-800 text-white p-4 rounded-xl font-bold uppercase tracking-widest text-xs transition-all shadow-md">
+                  Join the List
+                </button>
+              </form>
+            </div>
+          </aside>
+        </div>
       </section>
     </>
   );
@@ -2373,29 +2475,51 @@ const AdminView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
   const handleSaveInsight = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    const insightData: Omit<Insight, 'id'> = {
+    const insightData: Partial<Insight> = {
       title: formData.get('title') as string,
       summary: formData.get('summary') as string,
-      content: formData.get('content') as string,
+      content: richContent,
       author: formData.get('author') as string,
-      date: formData.get('date') as string || new Date().toISOString(),
+      date: formData.get('date') as string || new Date().toISOString().split('T')[0],
       image: formData.get('image') as string,
       tag: formData.get('tag') as string,
       status: formData.get('status') as 'draft' | 'published'
     };
 
+    if (editingInsight?.id) insightData.id = editingInsight.id;
+
     try {
-      if (editingInsight?.id) {
-        await adminService.updateInsight(editingInsight.id, insightData);
-      } else {
-        await adminService.createInsight(insightData);
-      }
+      await adminService.saveInsight(insightData);
       setIsFormOpen(false);
       setEditingInsight(null);
+      setRichContent('');
       fetchInsights();
     } catch (error) {
       alert("Failed to save insight. Check console for details.");
     }
+  };
+
+  const [richContent, setRichContent] = useState('');
+
+  useEffect(() => {
+    if (editingInsight) {
+      setRichContent(editingInsight.content || '');
+    } else {
+      setRichContent('');
+    }
+  }, [editingInsight, isFormOpen]);
+
+  // Quill modules for MS Word type formatting
+  const quillModules = {
+    toolbar: [
+      [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+      [{ 'font': [] }],
+      [{ 'size': [] }],
+      ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+      [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
+      ['link', 'image', 'video'],
+      ['clean']
+    ],
   };
 
   const handleDeleteInsight = async (id: string) => {
@@ -2714,6 +2838,28 @@ const AdminView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
                     </div>
                   </div>
 
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Featured Image URL</label>
+                      <input 
+                        name="image" 
+                        defaultValue={editingInsight?.image} 
+                        className="w-full p-4 bg-slate-50 border border-slate-100 rounded-xl outline-none focus:border-[#2368D6] transition-all"
+                        placeholder="https://..."
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Publication Date</label>
+                      <input 
+                        name="date" 
+                        type="date"
+                        defaultValue={editingInsight?.date || new Date().toISOString().split('T')[0]} 
+                        required 
+                        className="w-full p-4 bg-slate-50 border border-slate-100 rounded-xl outline-none focus:border-[#2368D6] transition-all"
+                      />
+                    </div>
+                  </div>
+
                   <div className="space-y-2">
                     <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Summary</label>
                     <textarea 
@@ -2726,19 +2872,20 @@ const AdminView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
                     />
                   </div>
 
-                  <div className="space-y-2">
-                    <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Content (Markdown)</label>
-                    <textarea 
-                      name="content" 
-                      defaultValue={editingInsight?.content} 
-                      required 
-                      rows={10}
-                      className="w-full p-4 bg-slate-50 border border-slate-100 rounded-xl outline-none focus:border-[#2368D6] transition-all font-mono text-sm"
-                      placeholder="Post body..."
-                    />
+                  <div className="space-y-2 pb-12">
+                    <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Content</label>
+                    <div className="h-[400px] mb-12">
+                      <ReactQuill 
+                        theme="snow"
+                        value={richContent}
+                        onChange={setRichContent}
+                        modules={quillModules}
+                        className="h-full"
+                      />
+                    </div>
                   </div>
 
-                  <div className="grid md:grid-cols-2 gap-6">
+                  <div className="grid md:grid-cols-2 gap-6 pt-4">
                     <div className="space-y-2">
                       <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Author</label>
                       <input 
@@ -2759,16 +2906,6 @@ const AdminView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
                         <option value="published">Published</option>
                       </select>
                     </div>
-                  </div>
-
-                  <div className="space-y-2">
-                    <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Featured Image URL</label>
-                    <input 
-                      name="image" 
-                      defaultValue={editingInsight?.image} 
-                      className="w-full p-4 bg-slate-50 border border-slate-100 rounded-xl outline-none focus:border-[#2368D6] transition-all"
-                      placeholder="https://..."
-                    />
                   </div>
                 </div>
 
@@ -3111,6 +3248,7 @@ export default function App() {
   };
 
   const [currentPath, setCurrentPath] = useState<ViewPath>(getInitialPath());
+  const [selectedInsightId, setSelectedInsightId] = useState<string | null>(null);
   const [settings, setSettings] = useState<SiteSettings>({});
 
   useEffect(() => {

@@ -133,8 +133,6 @@ export const adminService = {
     }
   },
 
-  // Admins
-  // Site Settings
   async getSettings(key: string) {
     const path = `siteSettings/${key}`;
     try {
@@ -157,6 +155,31 @@ export const adminService = {
       return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
     } catch (error) {
       handleFirestoreError(error, OperationType.LIST, path);
+    }
+  },
+
+  async saveInsight(insight: Partial<Insight>) {
+    const isNew = !insight.id;
+    const path = isNew ? 'insights' : `insights/${insight.id}`;
+    
+    const data = {
+      ...insight,
+      updatedAt: Timestamp.now(),
+      ...(isNew ? { createdAt: Timestamp.now() } : {})
+    };
+    
+    // Remove ID from data if updating
+    const docId = insight.id;
+    if (!isNew) delete (data as any).id;
+
+    try {
+      if (isNew) {
+        return await addDoc(collection(db, 'insights'), data);
+      } else {
+        await updateDoc(doc(db, 'insights', docId!), data);
+      }
+    } catch (error) {
+      handleFirestoreError(error, OperationType.WRITE, path);
     }
   },
 
