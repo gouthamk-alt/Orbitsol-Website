@@ -2967,29 +2967,45 @@ export default function App() {
     const base = '/Orbitsol-Website';
     let path = window.location.pathname;
     
-    if (path.toLowerCase().startsWith(base.toLowerCase())) {
-      path = path.substring(base.length);
-    }
+    // Robustly remove repository prefix (case-insensitive)
+    const repoPattern = new RegExp(`^${base}`, 'i');
+    path = path.replace(repoPattern, '');
     
+    // Clean up: ensure starts with /, remove duplicate slashes
     if (!path.startsWith('/')) path = '/' + path;
     path = path.replace(/\/+/g, '/');
     
+    // Remove trailing slash for consistency (except for root)
     if (path.length > 1 && path.endsWith('/')) {
       path = path.slice(0, -1);
     }
     
-    return (path === '' ? '/' : path) as ViewPath;
+    if (path === '' || path === '//') path = '/';
+    
+    return path as ViewPath;
   };
 
   const [currentPath, setCurrentPath] = useState<ViewPath>(getInitialPath());
   const [settings, setSettings] = useState<SiteSettings>({});
 
   useEffect(() => {
+    // Sync state with URL changes (back/forward buttons)
     const handlePopState = () => {
-      setCurrentPath(getInitialPath());
+      const newPath = getInitialPath();
+      if (newPath !== currentPath) {
+        setCurrentPath(newPath);
+      }
     };
     window.addEventListener('popstate', handlePopState);
     return () => window.removeEventListener('popstate', handlePopState);
+  }, [currentPath]);
+
+  useEffect(() => {
+    // Handle initial potentially deep path on load
+    const initial = getInitialPath();
+    if (initial !== currentPath) {
+      setCurrentPath(initial);
+    }
   }, []);
 
   useEffect(() => {
@@ -3044,19 +3060,21 @@ export default function App() {
       window.scrollTo(0, 0);
       
       // Update URL for refreshes to work on GitHub Pages
-      const fullPath = targetPath === '/' ? `${base}/` : `${base}${targetPath}`;
+      // Ensure we don't have double slashes when combining base and targetPath
+      const cleanTargetPath = targetPath.startsWith('/') ? targetPath : '/' + targetPath;
+      const fullPath = cleanTargetPath === '/' ? `${base}/` : `${base}${cleanTargetPath}`;
       window.history.pushState({}, '', fullPath);
     }
   };
 
   const renderView = () => {
-    // Extra safety: Normalize by stripping repository prefix if it somehow persisted
+    // Extra safety: Normalize currentPath by stripping repository prefix and cleaning slashes
     const base = '/Orbitsol-Website';
     let lookupPath = currentPath as string;
     
-    if (lookupPath.toLowerCase().startsWith(base.toLowerCase())) {
-      lookupPath = lookupPath.substring(base.length);
-    }
+    // Always ensure we are working with the path relative to the repo root
+    const repoPattern = new RegExp(`^${base}`, 'i');
+    lookupPath = lookupPath.replace(repoPattern, '');
     
     // Clean up: ensure starts with /, remove duplicate slashes, remove trailing slash
     if (!lookupPath.startsWith('/')) lookupPath = '/' + lookupPath;
@@ -3064,10 +3082,11 @@ export default function App() {
     if (lookupPath.length > 1 && lookupPath.endsWith('/')) {
       lookupPath = lookupPath.slice(0, -1);
     }
-    if (lookupPath === '') lookupPath = '/';
+    if (lookupPath === '' || lookupPath === '//') lookupPath = '/';
 
     switch (lookupPath) {
       case '/':
+      case '/index.html':
         return <HomeView onNavigate={onNavigate} />;
       case '/legal-professional-services':
       case '/who-we-work-with/legal-professional-services':
