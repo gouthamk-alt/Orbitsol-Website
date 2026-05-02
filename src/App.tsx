@@ -2992,8 +2992,14 @@ export default function App() {
 
   useEffect(() => {
     // Handle hash links or initial path
-    const path = window.location.pathname;
-    if (path !== '/') setCurrentPath(path);
+    let path = window.location.pathname;
+    // Handle GitHub Pages subdirectory
+    if (path.startsWith('/Orbitsol-Website')) {
+      path = path.replace('/Orbitsol-Website', '');
+    }
+    if (path === '' || path === '//') path = '/';
+    
+    if (path !== '/') setCurrentPath(path as ViewPath);
   }, []);
 
   const onNavigate = (path: ViewPath) => {
