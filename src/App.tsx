@@ -23,8 +23,9 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { adminService, Insight } from './services/adminService';
-import { auth, signInWithGoogle } from './lib/firebase';
+import { auth, signInWithGoogle, db } from './lib/firebase';
 import { onAuthStateChanged, User } from 'firebase/auth';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
 // --- Types ---
 type SiteSettings = {
@@ -1581,7 +1582,7 @@ const ContactView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) =
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
-  const contactEmail = getContent('global.contactEmail', 'info@orbitsol.com');
+  const contactEmail = getContent('global.contactEmail', 'gouthamk@orbitsol.com');
   const contactPhone = getContent('global.phone', '+1-833-384-1500');
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -1589,29 +1590,46 @@ const ContactView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) =
     setIsSubmitting(true);
     
     const formData = new FormData(e.currentTarget);
+    const data = {
+      name: formData.get('name'),
+      email: formData.get('email'),
+      company: formData.get('company'),
+      country: formData.get('country'),
+      service: formData.get('service'),
+      message: formData.get('message'),
+      submittedAt: serverTimestamp(),
+      source: window.location.href,
+    };
     
     try {
-      await fetch("/", {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: new URLSearchParams(formData as any).toString(),
-      });
+      // First try to save to Firestore (our new source of truth)
+      await addDoc(collection(db, 'enquiries'), data);
+      
+      // Also try Netlify if it exists, but don't fail if it doesn't
+      try {
+        await fetch("/", {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: new URLSearchParams(formData as any).toString(),
+        });
+      } catch (e) {
+        // Ignore Netlify failures on GitHub Pages
+      }
+
       setIsSubmitting(false);
       setSubmitted(true);
       window.scrollTo(0, 0);
     } catch (error) {
       console.error("Form submission error:", error);
-      // Fallback for non-Netlify environments (like GitHub Pages)
-      const name = formData.get('name');
-      const service = formData.get('service');
-      const message = formData.get('message');
-      const mailtoLink = `mailto:${contactEmail}?subject=Enquiry from ${name} regarding ${service}&body=${encodeURIComponent(message as string)}`;
+      setIsSubmitting(false);
       
-      if (confirm("Notice: Automatic submission is only available on Netlify. Would you like to send this enquiry via email instead?")) {
+      // Fallback to mailto if Firestore fails (unauthorized or quota)
+      const mailtoLink = `mailto:${contactEmail}?subject=Enquiry from ${data.name} regarding ${data.service}&body=${encodeURIComponent(data.message as string)}`;
+      
+      if (confirm("Notice: There was an issue with automatic submission. Would you like to send this enquiry via email instead?")) {
         window.location.href = mailtoLink;
         setSubmitted(true);
       }
-      setIsSubmitting(false);
     }
   };
 

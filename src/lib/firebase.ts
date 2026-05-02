@@ -18,7 +18,7 @@ export const signInWithGoogle = async () => {
     if (error instanceof FirebaseError) {
       // Provide user-friendly guidance for common production deployment errors
       if (error.code === 'auth/unauthorized-domain') {
-        alert("This domain is not authorized for Firebase Authentication. Please add your Netlify domain to 'Authorized domains' in the Firebase Console.");
+        alert("This domain is not authorized for Firebase Authentication. Please add your domain to 'Authorized domains' in the Firebase Console.");
       } else if (error.code === 'auth/popup-closed-by-user') {
         // User closed the popup, no need to alert usually
       } else {

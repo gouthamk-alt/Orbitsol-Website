@@ -44,6 +44,20 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
 
+    // Enquiries
+    match /enquiries/{enquiryId} {
+      function isValidEnquiry(data) {
+        return data.keys().hasAll(['name', 'email', 'message', 'submittedAt']) &&
+               data.name is string && data.name.size() <= 256 &&
+               data.email is string && data.email.size() <= 256 &&
+               data.message is string && data.message.size() <= 5000 &&
+               data.submittedAt == request.time;
+      }
+      
+      allow create: if isValidEnquiry(request.resource.data);
+      allow read, update, delete: if isAdmin();
+    }
+
     // Admins - Only admins can manage admins
     match /admins/{adminId} {
       allow read: if isSignedIn();

@@ -38,6 +38,22 @@
         "role": { "type": "string", "enum": ["admin"] }
       },
       "required": ["email", "role"]
+    },
+    "enquiry": {
+      "title": "Contact Enquiry",
+      "description": "Form submissions from the contact page.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "company": { "type": "string" },
+        "country": { "type": "string" },
+        "service": { "type": "string" },
+        "message": { "type": "string" },
+        "submittedAt": { "type": "string", "format": "date-time" },
+        "source": { "type": "string" }
+      },
+      "required": ["name", "email", "message", "submittedAt"]
     }
   },
   "firestore": {
@@ -52,6 +68,10 @@
     "admins": {
       "schema": "admin",
       "description": "Admin users list."
+    },
+    "enquiries": {
+      "schema": "enquiry",
+      "description": "Contact form submissions."
     }
   }
 }
