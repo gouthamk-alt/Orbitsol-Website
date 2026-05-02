@@ -1295,11 +1295,13 @@ const Header = ({ currentPath, onNavigate }: { currentPath: ViewPath, onNavigate
 
   const navItems = [
     { label: 'Home', path: '/' },
-    { label: 'Who We Work With', dropdown: whoWeServe },
+    { label: 'Who We Serve', dropdown: whoWeServe },
     { label: 'What We Do', dropdown: whatWeDo },
     { label: 'Insights', path: '/insights' },
     { label: 'About', path: '/about' },
   ];
+
+  const logoUrl = getContent('global.logoUrl', '');
 
   return (
     <header 
@@ -1309,14 +1311,18 @@ const Header = ({ currentPath, onNavigate }: { currentPath: ViewPath, onNavigate
       <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
         {/* Logo */}
         <div className="flex items-center cursor-pointer" onClick={() => onNavigate('/')}>
-          <div className="flex flex-col">
-            <div className="font-serif text-2xl font-black text-[#0A192F] leading-none tracking-tight">
-              {getContent('global.siteName', 'OrbitSol')}
+          {logoUrl ? (
+            <img src={logoUrl} alt={getContent('global.siteName', 'OrbitSol')} className="h-10 w-auto object-contain" />
+          ) : (
+            <div className="flex flex-col">
+              <div className="font-serif text-2xl font-black text-[#0A192F] leading-none tracking-tight">
+                {getContent('global.siteName', 'OrbitSol')}
+              </div>
+              <div className="text-[9px] font-bold tracking-[0.25em] text-slate-400 uppercase mt-1.5">
+                {getContent('global.tagline', 'BRINGING WORLDS TOGETHER')}
+              </div>
             </div>
-            <div className="text-[9px] font-bold tracking-[0.25em] text-slate-400 uppercase mt-1.5">
-              {getContent('global.tagline', 'BRINGING WORLDS TOGETHER')}
-            </div>
-          </div>
+          )}
         </div>
 
         {/* Desktop Nav */}
@@ -1559,76 +1565,133 @@ const AboutView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
   );
 };
 
-const ContactView = () => (
-  <>
-    {/* Section 1 - Hero */}
-    <section className="relative bg-[#F8FAFC] pt-32 pb-24 overflow-hidden font-sans border-b border-slate-100">
-      <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-16 items-start">
-        <div>
-          <h1 className="font-serif text-4xl md:text-5xl font-bold leading-tight mb-8 text-[#0A192F]">
-            Send us the workflow, sample file, or task list you want handled.
-          </h1>
-          <p className="text-lg text-slate-600 leading-relaxed mb-12">
-            Tell us what you need completed, where the input comes from, what the output should look like, and how often the work repeats.
+const ContactView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => {
+  const { getContent } = React.useContext(SiteSettingsContext);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    
+    // Simulate API call
+    // In production, you'd use EmailJS, Resend, or Netlify Functions
+    setTimeout(() => {
+      setIsSubmitting(false);
+      setSubmitted(true);
+      window.scrollTo(0, 0);
+    }, 1500);
+  };
+
+  const contactEmail = getContent('global.contactEmail', 'info@orbitsol.com');
+  const contactPhone = getContent('global.phone', '+1-833-384-1500');
+
+  if (submitted) {
+    return (
+      <section className="py-32 bg-white text-center font-sans h-screen flex items-center justify-center">
+        <div className="max-w-md mx-auto px-6">
+          <div className="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-8 shadow-inner">
+            <Check size={40} />
+          </div>
+          <h2 className="text-3xl font-serif font-bold text-[#0A192F] mb-4">Enquiry Received</h2>
+          <p className="text-slate-600 mb-8 leading-relaxed">
+            Thank you for reaching out. We have sent your details to <strong>{contactEmail}</strong> and our team will get back to you shortly.
           </p>
-          <div className="space-y-6 pt-12 border-t border-slate-200">
-             <div>
-                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Email Address</p>
-                <a href="mailto:info@orbitsol.com" className="text-2xl font-serif font-bold text-[#2368D6] hover:underline">info@orbitsol.com</a>
-             </div>
-             <div>
-                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Phone Number (Toll-free)</p>
-                <p className="text-2xl font-serif font-bold text-[#0A192F]">+1-833-384-1500</p>
-                <p className="text-xs text-slate-400 mt-1">Reachable from any country</p>
-             </div>
+          <button 
+            onClick={() => onNavigate('/')}
+            className="bg-[#0A192F] text-white px-8 py-3 rounded-xl font-bold uppercase tracking-widest text-xs transition-all hover:bg-slate-800"
+          >
+            Return Home
+          </button>
+        </div>
+      </section>
+    );
+  }
+
+  return (
+    <>
+      {/* Section 1 - Hero */}
+      <section className="relative bg-[#F8FAFC] pt-32 pb-24 overflow-hidden font-sans border-b border-slate-100">
+        <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-16 items-start">
+          <div>
+            <h1 className="font-serif text-4xl md:text-5xl font-bold leading-tight mb-8 text-[#0A192F]">
+              Send us the workflow, sample file, or task list you want handled.
+            </h1>
+            <p className="text-lg text-slate-600 leading-relaxed mb-12">
+              Tell us what you need completed, where the input comes from, what the output should look like, and how often the work repeats.
+            </p>
+            <div className="space-y-6 pt-12 border-t border-slate-200">
+               <div>
+                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Email Address</p>
+                  <a href={`mailto:${contactEmail}`} className="text-2xl font-serif font-bold text-[#2368D6] hover:underline">{contactEmail}</a>
+               </div>
+               <div>
+                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Phone Number (Toll-free)</p>
+                  <p className="text-2xl font-serif font-bold text-[#0A192F]">{contactPhone}</p>
+                  <p className="text-xs text-slate-400 mt-1">Reachable from any country</p>
+               </div>
+            </div>
+          </div>
+          <div className="bg-white p-10 rounded shadow-2xl border border-slate-100">
+            <form className="space-y-6" onSubmit={handleSubmit}>
+              <div className="grid sm:grid-cols-2 gap-6">
+                 <div className="space-y-2">
+                    <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Name *</label>
+                    <input name="name" type="text" className="w-full p-3 bg-slate-50 border border-slate-200 rounded focus:border-[#2368D6] outline-none transition-colors" required />
+                 </div>
+                 <div className="space-y-2">
+                    <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Email *</label>
+                    <input name="email" type="email" className="w-full p-3 bg-slate-50 border border-slate-200 rounded focus:border-[#2368D6] outline-none transition-colors" required />
+                 </div>
+              </div>
+              <div className="grid sm:grid-cols-2 gap-6">
+                 <div className="space-y-2">
+                    <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Company</label>
+                    <input name="company" type="text" className="w-full p-3 bg-slate-50 border border-slate-200 rounded focus:border-[#2368D6] outline-none transition-colors" />
+                 </div>
+                 <div className="space-y-2">
+                    <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Country</label>
+                    <input name="country" type="text" className="w-full p-3 bg-slate-50 border border-slate-200 rounded focus:border-[#2368D6] outline-none transition-colors" />
+                 </div>
+              </div>
+              <div className="space-y-2">
+                 <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Service Interest</label>
+                 <select name="service" className="w-full p-3 bg-slate-50 border border-slate-200 rounded focus:border-[#2368D6] outline-none transition-colors text-sm">
+                    <option>Property Inspection Reports</option>
+                    <option>Managed Remote Operations</option>
+                    <option>Digital Marketing & Creative</option>
+                    <option>Process and Automation</option>
+                    <option>Speech and Content Intelligence</option>
+                    <option>General Enquiry</option>
+                 </select>
+              </div>
+              <div className="space-y-2">
+                 <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">What do you want handled? *</label>
+                 <textarea name="message" rows={4} className="w-full p-3 bg-slate-50 border border-slate-200 rounded focus:border-[#2368D6] outline-none transition-colors resize-none" required></textarea>
+              </div>
+              <button 
+                type="submit" 
+                disabled={isSubmitting}
+                className="w-full bg-[#2368D6] hover:bg-blue-500 text-white py-4 rounded font-bold uppercase tracking-widest text-xs shadow-lg transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+              >
+                {isSubmitting ? (
+                  <>
+                    <motion.div 
+                      animate={{ rotate: 360 }}
+                      transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
+                      className="w-4 h-4 border-2 border-white border-t-transparent rounded-full"
+                    />
+                    Sending...
+                  </>
+                ) : 'Send enquiry'}
+              </button>
+            </form>
           </div>
         </div>
-        <div className="bg-white p-10 rounded shadow-2xl border border-slate-100">
-          <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
-            <div className="grid sm:grid-cols-2 gap-6">
-               <div className="space-y-2">
-                  <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Name *</label>
-                  <input type="text" className="w-full p-3 bg-slate-50 border border-slate-200 rounded focus:border-[#2368D6] outline-none transition-colors" required />
-               </div>
-               <div className="space-y-2">
-                  <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Email *</label>
-                  <input type="email" className="w-full p-3 bg-slate-50 border border-slate-200 rounded focus:border-[#2368D6] outline-none transition-colors" required />
-               </div>
-            </div>
-            <div className="grid sm:grid-cols-2 gap-6">
-               <div className="space-y-2">
-                  <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Company</label>
-                  <input type="text" className="w-full p-3 bg-slate-50 border border-slate-200 rounded focus:border-[#2368D6] outline-none transition-colors" />
-               </div>
-               <div className="space-y-2">
-                  <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Country</label>
-                  <input type="text" className="w-full p-3 bg-slate-50 border border-slate-200 rounded focus:border-[#2368D6] outline-none transition-colors" />
-               </div>
-            </div>
-            <div className="space-y-2">
-               <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Service Interest</label>
-               <select className="w-full p-3 bg-slate-50 border border-slate-200 rounded focus:border-[#2368D6] outline-none transition-colors text-sm">
-                  <option>Property Inspection Reports</option>
-                  <option>Managed Remote Operations</option>
-                  <option>Digital Marketing & Creative</option>
-                  <option>Process and Automation</option>
-                  <option>Speech and Content Intelligence</option>
-                  <option>General Enquiry</option>
-               </select>
-            </div>
-            <div className="space-y-2">
-               <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">What do you want handled? *</label>
-               <textarea rows={4} className="w-full p-3 bg-slate-50 border border-slate-200 rounded focus:border-[#2368D6] outline-none transition-colors resize-none" required></textarea>
-            </div>
-            <button type="submit" className="w-full bg-[#2368D6] hover:bg-blue-500 text-white py-4 rounded font-bold uppercase tracking-widest text-xs shadow-lg transition-all" onClick={() => alert('Form submitted')}>
-               Send enquiry
-            </button>
-          </form>
-        </div>
-      </div>
-    </section>
-  </>
-);
+      </section>
+    </>
+  );
+};
 
 const Footer = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => {
   const { getContent } = React.useContext(SiteSettingsContext);
@@ -1680,10 +1743,10 @@ const Footer = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => {
               <li>Headquarters: Kochi, India.</li>
               <li>Australia presence.</li>
               <li className="text-white pt-2 flex items-center gap-2">
-                <Mail size={14} /> info@orbitsol.com
+                <Mail size={14} /> {getContent('global.contactEmail', 'info@orbitsol.com')}
               </li>
               <li className="text-white flex items-center gap-2">
-                 <Phone size={14} /> +1-833-384-1500
+                 <Phone size={14} /> {getContent('global.phone', '+1-833-384-1500')}
               </li>
               <li className="text-xs text-blue-50/50 mt-1 block pl-6">(reachable from any country)</li>
             </ul>
@@ -2170,6 +2233,7 @@ const AdminView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
       case 'global':
         return [
           { id: 'siteName', label: 'Site Name', type: 'text' },
+          { id: 'logoUrl', label: 'Logo Image URL (e.g. /logo.png)', type: 'text' },
           { id: 'tagline', label: 'Tagline / Slogan', type: 'text' },
           { id: 'footerDesc', label: 'Footer Description', type: 'textarea' },
           { id: 'contactEmail', label: 'Contact Email', type: 'text' },
