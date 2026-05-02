@@ -1312,7 +1312,26 @@ const Header = ({ currentPath, onNavigate }: { currentPath: ViewPath, onNavigate
         {/* Logo */}
         <div className="flex items-center cursor-pointer" onClick={() => onNavigate('/')}>
           {logoUrl ? (
-            <img src={logoUrl} alt={getContent('global.siteName', 'OrbitSol')} className="h-10 w-auto object-contain" />
+            <div className="relative">
+               <img 
+                 src={logoUrl} 
+                 alt={getContent('global.siteName', 'OrbitSol')} 
+                 className="h-10 w-auto object-contain" 
+                 onError={(e) => {
+                   (e.target as HTMLImageElement).style.display = 'none';
+                   const fallback = (e.target as HTMLImageElement).nextElementSibling;
+                   if (fallback) (fallback as HTMLElement).style.display = 'flex';
+                 }}
+               />
+               <div className="hidden flex-col">
+                <div className="font-serif text-2xl font-black text-[#0A192F] leading-none tracking-tight">
+                  {getContent('global.siteName', 'OrbitSol')}
+                </div>
+                <div className="text-[9px] font-bold tracking-[0.25em] text-slate-400 uppercase mt-1.5">
+                  {getContent('global.tagline', 'BRINGING WORLDS TOGETHER')}
+                </div>
+              </div>
+            </div>
           ) : (
             <div className="flex flex-col">
               <div className="font-serif text-2xl font-black text-[#0A192F] leading-none tracking-tight">
@@ -1574,13 +1593,22 @@ const ContactView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) =
     e.preventDefault();
     setIsSubmitting(true);
     
-    // Simulate API call
-    // In production, you'd use EmailJS, Resend, or Netlify Functions
-    setTimeout(() => {
+    const formData = new FormData(e.currentTarget);
+    
+    try {
+      await fetch("/", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams(formData as any).toString(),
+      });
       setIsSubmitting(false);
       setSubmitted(true);
       window.scrollTo(0, 0);
-    }, 1500);
+    } catch (error) {
+      console.error("Form submission error:", error);
+      alert("There was an error sending your enquiry. Please try again or contact us directly via email.");
+      setIsSubmitting(false);
+    }
   };
 
   const contactEmail = getContent('global.contactEmail', 'info@orbitsol.com');
@@ -1595,7 +1623,7 @@ const ContactView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) =
           </div>
           <h2 className="text-3xl font-serif font-bold text-[#0A192F] mb-4">Enquiry Received</h2>
           <p className="text-slate-600 mb-8 leading-relaxed">
-            Thank you for reaching out. We have sent your details to <strong>{contactEmail}</strong> and our team will get back to you shortly.
+            Thank you for reaching out. Your enquiry has been sent to our team at <strong>{contactEmail}</strong>. We will get back to you shortly.
           </p>
           <button 
             onClick={() => onNavigate('/')}
@@ -1633,7 +1661,14 @@ const ContactView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) =
             </div>
           </div>
           <div className="bg-white p-10 rounded shadow-2xl border border-slate-100">
-            <form className="space-y-6" onSubmit={handleSubmit}>
+            <form 
+              name="contact" 
+              method="POST" 
+              data-netlify="true"
+              className="space-y-6" 
+              onSubmit={handleSubmit}
+            >
+              <input type="hidden" name="form-name" value="contact" />
               <div className="grid sm:grid-cols-2 gap-6">
                  <div className="space-y-2">
                     <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Name *</label>
@@ -2233,7 +2268,8 @@ const AdminView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
       case 'global':
         return [
           { id: 'siteName', label: 'Site Name', type: 'text' },
-          { id: 'logoUrl', label: 'Logo Image URL (e.g. /logo.png)', type: 'text' },
+          { id: 'logoUrl', label: 'Logo Image URL', type: 'text' },
+          { id: 'logoInfo', label: 'How to use your own logo', type: 'info', content: '1. Rename your logo to "logo.png".\n2. Upload it to the "public" folder in your GitHub repository.\n3. Set the "Logo Image URL" above to "/logo.png".' },
           { id: 'tagline', label: 'Tagline / Slogan', type: 'text' },
           { id: 'footerDesc', label: 'Footer Description', type: 'textarea' },
           { id: 'contactEmail', label: 'Contact Email', type: 'text' },
@@ -2484,21 +2520,30 @@ const AdminView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
                 <div className="space-y-6">
                   {getFieldsForPage(selectedPage).map(field => (
                     <div key={field.id} className="space-y-2">
-                      <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{field.label}</label>
-                      {field.type === 'textarea' ? (
-                        <textarea 
-                          rows={4}
-                          className="w-full p-4 bg-slate-50 border border-slate-100 rounded-xl focus:border-[#2368D6] outline-none transition-all"
-                          value={pageSettings[field.id] || ''}
-                          onChange={(e) => handleSettingChange(field.id, e.target.value)}
-                        />
+                      {field.type === 'info' ? (
+                        <div className="bg-blue-50 border border-blue-100 p-4 rounded-xl">
+                          <p className="text-[10px] font-bold text-blue-400 uppercase tracking-widest mb-2">{field.label}</p>
+                          <p className="text-xs text-blue-700 whitespace-pre-line leading-relaxed">{field.content}</p>
+                        </div>
                       ) : (
-                        <input 
-                          type="text"
-                          className="w-full p-4 bg-slate-50 border border-slate-100 rounded-xl focus:border-[#2368D6] outline-none transition-all"
-                          value={pageSettings[field.id] || ''}
-                          onChange={(e) => handleSettingChange(field.id, e.target.value)}
-                        />
+                        <>
+                          <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{field.label}</label>
+                          {field.type === 'textarea' ? (
+                            <textarea 
+                              rows={4}
+                              className="w-full p-4 bg-slate-50 border border-slate-100 rounded-xl focus:border-[#2368D6] outline-none transition-all"
+                              value={pageSettings[field.id] || ''}
+                              onChange={(e) => handleSettingChange(field.id, e.target.value)}
+                            />
+                          ) : (
+                            <input 
+                              type="text"
+                              className="w-full p-4 bg-slate-50 border border-slate-100 rounded-xl focus:border-[#2368D6] outline-none transition-all"
+                              value={pageSettings[field.id] || ''}
+                              onChange={(e) => handleSettingChange(field.id, e.target.value)}
+                            />
+                          )}
+                        </>
                       )}
                     </div>
                   ))}
