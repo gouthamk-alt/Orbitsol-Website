@@ -149,6 +149,17 @@ export const adminService = {
     }
   },
 
+  async getEnquiries() {
+    const path = 'enquiries';
+    try {
+      const q = query(collection(db, path), orderBy('submittedAt', 'desc'));
+      const snapshot = await getDocs(q);
+      return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    } catch (error) {
+      handleFirestoreError(error, OperationType.LIST, path);
+    }
+  },
+
   async updateSettings(key: string, value: any) {
     const path = `siteSettings/${key}`;
     try {

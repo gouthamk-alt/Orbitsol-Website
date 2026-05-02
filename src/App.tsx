@@ -32,6 +32,18 @@ type SiteSettings = {
   [key: string]: any;
 };
 
+type Enquiry = {
+  id?: string;
+  name: string;
+  email: string;
+  company: string;
+  country: string;
+  service: string;
+  message: string;
+  submittedAt: any;
+  source: string;
+};
+
 const SiteSettingsContext = React.createContext<{
   settings: SiteSettings;
   getContent: (path: string, defaultValue: string) => string;
@@ -210,9 +222,12 @@ const MarketingGrowthView = ({ onNavigate }: { onNavigate: (path: ViewPath) => v
   </>
 );
 
-const RemoteOperationsView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => (
-  <>
-    {/* Section 1 - Hero */}
+const RemoteOperationsView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => {
+  const { getContent } = React.useContext(SiteSettingsContext);
+  const contactEmail = getContent('global.contactEmail', 'info@orbitsol.com');
+  return (
+    <>
+      {/* Section 1 - Hero */}
     <section className="relative bg-gradient-to-br from-[#0A192F] to-[#112240] text-white pt-32 pb-24 overflow-hidden font-sans">
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         <div className="max-w-3xl">
@@ -394,6 +409,7 @@ const RemoteOperationsView = ({ onNavigate }: { onNavigate: (path: ViewPath) => 
     </section>
   </>
 );
+};
 
 const SMEsFoundersView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => (
   <>
@@ -541,9 +557,12 @@ const SMEsFoundersView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void
   </>
 );
 
-const DigitalMarketingView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => (
-  <>
-    {/* Section 1 - Hero */}
+const DigitalMarketingView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => {
+  const { getContent } = React.useContext(SiteSettingsContext);
+  const contactEmail = getContent('global.contactEmail', 'info@orbitsol.com');
+  return (
+    <>
+      {/* Section 1 - Hero */}
     <section className="relative bg-[#0A192F] text-white pt-32 pb-24 overflow-hidden font-sans">
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         <div className="text-xs uppercase tracking-[0.2em] font-bold text-blue-300/60 mb-6 underline decoration-[#2368D6] underline-offset-8">Digital Marketing and Creative.</div>
@@ -558,8 +577,8 @@ const DigitalMarketingView = ({ onNavigate }: { onNavigate: (path: ViewPath) => 
             <button onClick={() => onNavigate('/contact')} className="bg-[#2368D6] hover:bg-blue-500 text-white px-10 py-4 rounded-xl font-bold uppercase tracking-widest text-xs shadow-xl transition-all">
               Send a marketing enquiry
             </button>
-            <button onClick={() => window.location.href='mailto:info@orbitsol.com'} className="border border-white/20 text-white hover:bg-white/10 px-10 py-4 rounded-xl font-bold uppercase tracking-widest text-xs transition-all shadow-sm">
-              Email info@orbitsol.com
+            <button onClick={() => window.location.href=`mailto:${contactEmail}`} className="border border-white/20 text-white hover:bg-white/10 px-10 py-4 rounded-xl font-bold uppercase tracking-widest text-xs transition-all shadow-sm">
+              Email {contactEmail}
             </button>
           </div>
         </div>
@@ -697,8 +716,8 @@ const DigitalMarketingView = ({ onNavigate }: { onNavigate: (path: ViewPath) => 
       <div className="max-w-4xl mx-auto px-6">
         <h2 className="font-serif text-3xl md:text-5xl font-bold text-[#0A192F] mb-12">If you are running marketing on too many freelancers and not enough rhythm, let us fix that.</h2>
         <div className="flex flex-wrap justify-center gap-6 items-center">
-           <button onClick={() => window.location.href='mailto:info@orbitsol.com'} className="bg-[#2368D6] hover:bg-blue-500 text-white px-10 py-4 rounded font-bold uppercase tracking-widest text-xs shadow-xl transition-all">
-             Email us at info@orbitsol.com
+           <button onClick={() => window.location.href=`mailto:${contactEmail}`} className="bg-[#2368D6] hover:bg-blue-500 text-white px-10 py-4 rounded font-bold uppercase tracking-widest text-xs shadow-xl transition-all">
+             Email us at {contactEmail}
            </button>
            <button onClick={() => onNavigate('/contact')} className="text-slate-400 font-bold uppercase tracking-widest text-xs hover:text-[#0A192F] transition-colors">
              Or send a note via /contact
@@ -708,8 +727,12 @@ const DigitalMarketingView = ({ onNavigate }: { onNavigate: (path: ViewPath) => 
     </section>
   </>
 );
+};
 
-const ProcessAutomationView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => (
+const ProcessAutomationView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => {
+  const { getContent } = React.useContext(SiteSettingsContext);
+  const contactEmail = getContent('global.contactEmail', 'info@orbitsol.com');
+  return (
   <>
     {/* Section 1 - Hero */}
     <section className="relative bg-gradient-to-br from-[#0A192F] to-[#112240] text-white pt-32 pb-24 overflow-hidden font-sans">
@@ -805,6 +828,7 @@ const ProcessAutomationView = ({ onNavigate }: { onNavigate: (path: ViewPath) =>
     </section>
   </>
 );
+};
 
 const StrataManagementView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => (
   <>
@@ -1304,7 +1328,7 @@ const Header = ({ currentPath, onNavigate }: { currentPath: ViewPath, onNavigate
   ];
 
   const rawLogoUrl = getContent('global.logoUrl', '');
-  const base = (import.meta.env.BASE_URL || '/').replace(/\/$/, '');
+  const base = '';
   const logoUrl = rawLogoUrl && rawLogoUrl.startsWith('/') && !rawLogoUrl.startsWith('//')
     ? `${base}${rawLogoUrl}` 
     : rawLogoUrl;
@@ -1468,6 +1492,7 @@ const Header = ({ currentPath, onNavigate }: { currentPath: ViewPath, onNavigate
 
 const AboutView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => {
   const { getContent } = React.useContext(SiteSettingsContext);
+  const contactEmail = getContent('global.contactEmail', 'info@orbitsol.com');
   return (
     <>
       {/* Section 1 - Hero */}
@@ -1582,7 +1607,7 @@ const ContactView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) =
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
-  const contactEmail = getContent('global.contactEmail', 'gouthamk@orbitsol.com');
+  const contactEmail = getContent('global.contactEmail', 'info@orbitsol.com');
   const contactPhone = getContent('global.phone', '+1-833-384-1500');
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -1591,17 +1616,22 @@ const ContactView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) =
     
     const formData = new FormData(e.currentTarget);
     const data = {
-      name: formData.get('name'),
-      email: formData.get('email'),
-      company: formData.get('company'),
-      country: formData.get('country'),
-      service: formData.get('service'),
-      message: formData.get('message'),
+      name: String(formData.get('name') || ''),
+      email: String(formData.get('email') || ''),
+      company: String(formData.get('company') || ''),
+      country: String(formData.get('country') || ''),
+      service: String(formData.get('service') || ''),
+      message: String(formData.get('message') || ''),
       submittedAt: serverTimestamp(),
       source: window.location.href,
     };
     
     try {
+      // Validate basic fields to ensure Rules don't reject due to null/blob
+      if (!data.name || !data.email || !data.message) {
+        throw new Error("Required fields are missing.");
+      }
+
       // First try to save to Firestore (our new source of truth)
       await addDoc(collection(db, 'enquiries'), data);
       
@@ -1854,6 +1884,7 @@ const FAQItem = ({ question, answer }: { question: string; answer: string }) => 
 
 const HomeView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => {
   const { getContent } = React.useContext(SiteSettingsContext);
+  const contactEmail = getContent('global.contactEmail', 'info@orbitsol.com');
 
   return (
     <>
@@ -1880,8 +1911,8 @@ const HomeView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => {
             <button onClick={() => onNavigate('/contact')} className="bg-[#2368D6] hover:bg-blue-500 text-white px-8 py-3.5 rounded font-bold uppercase tracking-widest text-xs shadow-lg transition-all">
               Send a workflow enquiry
             </button>
-            <button onClick={() => window.location.href='mailto:info@orbitsol.com'} className="border border-white/20 text-white hover:bg-white/10 px-8 py-3.5 rounded font-bold uppercase tracking-widest text-xs transition-all">
-              Email info@orbitsol.com
+            <button onClick={() => window.location.href=`mailto:${contactEmail}`} className="border border-white/20 text-white hover:bg-white/10 px-8 py-3.5 rounded font-bold uppercase tracking-widest text-xs transition-all">
+              Email {contactEmail}
             </button>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 pt-10 border-t border-white/10 text-xs font-sans tracking-tight">
@@ -2240,9 +2271,10 @@ const AdminView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
   const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
   const [insights, setInsights] = useState<Insight[]>([]);
+  const [enquiries, setEnquiries] = useState<Enquiry[]>([]);
   const [editingInsight, setEditingInsight] = useState<Insight | null>(null);
   const [isFormOpen, setIsFormOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState<'insights' | 'settings'>('insights');
+  const [activeTab, setActiveTab] = useState<'insights' | 'settings' | 'enquiries'>('insights');
   const [selectedPage, setSelectedPage] = useState('home');
   const [pageSettings, setPageSettings] = useState<any>({});
   const [savingSettings, setSavingSettings] = useState(false);
@@ -2250,6 +2282,8 @@ const AdminView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
   useEffect(() => {
     if (activeTab === 'settings') {
       loadPageSettings(selectedPage);
+    } else if (activeTab === 'enquiries') {
+      fetchEnquiries();
     }
   }, [selectedPage, activeTab]);
 
@@ -2267,8 +2301,6 @@ const AdminView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
     try {
       await adminService.updateSettings(selectedPage, pageSettings);
       alert("Settings saved successfully!");
-      // Ideally we'd trigger a refresh in the main app too.
-      // For now, window.location.reload() or just state update is fine.
     } catch (e) {
       alert("Failed to save settings");
     } finally {
@@ -2323,6 +2355,11 @@ const AdminView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
   const fetchInsights = async () => {
     const data = await adminService.getInsights(true);
     setInsights(data || []);
+  };
+
+  const fetchEnquiries = async () => {
+    const data = await adminService.getEnquiries();
+    setEnquiries(data || []);
   };
 
   const handleLogin = async () => {
@@ -2429,6 +2466,12 @@ const AdminView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
               >
                 Settings
               </button>
+              <button 
+                onClick={() => setActiveTab('enquiries')}
+                className={`px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-widest transition-all ${activeTab === 'enquiries' ? 'bg-[#0A192F] text-white shadow-md' : 'text-slate-400 hover:text-[#0A192F]'}`}
+              >
+                Enquiries
+              </button>
             </div>
             {activeTab === 'insights' && (
               <button 
@@ -2500,6 +2543,50 @@ const AdminView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
                        </td>
                      </tr>
                    ))}
+                 </tbody>
+               </table>
+             </div>
+          </div>
+        ) : activeTab === 'enquiries' ? (
+          <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+             <div className="border-b border-slate-100 bg-slate-50/50 px-8 py-4">
+                <h2 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">New Enquiries</h2>
+             </div>
+             <div className="overflow-x-auto">
+               <table className="w-full text-left">
+                 <thead>
+                   <tr className="border-b border-slate-100 text-[10px] uppercase tracking-widest font-bold text-slate-400">
+                     <th className="px-8 py-4">Sender</th>
+                     <th className="px-8 py-4">Service</th>
+                     <th className="px-8 py-4">Message</th>
+                     <th className="px-8 py-4">Date</th>
+                   </tr>
+                 </thead>
+                 <tbody className="divide-y divide-slate-50">
+                   {enquiries.map((enq) => (
+                     <tr key={enq.id} className="hover:bg-slate-50/50 transition-colors align-top">
+                       <td className="px-8 py-5">
+                         <div className="font-bold text-[#0A192F] text-sm">{enq.name}</div>
+                         <div className="text-slate-400 text-xs mt-1">{enq.email}</div>
+                         <div className="text-[10px] text-slate-300 mt-1">{enq.company || 'No Company'} • {enq.country || 'No Country'}</div>
+                       </td>
+                       <td className="px-8 py-5">
+                         <span className="px-2 py-1 bg-blue-50 text-[#2368D6] text-[9px] font-bold rounded uppercase tracking-widest whitespace-nowrap">{enq.service}</span>
+                       </td>
+                       <td className="px-8 py-5">
+                         <p className="text-slate-500 text-xs leading-relaxed max-w-md whitespace-pre-wrap">{enq.message}</p>
+                         <div className="text-[9px] text-slate-300 mt-2">Source: <a href={enq.source} target="_blank" className="hover:underline text-blue-500">{enq.source}</a></div>
+                       </td>
+                       <td className="px-8 py-5 text-slate-400 text-xs whitespace-nowrap">
+                         {(enq.submittedAt as any)?.toDate ? (enq.submittedAt as any).toDate().toLocaleString() : 'Just now'}
+                       </td>
+                     </tr>
+                   ))}
+                   {enquiries.length === 0 && (
+                     <tr>
+                       <td colSpan={4} className="px-8 py-20 text-center text-slate-400 italic text-sm">No enquiries found yet.</td>
+                     </tr>
+                   )}
                  </tbody>
                </table>
              </div>
@@ -2986,8 +3073,8 @@ const LegalProfessionalServicesView = ({ onNavigate }: { onNavigate: (path: View
 
 export default function App() {
   const getInitialPath = (): ViewPath => {
-    // Determine the base path from Vite config
-    const base = (import.meta.env.BASE_URL || '/').replace(/\/$/, '');
+    // Determine the base path
+    const base = '';
     let path = window.location.pathname;
     
     // 1. Remove repository prefix if present (case-insensitive)
@@ -3072,7 +3159,7 @@ export default function App() {
 
 
   const onNavigate = (path: ViewPath) => {
-    const base = (import.meta.env.BASE_URL || '/').replace(/\/$/, '');
+    const base = '';
     
     if (path.startsWith('/#')) {
       // Internal scrolling
@@ -3106,7 +3193,7 @@ export default function App() {
 
   const renderView = () => {
     // Determine the path to use for lookup in the switch statement
-    const base = (import.meta.env.BASE_URL || '/').replace(/\/$/, '');
+    const base = '';
     let lookupPath = (currentPath as string) || '/';
     
     // Strip base if it's still present in the state (case-insensitive)
