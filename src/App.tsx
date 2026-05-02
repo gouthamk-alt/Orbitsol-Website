@@ -2973,15 +2973,21 @@ export default function App() {
     let path = window.location.pathname;
     
     // 1. Remove repository prefix if present (case-insensitive)
-    if (base.length > 0 && path.toLowerCase().startsWith(base.toLowerCase())) {
-      path = path.substring(base.length);
+    const baseClean = base.toLowerCase().replace(/^\/+/, '').replace(/\/+$/, '');
+    const pathLow = path.toLowerCase();
+    
+    if (baseClean.length > 0) {
+      // Check if path starts with /base or base
+      if (pathLow.startsWith('/' + baseClean)) {
+        path = path.substring(baseClean.length + 1);
+      } else if (pathLow.startsWith(baseClean)) {
+        path = path.substring(baseClean.length);
+      }
     }
     
-    // 2. Remove /index.html if present at the end
-    if (path.toLowerCase().endsWith('/index.html')) {
-      path = path.substring(0, path.length - 10);
-    } else if (path.toLowerCase() === '/index.html') {
-      path = '/';
+    // 2. Remove /index.html if present anywhere (GitHub Pages sometimes appends it or keeps it)
+    if (path.toLowerCase().includes('index.html')) {
+       path = path.replace(/index\.html/i, '');
     }
     
     // 3. Clean up slashes
@@ -2994,7 +3000,7 @@ export default function App() {
     }
     
     // 5. Final fallback
-    if (path === '' || path === '//') path = '/';
+    if (path === '' || path === '//' || path === '/index.html') path = '/';
     
     return path as ViewPath;
   };
@@ -3086,8 +3092,15 @@ export default function App() {
     let lookupPath = (currentPath as string) || '/';
     
     // Strip base if it's still present in the state (case-insensitive)
-    if (base.length > 0 && lookupPath.toLowerCase().startsWith(base.toLowerCase())) {
-      lookupPath = lookupPath.substring(base.length);
+    const baseClean = base.toLowerCase().replace(/^\/+/, '').replace(/\/+$/, '');
+    const currentPathLow = lookupPath.toLowerCase();
+    
+    if (baseClean.length > 0) {
+      if (currentPathLow.startsWith('/' + baseClean)) {
+        lookupPath = lookupPath.substring(baseClean.length + 1);
+      } else if (currentPathLow.startsWith(baseClean)) {
+        lookupPath = lookupPath.substring(baseClean.length);
+      }
     }
     
     // Clean slashes for matching
@@ -3100,12 +3113,16 @@ export default function App() {
     
     // Filter out index.html at the end if it stuck around
     const lowPath = lookupPath.toLowerCase();
-    if (lowPath.endsWith('/index.html')) {
-      lookupPath = lookupPath.substring(0, lookupPath.length - 10);
-    } else if (lowPath === '/index.html') {
-      lookupPath = '/';
+    if (lowPath.includes('index.html')) {
+      lookupPath = lookupPath.replace(/index\.html/i, '');
     }
-    if (lookupPath === '') lookupPath = '/';
+    if (lookupPath === '' || lookupPath === '//' || lookupPath === '/') lookupPath = '/';
+    else if (!lookupPath.startsWith('/')) lookupPath = '/' + lookupPath;
+    
+    // Final cleanup
+    lookupPath = lookupPath.replace(/\/+/g, '/');
+    if (lookupPath.length > 1 && lookupPath.endsWith('/')) lookupPath = lookupPath.slice(0, -1);
+    if (!lookupPath) lookupPath = '/';
 
     const finalPath = lookupPath.toLowerCase();
 
