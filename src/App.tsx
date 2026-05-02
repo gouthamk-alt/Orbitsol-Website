@@ -1276,6 +1276,7 @@ const Header = ({ currentPath, onNavigate }: { currentPath: ViewPath, onNavigate
   const { getContent } = React.useContext(SiteSettingsContext);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const [logoError, setLogoError] = useState(false);
 
   const whoWeServe = [
     { label: 'Property and Real Estate', path: '/who-we-work-with/property-and-real-estate/' },
@@ -1311,27 +1312,13 @@ const Header = ({ currentPath, onNavigate }: { currentPath: ViewPath, onNavigate
       <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
         {/* Logo */}
         <div className="flex items-center cursor-pointer" onClick={() => onNavigate('/')}>
-          {logoUrl ? (
-            <div className="relative">
-               <img 
-                 src={logoUrl} 
-                 alt={getContent('global.siteName', 'OrbitSol')} 
-                 className="h-10 w-auto object-contain" 
-                 onError={(e) => {
-                   (e.target as HTMLImageElement).style.display = 'none';
-                   const fallback = (e.target as HTMLImageElement).nextElementSibling;
-                   if (fallback) (fallback as HTMLElement).style.display = 'flex';
-                 }}
-               />
-               <div className="hidden flex-col">
-                <div className="font-serif text-2xl font-black text-[#0A192F] leading-none tracking-tight">
-                  {getContent('global.siteName', 'OrbitSol')}
-                </div>
-                <div className="text-[9px] font-bold tracking-[0.25em] text-slate-400 uppercase mt-1.5">
-                  {getContent('global.tagline', 'BRINGING WORLDS TOGETHER')}
-                </div>
-              </div>
-            </div>
+          {logoUrl && !logoError ? (
+             <img 
+               src={logoUrl} 
+               alt={getContent('global.siteName', 'OrbitSol')} 
+               className="h-10 w-auto object-contain" 
+               onError={() => setLogoError(true)}
+             />
           ) : (
             <div className="flex flex-col">
               <div className="font-serif text-2xl font-black text-[#0A192F] leading-none tracking-tight">
