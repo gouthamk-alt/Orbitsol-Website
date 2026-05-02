@@ -2967,22 +2967,21 @@ export default function App() {
     const base = '/Orbitsol-Website';
     let path = window.location.pathname;
     
-    // Robustly remove repository prefix (case-insensitive)
-    const repoPattern = new RegExp(`^${base}`, 'i');
-    path = path.replace(repoPattern, '');
+    // Normalize path: handle case-insensitive repository prefix
+    if (path.toLowerCase().startsWith(base.toLowerCase())) {
+      path = path.substring(base.length);
+    }
     
-    // Clean up: ensure starts with /, remove duplicate slashes
+    // Clean up slashes
     if (!path.startsWith('/')) path = '/' + path;
     path = path.replace(/\/+/g, '/');
     
-    // Remove trailing slash for consistency (except for root)
+    // Remove trailing slash for comparison (except for root)
     if (path.length > 1 && path.endsWith('/')) {
       path = path.slice(0, -1);
     }
     
-    if (path === '' || path === '//') path = '/';
-    
-    return path as ViewPath;
+    return (path === '' ? '/' : path) as ViewPath;
   };
 
   const [currentPath, setCurrentPath] = useState<ViewPath>(getInitialPath());
@@ -3068,15 +3067,17 @@ export default function App() {
   };
 
   const renderView = () => {
-    // Extra safety: Normalize currentPath by stripping repository prefix and cleaning slashes
+    // Normalize currentPath for routing lookup
     const base = '/Orbitsol-Website';
     let lookupPath = currentPath as string;
     
-    // Always ensure we are working with the path relative to the repo root
-    const repoPattern = new RegExp(`^${base}`, 'i');
-    lookupPath = lookupPath.replace(repoPattern, '');
+    // Strip everything before our repo root if it somehow got in state
+    if (lookupPath.toLowerCase().includes(base.toLowerCase())) {
+      const index = lookupPath.toLowerCase().indexOf(base.toLowerCase());
+      lookupPath = lookupPath.substring(index + base.length);
+    }
     
-    // Clean up: ensure starts with /, remove duplicate slashes, remove trailing slash
+    // Standard cleaning for the switch statement
     if (!lookupPath.startsWith('/')) lookupPath = '/' + lookupPath;
     lookupPath = lookupPath.replace(/\/+/g, '/');
     if (lookupPath.length > 1 && lookupPath.endsWith('/')) {
