@@ -2968,30 +2968,32 @@ const LegalProfessionalServicesView = ({ onNavigate }: { onNavigate: (path: View
 
 export default function App() {
   const getInitialPath = (): ViewPath => {
-    // Use Vite's base URL (e.g. "/Orbitsol-Website/")
-    const base = import.meta.env.BASE_URL || '/';
+    // Determine the base path from Vite config
+    const base = (import.meta.env.BASE_URL || '/').replace(/\/$/, '');
     let path = window.location.pathname;
     
-    // Normalize: remove BASE_URL prefix if present
-    if (path.toLowerCase().startsWith(base.toLowerCase())) {
-      path = path.substring(base.length - (base.endsWith('/') ? 1 : 0));
-    } else if (base.length > 1) {
-      // Also check for base without trailing slash
-      const baseNoTrail = base.endsWith('/') ? base.slice(0, -1) : base;
-      if (path.toLowerCase().startsWith(baseNoTrail.toLowerCase())) {
-        path = path.substring(baseNoTrail.length);
-      }
+    // 1. Remove repository prefix if present (case-insensitive)
+    if (base.length > 0 && path.toLowerCase().startsWith(base.toLowerCase())) {
+      path = path.substring(base.length);
     }
     
-    // Clean up slashes
+    // 2. Remove /index.html if present at the end
+    if (path.toLowerCase().endsWith('/index.html')) {
+      path = path.substring(0, path.length - 10);
+    } else if (path.toLowerCase() === '/index.html') {
+      path = '/';
+    }
+    
+    // 3. Clean up slashes
     if (!path.startsWith('/')) path = '/' + path;
     path = path.replace(/\/+/g, '/');
     
-    // Remove trailing slash except for root
+    // 4. Remove trailing slash except for root
     if (path.length > 1 && path.endsWith('/')) {
       path = path.slice(0, -1);
     }
     
+    // 5. Final fallback
     if (path === '' || path === '//') path = '/';
     
     return path as ViewPath;
@@ -3080,13 +3082,12 @@ export default function App() {
 
   const renderView = () => {
     // Determine the path to use for lookup in the switch statement
-    const base = import.meta.env.BASE_URL || '/';
+    const base = (import.meta.env.BASE_URL || '/').replace(/\/$/, '');
     let lookupPath = (currentPath as string) || '/';
     
     // Strip base if it's still present in the state (case-insensitive)
-    const baseNoTrail = base.endsWith('/') ? base.slice(0, -1) : base;
-    if (lookupPath.toLowerCase().startsWith(baseNoTrail.toLowerCase())) {
-      lookupPath = lookupPath.substring(baseNoTrail.length);
+    if (base.length > 0 && lookupPath.toLowerCase().startsWith(base.toLowerCase())) {
+      lookupPath = lookupPath.substring(base.length);
     }
     
     // Clean slashes for matching
@@ -3096,10 +3097,21 @@ export default function App() {
       lookupPath = lookupPath.slice(0, -1);
     }
     if (lookupPath === '' || lookupPath === '//') lookupPath = '/';
+    
+    // Filter out index.html at the end if it stuck around
+    const lowPath = lookupPath.toLowerCase();
+    if (lowPath.endsWith('/index.html')) {
+      lookupPath = lookupPath.substring(0, lookupPath.length - 10);
+    } else if (lowPath === '/index.html') {
+      lookupPath = '/';
+    }
+    if (lookupPath === '') lookupPath = '/';
 
-    switch (lookupPath.toLowerCase()) {
+    const finalPath = lookupPath.toLowerCase();
+
+    switch (finalPath) {
       case '/':
-      case '/index.html':
+      case '':
         return <HomeView onNavigate={onNavigate} />;
       case '/legal-professional-services':
       case '/who-we-work-with/legal-professional-services':
