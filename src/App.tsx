@@ -1316,10 +1316,11 @@ const Header = ({ currentPath, onNavigate }: { currentPath: ViewPath, onNavigate
              <img 
                src={logoUrl} 
                alt={getContent('global.siteName', 'OrbitSol')} 
-               className="h-10 w-auto object-contain" 
+               className={`h-10 w-auto object-contain ${logoError ? 'hidden' : 'block'}`} 
                onError={() => setLogoError(true)}
              />
-          ) : (
+          ) : null}
+          {(logoError || !logoUrl) && (
             <div className="flex flex-col">
               <div className="font-serif text-2xl font-black text-[#0A192F] leading-none tracking-tight">
                 {getContent('global.siteName', 'OrbitSol')}
@@ -1576,6 +1577,9 @@ const ContactView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) =
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
+  const contactEmail = getContent('global.contactEmail', 'info@orbitsol.com');
+  const contactPhone = getContent('global.phone', '+1-833-384-1500');
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -1593,13 +1597,19 @@ const ContactView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) =
       window.scrollTo(0, 0);
     } catch (error) {
       console.error("Form submission error:", error);
-      alert("There was an error sending your enquiry. Please try again or contact us directly via email.");
+      // Fallback for non-Netlify environments (like GitHub Pages)
+      const name = formData.get('name');
+      const service = formData.get('service');
+      const message = formData.get('message');
+      const mailtoLink = `mailto:${contactEmail}?subject=Enquiry from ${name} regarding ${service}&body=${encodeURIComponent(message as string)}`;
+      
+      if (confirm("Notice: Automatic submission is only available on Netlify. Would you like to send this enquiry via email instead?")) {
+        window.location.href = mailtoLink;
+        setSubmitted(true);
+      }
       setIsSubmitting(false);
     }
   };
-
-  const contactEmail = getContent('global.contactEmail', 'info@orbitsol.com');
-  const contactPhone = getContent('global.phone', '+1-833-384-1500');
 
   if (submitted) {
     return (
@@ -2256,12 +2266,12 @@ const AdminView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
         return [
           { id: 'siteName', label: 'Site Name', type: 'text' },
           { id: 'logoUrl', label: 'Logo Image URL', type: 'text' },
-          { id: 'logoInfo', label: 'How to use your own logo', type: 'info', content: '1. Rename your logo to "logo.png".\n2. Upload it to the "public" folder in your GitHub repository.\n3. Set the "Logo Image URL" above to "/logo.png".' },
+          { id: 'logoInfo', label: 'Setting up your Logo (Required for GitHub)', type: 'info', content: '1. Rename your logo file to "logo.png".\n2. Upload it to the "public" folder in your GitHub repository.\n3. Set the "Logo Image URL" above to "/logo.png".' },
           { id: 'tagline', label: 'Tagline / Slogan', type: 'text' },
           { id: 'footerDesc', label: 'Footer Description', type: 'textarea' },
           { id: 'contactEmail', label: 'Contact Email', type: 'text' },
-          { id: 'phone', label: 'Contact Phone', type: 'text' },
-          { id: 'address', label: 'Address', type: 'textarea' },
+          { id: 'phone', label: 'Phone Number', type: 'text' },
+          { id: 'address', label: 'Office Address', type: 'textarea' },
         ];
       default:
         return [];
