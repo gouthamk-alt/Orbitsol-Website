@@ -2993,11 +2993,11 @@ export default function App() {
   useEffect(() => {
     // Handle hash links or initial path
     let path = window.location.pathname;
-    // Handle GitHub Pages subdirectory
-    if (path.startsWith('/Orbitsol-Website')) {
-      path = path.replace('/Orbitsol-Website', '');
+    const base = '/Orbitsol-Website';
+    if (path.startsWith(base)) {
+      path = path.substring(base.length);
     }
-    if (path === '' || path === '//') path = '/';
+    if (!path || path === '' || path === '//') path = '/';
     
     if (path !== '/') setCurrentPath(path as ViewPath);
   }, []);
@@ -3008,6 +3008,7 @@ export default function App() {
       const id = path.replace('/#', '');
       if (currentPath !== '/') {
         setCurrentPath('/');
+        window.history.pushState({}, '', '/Orbitsol-Website/');
         setTimeout(() => {
           document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
         }, 100);
@@ -3017,7 +3018,9 @@ export default function App() {
     } else {
       setCurrentPath(path);
       window.scrollTo(0, 0);
-      // In a real SPA we might use window.history.pushState
+      // Update URL for refreshes to work on GitHub Pages (with 404.html trick)
+      const fullPath = path === '/' ? '/Orbitsol-Website/' : `/Orbitsol-Website${path}`;
+      window.history.pushState({}, '', fullPath);
     }
   };
 
