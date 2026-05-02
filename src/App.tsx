@@ -2963,8 +2963,34 @@ const LegalProfessionalServicesView = ({ onNavigate }: { onNavigate: (path: View
 // --- Main App ---
 
 export default function App() {
-  const [currentPath, setCurrentPath] = useState<ViewPath>('/');
+  const getInitialPath = (): ViewPath => {
+    const base = '/Orbitsol-Website';
+    let path = window.location.pathname;
+    
+    if (path.toLowerCase().startsWith(base.toLowerCase())) {
+      path = path.substring(base.length);
+    }
+    
+    if (!path.startsWith('/')) path = '/' + path;
+    path = path.replace(/\/+/g, '/');
+    
+    if (path.length > 1 && path.endsWith('/')) {
+      path = path.slice(0, -1);
+    }
+    
+    return (path === '' ? '/' : path) as ViewPath;
+  };
+
+  const [currentPath, setCurrentPath] = useState<ViewPath>(getInitialPath());
   const [settings, setSettings] = useState<SiteSettings>({});
+
+  useEffect(() => {
+    const handlePopState = () => {
+      setCurrentPath(getInitialPath());
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
 
   useEffect(() => {
     const fetchAllSettings = async () => {
@@ -2990,31 +3016,10 @@ export default function App() {
     return settings[page]?.[field] || defaultValue;
   };
 
-  useEffect(() => {
-    // Handle initial path from URL, accounting for GitHub Pages subdirectory
-    let path = window.location.pathname;
-    
-    // Robust detection of the GitHub Pages base path (case-insensitive)
-    const repoMatch = path.match(/^\/Orbitsol-Website(.*)/i);
-    if (repoMatch) {
-      path = repoMatch[1] || '/';
-    }
-    
-    // Normalize path: handle trailing slashes and empty paths
-    if (!path || path === '' || path === '//') {
-      path = '/';
-    } else if (path.length > 1 && path.endsWith('/')) {
-      path = path.slice(0, -1);
-    }
-    
-    // Ensure we match the expected ViewPath types
-    if (path !== currentPath) {
-      setCurrentPath(path as ViewPath);
-    }
-  }, []);
 
   const onNavigate = (path: ViewPath) => {
     const base = '/Orbitsol-Website';
+    
     if (path.startsWith('/#')) {
       // Internal scrolling
       const id = path.replace('/#', '');
@@ -3028,54 +3033,70 @@ export default function App() {
         document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
       }
     } else {
-      setCurrentPath(path);
+      // Normalize target path for state
+      let targetPath = path as string;
+      if (targetPath.length > 1 && targetPath.endsWith('/')) {
+        targetPath = targetPath.slice(0, -1);
+      }
+      if (targetPath === '') targetPath = '/';
+
+      setCurrentPath(targetPath as ViewPath);
       window.scrollTo(0, 0);
       
-      // Update URL for refreshes to work on GitHub Pages (with 404.html trick)
-      let normalizedPath = path === '/' ? '/' : path;
-      if (normalizedPath !== '/' && normalizedPath.endsWith('/')) {
-        normalizedPath = normalizedPath.slice(0, -1);
-      }
-      
-      const fullPath = normalizedPath === '/' ? `${base}/` : `${base}${normalizedPath}`;
+      // Update URL for refreshes to work on GitHub Pages
+      const fullPath = targetPath === '/' ? `${base}/` : `${base}${targetPath}`;
       window.history.pushState({}, '', fullPath);
     }
   };
 
   const renderView = () => {
-    switch (currentPath) {
+    // Extra safety: Normalize by stripping repository prefix if it somehow persisted
+    const base = '/Orbitsol-Website';
+    let lookupPath = currentPath as string;
+    
+    if (lookupPath.toLowerCase().startsWith(base.toLowerCase())) {
+      lookupPath = lookupPath.substring(base.length);
+    }
+    
+    // Clean up: ensure starts with /, remove duplicate slashes, remove trailing slash
+    if (!lookupPath.startsWith('/')) lookupPath = '/' + lookupPath;
+    lookupPath = lookupPath.replace(/\/+/g, '/');
+    if (lookupPath.length > 1 && lookupPath.endsWith('/')) {
+      lookupPath = lookupPath.slice(0, -1);
+    }
+    if (lookupPath === '') lookupPath = '/';
+
+    switch (lookupPath) {
       case '/':
         return <HomeView onNavigate={onNavigate} />;
       case '/legal-professional-services':
-      case '/who-we-work-with/legal-professional-services/':
+      case '/who-we-work-with/legal-professional-services':
         return <LegalProfessionalServicesView onNavigate={onNavigate} />;
       case '/marketing-growth':
-      case '/who-we-work-with/marketing-and-growth-teams/':
+      case '/who-we-work-with/marketing-and-growth-teams':
         return <MarketingGrowthView onNavigate={onNavigate} />;
       case '/strata-management':
-      case '/who-we-work-with/strata-management/':
+      case '/who-we-work-with/strata-management':
         return <StrataManagementView onNavigate={onNavigate} />;
       case '/property-real-estate':
-      case '/who-we-work-with/property-and-real-estate/':
+      case '/who-we-work-with/property-and-real-estate':
         return <PropertyRealEstateView onNavigate={onNavigate} />;
       case '/smes-founders':
-      case '/who-we-work-with/smes-founders/':
+      case '/who-we-work-with/smes-founders':
         return <SMEsFoundersView onNavigate={onNavigate} />;
       case '/property-inspection':
-      case '/what-we-do/property-inspection-reports/':
+      case '/what-we-do/property-inspection-reports':
         return <PropertyInspectionView onNavigate={onNavigate} />;
       case '/speech-content-data':
-      case '/what-we-do/speech-content-data-intelligence/':
+      case '/what-we-do/speech-content-data-intelligence':
         return <SpeechContentDataView onNavigate={onNavigate} />;
       case '/remote-operations':
-      case '/what-we-do/managed-remote-operations/':
+      case '/what-we-do/managed-remote-operations':
         return <RemoteOperationsView onNavigate={onNavigate} />;
       case '/process-automation':
-      case '/what-we-do/process-automation/':
       case '/what-we-do/process-automation':
         return <ProcessAutomationView onNavigate={onNavigate} />;
       case '/digital-marketing':
-      case '/what-we-do/digital-marketing/':
       case '/what-we-do/digital-marketing':
         return <DigitalMarketingView onNavigate={onNavigate} />;
       case '/about':
