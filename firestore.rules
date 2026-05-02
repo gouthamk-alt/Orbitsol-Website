@@ -48,9 +48,9 @@ service cloud.firestore {
     match /enquiries/{enquiryId} {
       function isValidEnquiry(data) {
         return data.keys().hasAll(['name', 'email', 'message', 'submittedAt']) &&
-               data.name is string && data.name.size() <= 256 &&
-               data.email is string && data.email.size() <= 256 &&
-               data.message is string && data.message.size() <= 5000 &&
+               data.name is string && data.name.size() <= 512 &&
+               data.email is string && data.email.size() <= 512 &&
+               data.message is string && data.message.size() <= 10000 &&
                data.submittedAt == request.time;
       }
       
