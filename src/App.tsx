@@ -2964,24 +2964,33 @@ const LegalProfessionalServicesView = ({ onNavigate }: { onNavigate: (path: View
 
 export default function App() {
   const getInitialPath = (): ViewPath => {
-    const base = '/Orbitsol-Website';
+    // Use Vite's base URL (e.g. "/Orbitsol-Website/")
+    const base = import.meta.env.BASE_URL || '/';
     let path = window.location.pathname;
     
-    // Normalize path: handle case-insensitive repository prefix
+    // Normalize: remove BASE_URL prefix if present
     if (path.toLowerCase().startsWith(base.toLowerCase())) {
-      path = path.substring(base.length);
+      path = path.substring(base.length - (base.endsWith('/') ? 1 : 0));
+    } else if (base.length > 1) {
+      // Also check for base without trailing slash
+      const baseNoTrail = base.endsWith('/') ? base.slice(0, -1) : base;
+      if (path.toLowerCase().startsWith(baseNoTrail.toLowerCase())) {
+        path = path.substring(baseNoTrail.length);
+      }
     }
     
     // Clean up slashes
     if (!path.startsWith('/')) path = '/' + path;
     path = path.replace(/\/+/g, '/');
     
-    // Remove trailing slash for comparison (except for root)
+    // Remove trailing slash except for root
     if (path.length > 1 && path.endsWith('/')) {
       path = path.slice(0, -1);
     }
     
-    return (path === '' ? '/' : path) as ViewPath;
+    if (path === '' || path === '//') path = '/';
+    
+    return path as ViewPath;
   };
 
   const [currentPath, setCurrentPath] = useState<ViewPath>(getInitialPath());
@@ -3033,14 +3042,14 @@ export default function App() {
 
 
   const onNavigate = (path: ViewPath) => {
-    const base = '/Orbitsol-Website';
+    const base = (import.meta.env.BASE_URL || '/').replace(/\/$/, '');
     
     if (path.startsWith('/#')) {
       // Internal scrolling
       const id = path.replace('/#', '');
       if (currentPath !== '/') {
         setCurrentPath('/');
-        window.history.pushState({}, '', `${base}/`);
+        window.history.pushState({}, '', `${base}/#${id}`);
         setTimeout(() => {
           document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
         }, 100);
@@ -3059,7 +3068,6 @@ export default function App() {
       window.scrollTo(0, 0);
       
       // Update URL for refreshes to work on GitHub Pages
-      // Ensure we don't have double slashes when combining base and targetPath
       const cleanTargetPath = targetPath.startsWith('/') ? targetPath : '/' + targetPath;
       const fullPath = cleanTargetPath === '/' ? `${base}/` : `${base}${cleanTargetPath}`;
       window.history.pushState({}, '', fullPath);
@@ -3067,17 +3075,17 @@ export default function App() {
   };
 
   const renderView = () => {
-    // Normalize currentPath for routing lookup
-    const base = '/Orbitsol-Website';
-    let lookupPath = currentPath as string;
+    // Determine the path to use for lookup in the switch statement
+    const base = import.meta.env.BASE_URL || '/';
+    let lookupPath = (currentPath as string) || '/';
     
-    // Strip everything before our repo root if it somehow got in state
-    if (lookupPath.toLowerCase().includes(base.toLowerCase())) {
-      const index = lookupPath.toLowerCase().indexOf(base.toLowerCase());
-      lookupPath = lookupPath.substring(index + base.length);
+    // Strip base if it's still present in the state (case-insensitive)
+    const baseNoTrail = base.endsWith('/') ? base.slice(0, -1) : base;
+    if (lookupPath.toLowerCase().startsWith(baseNoTrail.toLowerCase())) {
+      lookupPath = lookupPath.substring(baseNoTrail.length);
     }
     
-    // Standard cleaning for the switch statement
+    // Clean slashes for matching
     if (!lookupPath.startsWith('/')) lookupPath = '/' + lookupPath;
     lookupPath = lookupPath.replace(/\/+/g, '/');
     if (lookupPath.length > 1 && lookupPath.endsWith('/')) {
