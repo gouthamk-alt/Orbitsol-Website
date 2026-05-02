@@ -3328,7 +3328,7 @@ const LegalProfessionalServicesView = ({ onNavigate }: { onNavigate: (path: View
 export default function App() {
   const getInitialPath = (): ViewPath => {
     // Determine the base path
-    const base = '';
+    const base = 'Orbitsol-Website';
     let path = window.location.pathname;
     
     // 1. Remove repository prefix if present (case-insensitive)
@@ -3414,7 +3414,7 @@ export default function App() {
 
 
   const onNavigate = (path: ViewPath) => {
-    const base = '';
+    const base = 'Orbitsol-Website';
     
     if (path.startsWith('/#')) {
       // Internal scrolling
@@ -3441,14 +3441,17 @@ export default function App() {
       
       // Update URL for refreshes to work on GitHub Pages
       const cleanTargetPath = targetPath.startsWith('/') ? targetPath : '/' + targetPath;
-      const fullPath = cleanTargetPath === '/' ? `${base}/` : `${base}${cleanTargetPath}`;
+      const normalizedBase = base.replace(/^\/+/, '').replace(/\/+$/, '');
+      const fullPath = normalizedBase.length > 0 
+        ? (cleanTargetPath === '/' ? `/${normalizedBase}/` : `/${normalizedBase}${cleanTargetPath}`)
+        : cleanTargetPath;
       window.history.pushState({}, '', fullPath);
     }
   };
 
   const renderView = () => {
     // Determine the path to use for lookup in the switch statement
-    const base = '';
+    const base = 'Orbitsol-Website';
     let lookupPath = (currentPath as string) || '/';
     
     // Strip base if it's still present in the state (case-insensitive)
