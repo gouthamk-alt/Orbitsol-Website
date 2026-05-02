@@ -1302,7 +1302,11 @@ const Header = ({ currentPath, onNavigate }: { currentPath: ViewPath, onNavigate
     { label: 'About', path: '/about' },
   ];
 
-  const logoUrl = getContent('global.logoUrl', '');
+  const rawLogoUrl = getContent('global.logoUrl', '');
+  const base = (import.meta.env.BASE_URL || '/').replace(/\/$/, '');
+  const logoUrl = rawLogoUrl && rawLogoUrl.startsWith('/') && !rawLogoUrl.startsWith('//')
+    ? `${base}${rawLogoUrl}` 
+    : rawLogoUrl;
 
   return (
     <header 
@@ -3093,7 +3097,7 @@ export default function App() {
     }
     if (lookupPath === '' || lookupPath === '//') lookupPath = '/';
 
-    switch (lookupPath) {
+    switch (lookupPath.toLowerCase()) {
       case '/':
       case '/index.html':
         return <HomeView onNavigate={onNavigate} />;
@@ -3139,7 +3143,7 @@ export default function App() {
         return (
           <div className="py-32 text-center max-w-2xl mx-auto min-h-[60vh]">
             <h2 className="text-4xl font-serif text-[#0A192F] mb-4">Page Currently in Build</h2>
-            <p className="text-slate-600">The layout for <strong>{currentPath}</strong> is being processed.</p>
+            <p className="text-slate-600">The layout for <strong>{lookupPath}</strong> (raw: {currentPath}) is being processed.</p>
             <button onClick={() => onNavigate('/')} className="mt-8 bg-[#2368D6] text-white px-6 py-2 rounded-lg">Return Home</button>
           </div>
         );
