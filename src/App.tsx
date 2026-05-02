@@ -11,6 +11,7 @@ import {
   Mail,
   MapPin,
   Phone,
+  Search,
   Settings,
   Plus,
   Trash2,
@@ -1206,10 +1207,107 @@ const PropertyRealEstateView = ({ onNavigate }: { onNavigate: (path: ViewPath) =
   </>
 );
 
+const BlogSidebar = ({ 
+  searchQuery, 
+  setSearchQuery, 
+  categories, 
+  selectedCategory, 
+  setSelectedCategory, 
+  insights, 
+  currentInsightId, 
+  onSelectInsight,
+  onClearFilters
+}: { 
+  searchQuery: string;
+  setSearchQuery: (val: string) => void;
+  categories: string[];
+  selectedCategory: string | null;
+  setSelectedCategory: (val: string | null) => void;
+  insights: Insight[];
+  currentInsightId?: string;
+  onSelectInsight: (insight: Insight) => void;
+  onClearFilters: () => void;
+}) => (
+  <aside className="lg:col-span-4 space-y-12">
+    <div>
+      <div className="relative mb-12">
+        <input 
+          type="text" 
+          placeholder="Search here..." 
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="w-full p-4 pr-12 bg-white border border-slate-100 rounded-xl outline-none focus:border-[#2368D6] text-sm text-slate-600 shadow-sm"
+        />
+        <button className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-300 hover:text-[#2368D6]">
+          <Search size={18} />
+        </button>
+      </div>
+
+      <h3 className="text-xs font-bold text-[#0A192F] uppercase tracking-widest mb-6 pb-4 border-b border-slate-100">Categories</h3>
+      <ul className="space-y-4">
+        <li>
+          <button 
+            onClick={onClearFilters}
+            className={`${!selectedCategory ? 'text-[#2368D6]' : 'text-slate-500'} hover:text-[#2368D6] text-sm transition-colors uppercase tracking-widest font-medium`}
+          >
+            All Categories
+          </button>
+        </li>
+        {categories.map(cat => (
+          <li key={cat}>
+            <button 
+              onClick={() => setSelectedCategory(cat)}
+              className={`${selectedCategory === cat ? 'text-[#2368D6]' : 'text-slate-500'} hover:text-[#2368D6] text-sm transition-colors uppercase tracking-widest font-medium`}
+            >
+              {cat}
+            </button>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <div>
+      <h3 className="text-xs font-bold text-[#0A192F] uppercase tracking-widest mb-6 pb-4 border-b border-slate-100">Recent Posts</h3>
+      <div className="space-y-8">
+        {insights.filter(i => i.id !== currentInsightId).slice(0, 5).map(post => (
+          <div key={post.id} className="group cursor-pointer" onClick={() => { onSelectInsight(post); window.scrollTo(0, 0); }}>
+            <div className="flex gap-4">
+              {post.image && (
+                <div className="w-20 h-20 flex-shrink-0">
+                  <img src={post.image} alt="" className="w-full h-full object-cover rounded-lg" referrerPolicy="no-referrer" />
+                </div>
+              )}
+              <div>
+                <h4 className="text-sm font-bold text-[#0A192F] group-hover:text-[#2368D6] transition-colors leading-snug line-clamp-2">
+                  {post.title}
+                </h4>
+                <p className="text-[10px] text-slate-400 mt-2 uppercase tracking-wider">{post.date}</p>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <div className="bg-[#F8FAFC] p-10 rounded-3xl border border-slate-100">
+      <h3 className="text-xs font-bold text-[#0A192F] uppercase tracking-widest mb-6">Orbit Newsletter</h3>
+      <p className="text-slate-500 text-sm leading-relaxed mb-8">Practical, monthly operational insights delivered to your inbox.</p>
+      <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
+        <input type="email" placeholder="Email" className="w-full p-4 bg-white border border-slate-200 rounded-xl outline-none focus:border-[#2368D6] text-sm" required />
+        <button type="submit" className="w-full bg-[#0A192F] hover:bg-slate-800 text-white p-4 rounded-xl font-bold uppercase tracking-widest text-xs transition-all shadow-md">
+          Join the List
+        </button>
+      </form>
+    </div>
+  </aside>
+);
+
 const InsightsView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => {
   const [insights, setInsights] = useState<Insight[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedInsight, setSelectedInsight] = useState<Insight | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchInsights = async () => {
@@ -1225,9 +1323,26 @@ const InsightsView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) 
     fetchInsights();
   }, []);
 
-  const categories = Array.from(new Set(insights.map(i => i.tag))).filter(Boolean);
+  const categories = Array.from(new Set(insights.map(i => i.tag))).filter(Boolean) as string[];
+
+  const filteredInsights = insights.filter(i => {
+    const matchesSearch = !searchQuery || 
+      i.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+      i.summary.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesCategory = !selectedCategory || i.tag === selectedCategory;
+    return matchesSearch && matchesCategory;
+  });
+
+  const clearFilters = () => {
+    setSearchQuery('');
+    setSelectedCategory(null);
+  };
 
   if (selectedInsight) {
+    const currentIndex = insights.findIndex(i => i.id === selectedInsight.id);
+    const nextPost = currentIndex > 0 ? insights[currentIndex - 1] : null;
+    const prevPost = currentIndex < insights.length - 1 ? insights[currentIndex + 1] : null;
+
     return (
       <div className="bg-white min-h-screen pt-32 pb-24 font-sans">
         <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-12 gap-16">
@@ -1260,49 +1375,53 @@ const InsightsView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) 
             </h1>
 
             <div 
-              className="prose prose-slate prose-lg max-w-none prose-headings:font-serif prose-headings:text-[#0A192F] prose-h1:text-4xl prose-h2:text-3xl prose-h3:text-2xl prose-p:text-slate-600 prose-p:leading-relaxed prose-a:text-[#2368D6] prose-strong:text-[#0A192F]"
+              className="prose prose-slate prose-lg max-w-none prose-headings:font-serif prose-headings:text-[#0A192F] prose-h1:text-4xl prose-h2:text-3xl prose-h3:text-2xl prose-p:text-slate-600 prose-p:leading-relaxed prose-a:text-[#2368D6] prose-strong:text-[#0A192F] mb-24"
               dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(selectedInsight.content) }}
             />
+
+            {/* Post Navigation */}
+            <div className="pt-12 border-t border-slate-100 grid sm:grid-cols-2 gap-8">
+              {prevPost ? (
+                <div 
+                  className="group cursor-pointer p-8 rounded-2xl border border-slate-50 hover:border-blue-100 hover:bg-blue-50/30 transition-all"
+                  onClick={() => { setSelectedInsight(prevPost); window.scrollTo(0, 0); }}
+                >
+                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-2">
+                    <ArrowRight className="rotate-180" size={12} /> Previous Post
+                  </p>
+                  <h4 className="text-[#0A192F] font-bold group-hover:text-[#2368D6] transition-colors">{prevPost.title}</h4>
+                </div>
+              ) : <div />}
+              
+              {nextPost ? (
+                <div 
+                  className="group cursor-pointer p-8 rounded-2xl border border-slate-50 hover:border-blue-100 hover:bg-blue-50/30 transition-all text-right"
+                  onClick={() => { setSelectedInsight(nextPost); window.scrollTo(0, 0); }}
+                >
+                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-2 justify-end">
+                    Next Post <ArrowRight size={12} />
+                  </p>
+                  <h4 className="text-[#0A192F] font-bold group-hover:text-[#2368D6] transition-colors">{nextPost.title}</h4>
+                </div>
+              ) : <div />}
+            </div>
           </div>
 
-          {/* Sidebar */}
-          <aside className="lg:col-span-4 space-y-12">
-            <div>
-              <h3 className="text-xs font-bold text-[#0A192F] uppercase tracking-widest mb-6 pb-4 border-b border-slate-100">Categories</h3>
-              <ul className="space-y-4">
-                {categories.map(cat => (
-                  <li key={cat}>
-                    <button className="text-slate-500 hover:text-[#2368D6] text-sm transition-colors uppercase tracking-widest font-medium">
-                      {cat}
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div>
-              <h3 className="text-xs font-bold text-[#0A192F] uppercase tracking-widest mb-6 pb-4 border-b border-slate-100">Recent Posts</h3>
-              <div className="space-y-8">
-                {insights.filter(i => i.id !== selectedInsight.id).slice(0, 5).map(post => (
-                  <div key={post.id} className="group cursor-pointer" onClick={() => { setSelectedInsight(post); window.scrollTo(0, 0); }}>
-                    <div className="flex gap-4">
-                      {post.image && (
-                        <div className="w-20 h-20 flex-shrink-0">
-                          <img src={post.image} alt="" className="w-full h-full object-cover rounded-lg" referrerPolicy="no-referrer" />
-                        </div>
-                      )}
-                      <div>
-                        <h4 className="text-sm font-bold text-[#0A192F] group-hover:text-[#2368D6] transition-colors leading-snug line-clamp-2">
-                          {post.title}
-                        </h4>
-                        <p className="text-[10px] text-slate-400 mt-2 uppercase tracking-wider">{post.date}</p>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </aside>
+          <BlogSidebar 
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+            categories={categories}
+            selectedCategory={selectedCategory}
+            setSelectedCategory={(cat) => {
+              setSelectedCategory(cat);
+              setSelectedInsight(null);
+              window.scrollTo(0, 0);
+            }}
+            insights={insights}
+            currentInsightId={selectedInsight.id}
+            onSelectInsight={setSelectedInsight}
+            onClearFilters={clearFilters}
+          />
         </div>
       </div>
     );
@@ -1329,9 +1448,23 @@ const InsightsView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) 
               <div className="flex justify-center items-center py-20">
                 <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#2368D6]"></div>
               </div>
-            ) : insights.length > 0 ? (
+            ) : filteredInsights.length > 0 ? (
               <div className="space-y-16">
-                {insights.map((post) => (
+                {(searchQuery || selectedCategory) && (
+                  <div className="mb-12 pb-8 border-b border-slate-100 flex items-center justify-between">
+                    <p className="text-slate-500">
+                      Showing {filteredInsights.length} results for 
+                      <span className="font-bold text-[#0A192F]"> {searchQuery || selectedCategory}</span>
+                    </p>
+                    <button 
+                      onClick={() => { setSearchQuery(''); setSelectedCategory(null); }}
+                      className="text-xs font-bold text-[#2368D6] uppercase tracking-widest"
+                    >
+                      Clear filters
+                    </button>
+                  </div>
+                )}
+                {filteredInsights.map((post) => (
                   <div key={post.id} className="group cursor-pointer pb-16 border-b border-slate-50 last:border-0" onClick={() => setSelectedInsight(post)}>
                     {post.image && (
                       <div className="overflow-hidden rounded-3xl mb-8">
@@ -1367,32 +1500,16 @@ const InsightsView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) 
             )}
           </div>
 
-          {/* Sidebar */}
-          <aside className="lg:col-span-4 space-y-16 pt-4">
-            <div>
-              <h3 className="text-xs font-bold text-[#0A192F] uppercase tracking-widest mb-6 pb-4 border-b border-slate-100">Categories</h3>
-              <ul className="space-y-4">
-                {categories.map(cat => (
-                  <li key={cat}>
-                    <button className="text-slate-500 hover:text-[#2368D6] text-sm transition-colors uppercase tracking-widest font-medium">
-                      {cat}
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="bg-[#F8FAFC] p-10 rounded-3xl border border-slate-100">
-              <h3 className="text-xs font-bold text-[#0A192F] uppercase tracking-widest mb-6">Orbit Newsletter</h3>
-              <p className="text-slate-500 text-sm leading-relaxed mb-8">Practical, monthly operational insights delivered to your inbox.</p>
-              <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
-                <input type="email" placeholder="Email" className="w-full p-4 bg-white border border-slate-200 rounded-xl outline-none focus:border-[#2368D6] text-sm" required />
-                <button type="submit" className="w-full bg-[#0A192F] hover:bg-slate-800 text-white p-4 rounded-xl font-bold uppercase tracking-widest text-xs transition-all shadow-md">
-                  Join the List
-                </button>
-              </form>
-            </div>
-          </aside>
+          <BlogSidebar 
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+            categories={categories}
+            selectedCategory={selectedCategory}
+            setSelectedCategory={setSelectedCategory}
+            insights={insights}
+            onSelectInsight={setSelectedInsight}
+            onClearFilters={clearFilters}
+          />
         </div>
       </section>
     </>
