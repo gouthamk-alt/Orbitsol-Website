@@ -2991,24 +2991,36 @@ export default function App() {
   };
 
   useEffect(() => {
-    // Handle hash links or initial path
+    // Handle initial path from URL, accounting for GitHub Pages subdirectory
     let path = window.location.pathname;
-    const base = '/Orbitsol-Website';
-    if (path.startsWith(base)) {
-      path = path.substring(base.length);
-    }
-    if (!path || path === '' || path === '//') path = '/';
     
-    if (path !== '/') setCurrentPath(path as ViewPath);
+    // Robust detection of the GitHub Pages base path (case-insensitive)
+    const repoMatch = path.match(/^\/Orbitsol-Website(.*)/i);
+    if (repoMatch) {
+      path = repoMatch[1] || '/';
+    }
+    
+    // Normalize path: handle trailing slashes and empty paths
+    if (!path || path === '' || path === '//') {
+      path = '/';
+    } else if (path.length > 1 && path.endsWith('/')) {
+      path = path.slice(0, -1);
+    }
+    
+    // Ensure we match the expected ViewPath types
+    if (path !== currentPath) {
+      setCurrentPath(path as ViewPath);
+    }
   }, []);
 
   const onNavigate = (path: ViewPath) => {
+    const base = '/Orbitsol-Website';
     if (path.startsWith('/#')) {
       // Internal scrolling
       const id = path.replace('/#', '');
       if (currentPath !== '/') {
         setCurrentPath('/');
-        window.history.pushState({}, '', '/Orbitsol-Website/');
+        window.history.pushState({}, '', `${base}/`);
         setTimeout(() => {
           document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
         }, 100);
@@ -3018,8 +3030,14 @@ export default function App() {
     } else {
       setCurrentPath(path);
       window.scrollTo(0, 0);
+      
       // Update URL for refreshes to work on GitHub Pages (with 404.html trick)
-      const fullPath = path === '/' ? '/Orbitsol-Website/' : `/Orbitsol-Website${path}`;
+      let normalizedPath = path === '/' ? '/' : path;
+      if (normalizedPath !== '/' && normalizedPath.endsWith('/')) {
+        normalizedPath = normalizedPath.slice(0, -1);
+      }
+      
+      const fullPath = normalizedPath === '/' ? `${base}/` : `${base}${normalizedPath}`;
       window.history.pushState({}, '', fullPath);
     }
   };
