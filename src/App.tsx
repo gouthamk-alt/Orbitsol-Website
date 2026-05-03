@@ -86,7 +86,7 @@ type ViewPath =
 const MarketingGrowthView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => (
   <>
     {/* Block A — Hero */}
-    <section className="relative bg-gradient-to-br from-[#0A192F] to-[#112240] text-white pt-32 pb-24 overflow-hidden">
+    <section className="relative primary-gradient text-white pt-32 pb-24 overflow-hidden">
       <div className="absolute top-10 right-10 text-[18vw] font-serif font-black text-white/[0.03] pointer-events-none select-none tracking-tighter">MKT</div>
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         <div className="text-xs uppercase tracking-[0.2em] font-bold text-blue-300/60 mb-6 font-sans">
@@ -215,10 +215,10 @@ const MarketingGrowthView = ({ onNavigate }: { onNavigate: (path: ViewPath) => v
     </section>
 
     {/* Block F — CTA */}
-    <section className="bg-[#0A192F] py-16 px-6 text-center text-white border-t border-white/10 font-sans">
+    <section className="bg-brand-deep-navy py-16 px-6 text-center text-white border-t border-white/10 font-sans">
       <div className="max-w-4xl mx-auto">
         <h2 className="font-serif text-3xl md:text-4xl font-bold mb-10">Tired of chasing freelancers and managing edits? Send us the brief and we will scope the desk.</h2>
-        <button onClick={() => onNavigate('/contact')} className="bg-[#2368D6] hover:bg-blue-500 transition-colors px-10 py-4 rounded text-xs font-bold uppercase tracking-[0.2em] shadow-xl">
+        <button onClick={() => onNavigate('/contact')} className="bg-status-info hover:bg-status-info/90 transition-colors px-10 py-4 rounded text-xs font-bold uppercase tracking-[0.2em] shadow-xl">
           Send a marketing enquiry
         </button>
       </div>
@@ -232,10 +232,10 @@ const RemoteOperationsView = ({ onNavigate }: { onNavigate: (path: ViewPath) => 
   return (
     <>
       {/* Section 1 - Hero */}
-    <section className="relative bg-gradient-to-br from-[#0A192F] to-[#112240] text-white pt-32 pb-24 overflow-hidden font-sans">
+    <section className="relative primary-gradient text-white pt-32 pb-24 overflow-hidden font-sans">
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         <div className="max-w-3xl">
-          <div className="text-blue-300/60 font-bold uppercase tracking-[0.2em] text-xs mb-6 font-sans">Global delivery.</div>
+          <div className="text-white/60 font-bold uppercase tracking-[0.2em] text-xs mb-6 font-sans">Global delivery.</div>
           <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-8">
             Managed remote operations and virtual assistants for repeatable business work.
           </h1>
@@ -259,7 +259,7 @@ const RemoteOperationsView = ({ onNavigate }: { onNavigate: (path: ViewPath) => 
       <div className="max-w-7xl mx-auto px-6">
         <div className="max-w-3xl mb-20">
           <p className="text-[#2368D6] font-bold tracking-widest uppercase text-xs mb-4">The four levels.</p>
-          <h2 className="font-serif text-4xl font-bold text-[#0A192F] mb-6">Start where the work is, and move up as it scales.</h2>
+          <h2 className="font-serif text-4xl font-bold text-brand-deep-navy mb-6">Start where the work is, and move up as it scales.</h2>
           <p className="text-slate-500 leading-relaxed text-lg">
             We understand growth plans can be fluid and dynamic, and we tailor our solutions accordingly. Most engagements with us start at Level 01 or Level 02 and graduate to Level 03 or Level 04 once you have seen what the team can do, and the pricing is published so it is easy to plan against.
           </p>
@@ -418,10 +418,10 @@ const RemoteOperationsView = ({ onNavigate }: { onNavigate: (path: ViewPath) => 
 const SMEsFoundersView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => (
   <>
     {/* Block A — Hero */}
-    <section className="relative bg-gradient-to-br from-[#0A192F] to-[#112240] text-white pt-32 pb-24 overflow-hidden font-sans">
+    <section className="relative primary-gradient text-white pt-32 pb-24 overflow-hidden font-sans">
       <div className="absolute top-10 right-10 text-[18vw] font-serif font-black text-white/[0.03] pointer-events-none select-none tracking-tighter">SME</div>
       <div className="max-w-7xl mx-auto px-6 relative z-10">
-        <div className="text-xs uppercase tracking-[0.2em] font-bold text-blue-300/60 mb-6 underline decoration-[#2368D6] underline-offset-8">
+        <div className="text-xs uppercase tracking-[0.2em] font-bold text-white/60 mb-6 underline decoration-status-info underline-offset-8">
           Who we work with / SMEs and Founders
         </div>
         <div className="max-w-4xl">
@@ -567,9 +567,9 @@ const DigitalMarketingView = ({ onNavigate }: { onNavigate: (path: ViewPath) => 
   return (
     <>
       {/* Section 1 - Hero */}
-    <section className="relative bg-[#0A192F] text-white pt-32 pb-24 overflow-hidden font-sans">
+    <section className="relative primary-gradient text-white pt-32 pb-24 overflow-hidden font-sans">
       <div className="max-w-7xl mx-auto px-6 relative z-10">
-        <div className="text-xs uppercase tracking-[0.2em] font-bold text-blue-300/60 mb-6 underline decoration-[#2368D6] underline-offset-8">Digital Marketing and Creative.</div>
+        <div className="text-xs uppercase tracking-[0.2em] font-bold text-white/60 mb-6 underline decoration-status-info underline-offset-8">Digital Marketing and Creative.</div>
         <div className="max-w-4xl">
           <h1 className="font-serif text-4xl md:text-5xl lg:text-7xl font-bold leading-tight mb-8">
             A growth desk you can actually rely on.
@@ -837,10 +837,10 @@ const ProcessAutomationView = ({ onNavigate }: { onNavigate: (path: ViewPath) =>
 const StrataManagementView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => (
   <>
     {/* Block A — Hero */}
-    <section className="relative bg-gradient-to-br from-[#0A192F] to-[#112240] text-white pt-32 pb-24 overflow-hidden font-sans">
+    <section className="relative primary-gradient text-white pt-32 pb-24 overflow-hidden font-sans">
       <div className="absolute top-5 right-10 text-[18vw] font-serif font-black text-white/3 pointer-events-none select-none tracking-tighter">STR</div>
       <div className="max-w-7xl mx-auto px-6 relative z-10">
-        <div className="text-xs uppercase tracking-[0.2em] font-bold text-blue-300/60 mb-6 font-sans">
+        <div className="text-xs uppercase tracking-[0.2em] font-bold text-white/60 mb-6 font-sans">
           Who we work with / Strata Management
         </div>
         <div className="max-w-4xl">
@@ -859,7 +859,7 @@ const StrataManagementView = ({ onNavigate }: { onNavigate: (path: ViewPath) => 
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid lg:grid-cols-2 gap-16 items-start">
           <div>
-            <h2 className="text-[11px] font-bold text-[#2368D6] uppercase tracking-widest mb-8">What We Handle</h2>
+            <h2 className="text-[11px] font-bold text-status-info uppercase tracking-widest mb-8">What We Handle</h2>
             <ul className="space-y-4">
               {[
                 "Owner and committee correspondence.",
@@ -871,18 +871,18 @@ const StrataManagementView = ({ onNavigate }: { onNavigate: (path: ViewPath) => 
                 "Dashboard and key-performance-indicator reporting for portfolio health."
               ].map((item, idx) => (
                 <li key={idx} className="flex items-start gap-4">
-                  <Check className="mt-1 text-[#2368D6] flex-shrink-0" size={16} />
+                  <Check className="mt-1 text-status-info flex-shrink-0" size={16} />
                   <span className="text-slate-600 font-medium text-sm leading-relaxed">{item}</span>
                 </li>
               ))}
             </ul>
           </div>
           <div className="pt-4 lg:pt-10">
-            <p className="text-xl text-[#0A192F] leading-relaxed mb-10">
+            <p className="text-xl text-brand-deep-navy leading-relaxed mb-10">
               We understand that strata portfolios generate a constant flow of administration, queries, and documentation, and offshore support only helps when the team is trained, supervised, and embedded properly.
             </p>
             <div className="border-t border-slate-100 pt-10">
-              <h3 className="font-serif text-2xl font-bold text-[#0A192F] mb-6">Our delivery model:</h3>
+              <h3 className="font-serif text-2xl font-bold text-brand-deep-navy mb-6">Our delivery model:</h3>
               <p className="text-slate-500 leading-relaxed mb-6">
                 A dedicated project leader, trained strata associates, documented standard operating procedures, and weekly reporting. We log into your platform and work alongside your team rather than passing tasks back and forth through email.
               </p>
@@ -987,10 +987,10 @@ const StrataManagementView = ({ onNavigate }: { onNavigate: (path: ViewPath) => 
 const PropertyRealEstateView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => (
   <>
     {/* Block A — Hero */}
-    <section className="relative bg-gradient-to-br from-[#0A192F] to-[#112240] text-white pt-32 pb-24 overflow-hidden font-sans">
+    <section className="relative primary-gradient text-white pt-32 pb-24 overflow-hidden font-sans">
       <div className="absolute top-5 right-10 text-[18vw] font-serif font-black text-white/3 pointer-events-none select-none tracking-tighter">PRP</div>
       <div className="max-w-7xl mx-auto px-6 relative z-10">
-        <div className="text-xs uppercase tracking-[0.2em] font-bold text-blue-300/60 mb-6">
+        <div className="text-white/60 text-xs uppercase tracking-[0.2em] font-bold mb-6">
           Who we work with / Property and Real Estate
         </div>
         <div className="max-w-4xl">
@@ -1289,12 +1289,12 @@ const BlogSidebar = ({
       </div>
     </div>
 
-    <div className="bg-[#F8FAFC] p-10 rounded-3xl border border-slate-100">
-      <h3 className="text-xs font-bold text-[#0A192F] uppercase tracking-widest mb-6">Orbit Newsletter</h3>
-      <p className="text-slate-500 text-sm leading-relaxed mb-8">Practical, monthly operational insights delivered to your inbox.</p>
+    <div className="bg-brand-pale-blue p-10 rounded-3xl border border-slate-100/50">
+      <h3 className="text-xs font-bold text-brand-deep-navy uppercase tracking-widest mb-6">Orbit Newsletter</h3>
+      <p className="text-txt-secondary text-sm leading-relaxed mb-8">Practical, monthly operational insights delivered to your inbox.</p>
       <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
-        <input type="email" placeholder="Email" className="w-full p-4 bg-white border border-slate-200 rounded-xl outline-none focus:border-[#2368D6] text-sm" required />
-        <button type="submit" className="w-full bg-[#0A192F] hover:bg-slate-800 text-white p-4 rounded-xl font-bold uppercase tracking-widest text-xs transition-all shadow-md">
+        <input type="email" placeholder="Email address" className="w-full p-4 bg-white border border-slate-200/60 rounded-xl outline-none focus:border-status-info text-sm transition-all shadow-sm" required />
+        <button type="submit" className="w-full bg-status-info hover:bg-brand-primary-start text-white p-4 rounded-xl font-bold uppercase tracking-widest text-[10px] transition-all shadow-md">
           Join the List
         </button>
       </form>
@@ -1570,7 +1570,7 @@ const Header = ({ currentPath, onNavigate }: { currentPath: ViewPath, onNavigate
           ) : null}
           {(logoError || !logoUrl) && (
             <div className="flex flex-col">
-              <div className="font-serif text-2xl font-black text-[#0A192F] leading-none tracking-tight">
+              <div className="font-serif text-2xl font-black text-brand-deep-navy leading-none tracking-tight">
                 {getContent('global.siteName', 'OrbitSol')}
               </div>
               <div className="text-[9px] font-bold tracking-[0.25em] text-slate-400 uppercase mt-1.5">
@@ -1592,7 +1592,7 @@ const Header = ({ currentPath, onNavigate }: { currentPath: ViewPath, onNavigate
                 <button
                   onClick={() => onNavigate(item.path as ViewPath)}
                   className={`text-xs uppercase tracking-widest font-bold transition-colors ${
-                    currentPath === item.path ? 'text-[#2368D6]' : 'text-slate-500 hover:text-[#0A192F]'
+                    currentPath === item.path ? 'text-status-info' : 'text-brand-cool-gray hover:text-brand-deep-navy'
                   }`}
                 >
                   {item.label}
@@ -1600,7 +1600,7 @@ const Header = ({ currentPath, onNavigate }: { currentPath: ViewPath, onNavigate
               ) : (
                 <button
                   className={`text-xs uppercase tracking-widest font-bold transition-colors flex items-center gap-1 ${
-                    activeDropdown === item.label ? 'text-[#2368D6]' : 'text-slate-500 hover:text-[#0A192F]'
+                    activeDropdown === item.label ? 'text-status-info' : 'text-brand-cool-gray hover:text-brand-deep-navy'
                   }`}
                 >
                   {item.label}
@@ -1625,7 +1625,7 @@ const Header = ({ currentPath, onNavigate }: { currentPath: ViewPath, onNavigate
                             onNavigate(subItem.path as ViewPath);
                             setActiveDropdown(null);
                           }}
-                          className="w-full text-left px-8 py-3 text-xs font-bold text-slate-500 hover:text-[#2368D6] hover:bg-slate-50 transition-all uppercase tracking-widest border-l-2 border-transparent hover:border-[#2368D6]"
+                          className="w-full text-left px-8 py-3 text-xs font-bold text-brand-cool-gray hover:text-status-info hover:bg-brand-pale-blue transition-all uppercase tracking-widest border-l-2 border-transparent hover:border-status-info"
                         >
                           {subItem.label}
                         </button>
@@ -1639,7 +1639,7 @@ const Header = ({ currentPath, onNavigate }: { currentPath: ViewPath, onNavigate
           
           <button
             onClick={() => onNavigate('/contact')}
-            className="bg-[#0A192F] hover:bg-slate-800 text-white px-8 py-3.5 rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all shadow-md ml-4"
+            className="bg-brand-deep-navy hover:bg-brand-slate text-white px-8 py-3.5 rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all shadow-md ml-4"
           >
             Get a Quote
           </button>
@@ -1730,7 +1730,7 @@ const AboutView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
     <section className="py-24 bg-[#F8FAFC] font-sans">
       <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-start">
         <div>
-          <h2 className="font-serif text-3xl font-bold text-[#0A192F] mb-8">Our Story</h2>
+          <h2 className="font-serif text-3xl font-bold text-brand-deep-navy mb-8">Our Story</h2>
           <div className="space-y-6 text-slate-600 leading-relaxed">
             <p>
               OrbitSol was founded in <a href="https://www.keralatourism.org/topic/kochi" target="_blank" rel="noopener noreferrer" className="text-[#2368D6] hover:underline">Kochi</a>, on India's southwest coast in the state of Kerala, by a team with deep experience in transcription and business-process-outsourcing.
@@ -1785,10 +1785,10 @@ const AboutView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
             { n: "Vibhija S.", r: "Senior Manager - Finance" }
           ].map((member, idx) => (
             <div key={idx} className="text-center group">
-               <div className="w-full aspect-square bg-[#F8FAFC] rounded-full mb-4 border border-slate-100 flex items-center justify-center grayscale group-hover:grayscale-0 transition-all overflow-hidden">
-                  <span className="text-[#2368D6] opacity-10"><FileText size={48} /></span>
+               <div className="w-full aspect-square bg-brand-pale-blue rounded-full mb-4 border border-slate-100 flex items-center justify-center grayscale group-hover:grayscale-0 transition-all overflow-hidden">
+                  <span className="text-status-info opacity-10"><FileText size={48} /></span>
                </div>
-               <h4 className="font-bold text-[#0A192F] text-sm mb-1">{member.n}</h4>
+               <h4 className="font-bold text-brand-deep-navy text-sm mb-1">{member.n}</h4>
                <p className="text-slate-400 text-xs leading-tight">{member.r}</p>
             </div>
           ))}
@@ -1907,24 +1907,24 @@ const ContactView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) =
   return (
     <>
       {/* Section 1 - Hero */}
-      <section className="relative bg-[#F8FAFC] pt-32 pb-24 overflow-hidden font-sans border-b border-slate-100">
+      <section className="relative bg-brand-pale-blue pt-32 pb-24 overflow-hidden font-sans border-b border-slate-100">
         <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-16 items-start">
           <div>
-            <h1 className="font-serif text-4xl md:text-5xl font-bold leading-tight mb-8 text-[#0A192F]">
+            <h1 className="font-serif text-4xl md:text-5xl font-bold leading-tight mb-8 text-brand-deep-navy">
               Send us the workflow, sample file, or task list you want handled.
             </h1>
-            <p className="text-lg text-slate-600 leading-relaxed mb-12">
+            <p className="text-lg text-txt-secondary leading-relaxed mb-12">
               Tell us what you need completed, where the input comes from, what the output should look like, and how often the work repeats.
             </p>
             <div className="space-y-6 pt-12 border-t border-slate-200">
                <div>
-                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Email Address</p>
-                  <a href={`mailto:${contactEmail}`} className="text-2xl font-serif font-bold text-[#2368D6] hover:underline">{contactEmail}</a>
+                  <p className="text-[10px] font-bold text-txt-muted uppercase tracking-widest mb-2">Email Address</p>
+                  <a href={`mailto:${contactEmail}`} className="text-2xl font-serif font-bold text-status-info hover:underline">{contactEmail}</a>
                </div>
                <div>
-                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Phone Number (Toll-free)</p>
-                  <p className="text-2xl font-serif font-bold text-[#0A192F]">{contactPhone}</p>
-                  <p className="text-xs text-slate-400 mt-1">Reachable from any country</p>
+                  <p className="text-[10px] font-bold text-txt-muted uppercase tracking-widest mb-2">Phone Number (Toll-free)</p>
+                  <p className="text-2xl font-serif font-bold text-brand-deep-navy">{contactPhone}</p>
+                  <p className="text-xs text-txt-muted mt-1">Reachable from any country</p>
                </div>
             </div>
           </div>
@@ -1939,27 +1939,27 @@ const ContactView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) =
               <input type="hidden" name="form-name" value="contact" />
               <div className="grid sm:grid-cols-2 gap-6">
                  <div className="space-y-2">
-                    <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Name *</label>
-                    <input name="name" type="text" className="w-full p-3 bg-slate-50 border border-slate-200 rounded focus:border-[#2368D6] outline-none transition-colors" required />
+                    <label className="text-[10px] font-bold text-txt-secondary uppercase tracking-widest">Name *</label>
+                    <input name="name" type="text" className="w-full p-3 bg-slate-50 border border-slate-200 rounded focus:border-status-info outline-none transition-colors" required />
                  </div>
                  <div className="space-y-2">
-                    <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Email *</label>
-                    <input name="email" type="email" className="w-full p-3 bg-slate-50 border border-slate-200 rounded focus:border-[#2368D6] outline-none transition-colors" required />
+                    <label className="text-[10px] font-bold text-txt-secondary uppercase tracking-widest">Email *</label>
+                    <input name="email" type="email" className="w-full p-3 bg-slate-50 border border-slate-200 rounded focus:border-status-info outline-none transition-colors" required />
                  </div>
               </div>
               <div className="grid sm:grid-cols-2 gap-6">
                  <div className="space-y-2">
-                    <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Company</label>
-                    <input name="company" type="text" className="w-full p-3 bg-slate-50 border border-slate-200 rounded focus:border-[#2368D6] outline-none transition-colors" />
+                    <label className="text-[10px] font-bold text-txt-secondary uppercase tracking-widest">Company</label>
+                    <input name="company" type="text" className="w-full p-3 bg-slate-50 border border-slate-200 rounded focus:border-status-info outline-none transition-colors" />
                  </div>
                  <div className="space-y-2">
-                    <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Country</label>
-                    <input name="country" type="text" className="w-full p-3 bg-slate-50 border border-slate-200 rounded focus:border-[#2368D6] outline-none transition-colors" />
+                    <label className="text-[10px] font-bold text-txt-secondary uppercase tracking-widest">Country</label>
+                    <input name="country" type="text" className="w-full p-3 bg-slate-50 border border-slate-200 rounded focus:border-status-info outline-none transition-colors" />
                  </div>
               </div>
               <div className="space-y-2">
-                 <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Service Interest</label>
-                 <select name="service" className="w-full p-3 bg-slate-50 border border-slate-200 rounded focus:border-[#2368D6] outline-none transition-colors text-sm">
+                 <label className="text-[10px] font-bold text-txt-secondary uppercase tracking-widest">Service Interest</label>
+                 <select name="service" className="w-full p-3 bg-slate-50 border border-slate-200 rounded focus:border-status-info outline-none transition-colors text-sm">
                     <option>Property Inspection Reports</option>
                     <option>Managed Remote Operations</option>
                     <option>Digital Marketing & Creative</option>
@@ -1969,13 +1969,13 @@ const ContactView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) =
                  </select>
               </div>
               <div className="space-y-2">
-                 <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">What do you want handled? *</label>
-                 <textarea name="message" rows={4} className="w-full p-3 bg-slate-50 border border-slate-200 rounded focus:border-[#2368D6] outline-none transition-colors resize-none" required></textarea>
+                 <label className="text-[10px] font-bold text-txt-secondary uppercase tracking-widest">What do you want handled? *</label>
+                 <textarea name="message" rows={4} className="w-full p-3 bg-slate-50 border border-slate-200 rounded focus:border-status-info outline-none transition-colors resize-none" required></textarea>
               </div>
               <button 
                 type="submit" 
                 disabled={isSubmitting}
-                className="w-full bg-[#2368D6] hover:bg-blue-500 text-white py-4 rounded font-bold uppercase tracking-widest text-xs shadow-lg transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+                className="w-full bg-status-info hover:bg-brand-primary-start text-white py-4 rounded font-bold uppercase tracking-widest text-xs shadow-lg transition-all disabled:opacity-50 flex items-center justify-center gap-2"
               >
                 {isSubmitting ? (
                   <>
@@ -2000,12 +2000,12 @@ const Footer = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => {
   const { getContent } = React.useContext(SiteSettingsContext);
 
   return (
-    <footer className="bg-[#0A192F] text-blue-50/70 pt-20 pb-10 mt-auto">
+    <footer className="bg-brand-deep-navy text-white/70 pt-20 pb-10 mt-auto font-sans">
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 mb-16">
           <div className="lg:col-span-1">
             <div className="font-serif text-2xl font-bold text-white mb-2">{getContent('global.siteName', 'OrbitSol')}</div>
-            <div className="text-sm text-blue-300 mb-6">{getContent('global.tagline', 'Bringing Worlds Together.')}</div>
+            <div className="text-sm text-status-info mb-6">{getContent('global.tagline', 'Bringing Worlds Together.')}</div>
             <p className="text-sm leading-relaxed">
               {getContent('global.footerDesc', 'Managed offshore workflows for property, strata, transcription, remote operations, marketing production, and process automation.')}
             </p>
@@ -2077,9 +2077,9 @@ const FAQItem = ({ question, answer }: { question: string; answer: string }) => 
         className="w-full flex justify-between items-center text-left focus:outline-none"
         onClick={() => setIsOpen(!isOpen)}
       >
-        <span className="font-serif text-xl font-medium text-[#0A192F] pr-8">{question}</span>
+        <span className="font-serif text-xl font-medium text-brand-deep-navy pr-8">{question}</span>
         <ChevronDown 
-          className={`text-[#2368D6] transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} 
+          className={`text-status-info transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} 
           size={20} 
         />
       </button>
@@ -2107,7 +2107,7 @@ const HomeView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => {
 
   return (
     <>
-      <section className="relative bg-gradient-to-br from-[#0A192F] to-[#112240] text-white pt-32 pb-24 overflow-hidden">
+      <section className="relative primary-gradient text-white pt-32 pb-24 overflow-hidden">
         <div className="absolute top-0 right-0 w-1/2 h-full opacity-10 pointer-events-none">
           <svg viewBox="0 0 100 100" className="w-full h-full fill-current" preserveAspectRatio="none">
             <circle cx="80" cy="50" r="40" stroke="white" strokeWidth="0.5" fill="none" />
@@ -2117,17 +2117,17 @@ const HomeView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => {
         </div>
         <div className="max-w-7xl mx-auto px-6 relative z-10">
           <div className="max-w-4xl">
-            <p className="text-blue-300/80 font-medium tracking-widest uppercase text-xs mb-6">
+            <p className="text-white/80 font-medium tracking-widest uppercase text-xs mb-6 font-sans">
               {getContent('home.heroTag', 'Managed offshore operations / Powered by Practical AI')}
             </p>
             <h1 className="font-serif text-5xl md:text-6xl font-bold leading-tight mb-8">
               {getContent('home.heroTitle', 'Turn recurring work into managed workflows your team can rely on.')}
             </h1>
-            <p className="text-lg md:text-xl text-blue-100/70 leading-relaxed mb-12 max-w-3xl">
+            <p className="text-lg md:text-xl text-white/70 leading-relaxed mb-12 max-w-3xl font-sans">
               {getContent('home.heroDesc', 'OrbitSol helps property, strata, lettings, legal, and professional services firms move reporting, transcription, and admin work into a managed offshore operating layer.')}
             </p>
           <div className="flex flex-col sm:flex-row gap-4 mb-16">
-            <button onClick={() => onNavigate('/contact')} className="bg-[#2368D6] hover:bg-blue-500 text-white px-8 py-3.5 rounded font-bold uppercase tracking-widest text-xs shadow-lg transition-all">
+            <button onClick={() => onNavigate('/contact')} className="bg-brand-deep-navy hover:bg-brand-slate text-white px-8 py-3.5 rounded-xl font-bold uppercase tracking-widest text-xs shadow-lg transition-all">
               Send a workflow enquiry
             </button>
             <button onClick={() => window.location.href=`mailto:${contactEmail}`} className="border border-white/20 text-white hover:bg-white/10 px-8 py-3.5 rounded font-bold uppercase tracking-widest text-xs transition-all">
@@ -2144,7 +2144,7 @@ const HomeView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => {
       </div>
     </section>
 
-    <section className="bg-[#F8FAFC] border-b border-slate-100 py-5">
+    <section className="bg-brand-pale-blue border-b border-slate-100 py-5">
       <div className="max-w-7xl mx-auto px-6 text-center text-[11px] font-semibold text-slate-400 uppercase tracking-widest">
         Property report production <span className="mx-3 opacity-20">|</span> Strata administration <span className="mx-3 opacity-20">|</span> Lettings inventories <span className="mx-3 opacity-20">|</span> Legal transcription <span className="mx-3 opacity-20">|</span> Remote operations
       </div>
@@ -2153,8 +2153,8 @@ const HomeView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => {
     <section id="who-we-serve" className="py-24 bg-white font-sans">
       <div className="max-w-7xl mx-auto px-6">
         <div className="mb-20">
-          <p className="text-[#2368D6] font-bold tracking-widest uppercase text-xs mb-4">Who we serve.</p>
-          <h2 className="font-serif text-4xl md:text-5xl lg:text-7xl font-bold text-[#0A192F] mb-8 leading-[1.1] tracking-tight max-w-4xl">
+          <p className="text-status-info font-bold tracking-widest uppercase text-xs mb-4">Who we serve.</p>
+          <h2 className="font-serif text-4xl md:text-5xl lg:text-7xl font-bold text-brand-deep-navy mb-8 leading-[1.1] tracking-tight max-w-4xl">
             Built for teams whose work depends on accurate, repeatable operations.
           </h2>
           <p className="text-lg md:text-xl text-slate-500 leading-relaxed max-w-4xl">
@@ -2177,10 +2177,10 @@ const HomeView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => {
               className="group cursor-pointer p-10 rounded-2xl border border-slate-100 hover:border-blue-200 transition-all duration-300 bg-white flex flex-col h-full shadow-[0_4px_20px_rgba(0,0,0,0.02)] hover:shadow-xl"
             >
               <div className="flex-grow">
-                <h3 className="font-serif text-2xl font-bold text-[#0A192F] mb-6 group-hover:text-[#2368D6] transition-colors">{service.title}</h3>
-                <p className="text-slate-500 text-sm leading-relaxed mb-10">Dedicated offshore support tailored to your industry's specific workflow requirements.</p>
+                <h3 className="font-serif text-2xl font-bold text-brand-deep-navy mb-6 group-hover:text-status-info transition-colors">{service.title}</h3>
+                <p className="text-txt-secondary text-sm leading-relaxed mb-10 font-sans">Dedicated offshore support tailored to your industry's specific workflow requirements.</p>
               </div>
-              <div className="flex items-center gap-2 text-[#2368D6] text-sm font-bold">
+              <div className="flex items-center gap-2 text-status-info text-sm font-bold font-sans">
                 <span>Explore services</span>
                 <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
               </div>
@@ -2189,11 +2189,11 @@ const HomeView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => {
           
           {/* Custom Desk Card */}
           <div className="bg-[#F8FAFC] p-10 rounded-2xl flex flex-col items-center justify-center text-center shadow-[0_4px_20px_rgba(0,0,0,0.01)] border border-slate-100/50">
-             <h3 className="font-serif text-2xl font-bold text-[#0A192F] mb-4">Don't see your sector?</h3>
-             <p className="text-slate-500 text-sm mb-10">We build custom desks for unique workflows.</p>
+             <h3 className="font-serif text-2xl font-bold text-brand-deep-navy mb-4">Don't see your sector?</h3>
+             <p className="text-txt-secondary text-sm mb-10 font-sans">We build custom desks for unique workflows.</p>
              <button 
                onClick={(e) => { e.stopPropagation(); onNavigate('/contact'); }}
-               className="w-full bg-[#2368D6] hover:bg-blue-700 text-white font-bold py-4 rounded-xl transition-colors shadow-md"
+               className="w-full bg-status-info hover:bg-status-info/90 text-white font-bold py-4 rounded-xl transition-colors shadow-md uppercase tracking-widest text-xs font-sans"
              >
                Send an enquiry
              </button>
@@ -2202,10 +2202,10 @@ const HomeView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => {
       </div>
     </section>
 
-    <section id="what-we-do" className="py-24 bg-[#0A192F] text-white font-sans overflow-hidden">
+    <section id="what-we-do" className="py-24 bg-brand-deep-navy text-white font-sans overflow-hidden">
       <div className="max-w-7xl mx-auto px-6">
         <div className="mb-20">
-          <div className="text-blue-400 font-bold tracking-widest uppercase text-[11px] mb-6 underline decoration-blue-500 underline-offset-8">What we do.</div>
+          <div className="text-status-info font-bold tracking-widest uppercase text-[11px] mb-6 underline decoration-status-info underline-offset-8">What we do.</div>
           <h2 className="font-serif text-4xl md:text-5xl lg:text-7xl font-bold mb-8 leading-[1.1] tracking-tight max-w-4xl">
             Multiple managed workflow lines, one operating partner.
           </h2>
@@ -2225,14 +2225,14 @@ const HomeView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => {
             <div
               key={item.id}
               onClick={() => onNavigate(item.path as ViewPath)}
-              className="cursor-pointer group p-10 rounded-2xl bg-[#112240] border border-white/5 hover:border-blue-500/50 hover:bg-[#162e52] transition-all duration-300 flex flex-col h-full shadow-2xl"
+              className="cursor-pointer group p-10 rounded-2xl bg-brand-slate border border-white/5 hover:border-status-info/50 hover:bg-brand-slate/80 transition-all duration-300 flex flex-col h-full shadow-2xl"
             >
               <div className="flex-grow">
-                <div className="text-[#2368D6] font-serif text-5xl font-black mb-8 opacity-20 group-hover:opacity-40 transition-opacity">{item.id}</div>
-                <h3 className="font-serif text-2xl font-bold mb-6 group-hover:text-blue-300 transition-colors uppercase tracking-tight">{item.title}</h3>
-                <p className="text-blue-100/50 text-sm leading-relaxed mb-6">{item.desc}</p>
+                <div className="text-status-info font-serif text-5xl font-black mb-8 opacity-20 group-hover:opacity-40 transition-opacity">{item.id}</div>
+                <h3 className="font-serif text-2xl font-bold mb-6 group-hover:text-status-info transition-colors uppercase tracking-tight">{item.title}</h3>
+                <p className="text-white/50 text-sm leading-relaxed mb-6 font-sans">{item.desc}</p>
               </div>
-              <div className="flex items-center gap-2 text-blue-400 text-xs font-bold uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-all transform translate-x-[-10px] group-hover:translate-x-0">
+              <div className="flex items-center gap-2 text-status-info text-xs font-bold uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-all transform translate-x-[-10px] group-hover:translate-x-0 font-sans">
                 <span>View Capability</span>
                 <ArrowRight size={14} />
               </div>
@@ -2248,10 +2248,10 @@ const HomeView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => {
 const SpeechContentDataView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => (
   <>
     {/* Section 1 - Hero */}
-    <section className="relative bg-gradient-to-br from-[#0A192F] to-[#112240] text-white pt-32 pb-24 overflow-hidden font-sans">
+    <section className="relative primary-gradient text-white pt-32 pb-24 overflow-hidden font-sans">
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         <div className="max-w-3xl">
-          <div className="text-blue-300/60 font-bold uppercase tracking-[0.2em] text-xs mb-6">Speech, Content, and Data Intelligence.</div>
+          <div className="text-white/60 font-bold uppercase tracking-[0.2em] text-xs mb-6">Speech, Content, and Data Intelligence.</div>
           <h1 className="font-serif text-4xl md:text-5xl lg:text-7xl font-bold leading-tight mb-8">
             Turn speech, video, documents, and raw content into structured, usable business intelligence.
           </h1>
@@ -3187,10 +3187,10 @@ const PropertyInspectionView = ({ onNavigate }: { onNavigate: (path: ViewPath) =
 const LegalProfessionalServicesView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => (
   <>
     {/* Block A — Hero */}
-    <section className="relative bg-gradient-to-br from-[#0A192F] to-[#112240] text-white pt-32 pb-24 overflow-hidden">
+    <section className="relative primary-gradient text-white pt-32 pb-24 overflow-hidden">
       <div className="absolute top-5 right-10 text-[18vw] font-serif font-black text-white/3 pointer-events-none select-none tracking-tighter">LPS</div>
       <div className="max-w-7xl mx-auto px-6 relative z-10">
-        <div className="text-xs uppercase tracking-[0.2em] font-bold text-blue-300/60 mb-6 font-sans">
+        <div className="text-xs uppercase tracking-[0.2em] font-bold text-white/60 mb-6 font-sans">
           Who we work with / Legal and Professional Services
         </div>
         <div className="max-w-4xl">
@@ -3312,7 +3312,7 @@ const LegalProfessionalServicesView = ({ onNavigate }: { onNavigate: (path: View
     </section>
 
     {/* Block F — Closing Call to Action */}
-    <section className="bg-[#0A192F] py-16 px-6 text-center text-white border-t border-white/10 font-sans">
+    <section className="bg-brand-deep-navy py-16 px-6 text-center text-white border-t border-white/10 font-sans">
       <div className="max-w-4xl mx-auto">
         <h2 className="font-serif text-3xl md:text-4xl font-bold mb-10">Give your local team more time for billable and client-facing work.</h2>
         <button onClick={() => onNavigate('/contact')} className="bg-[#2368D6] hover:bg-blue-500 transition-colors px-10 py-4 rounded text-xs font-bold uppercase tracking-[0.2em] shadow-xl">
@@ -3533,10 +3533,10 @@ export default function App() {
         return <ContactView onNavigate={onNavigate} />;
       default:
         return (
-          <div className="py-32 text-center max-w-2xl mx-auto min-h-[60vh]">
-            <h2 className="text-4xl font-serif text-[#0A192F] mb-4">Page Currently in Build</h2>
-            <p className="text-slate-600">The layout for <strong>{lookupPath}</strong> (raw: {currentPath}) is being processed.</p>
-            <button onClick={() => onNavigate('/')} className="mt-8 bg-[#2368D6] text-white px-6 py-2 rounded-lg">Return Home</button>
+          <div className="py-32 text-center max-w-2xl mx-auto min-h-[60vh] font-sans">
+            <h2 className="text-4xl font-serif text-brand-deep-navy mb-4">Page Currently in Build</h2>
+            <p className="text-txt-secondary leading-relaxed">The layout for <strong>{lookupPath}</strong> (raw: {currentPath}) is being processed.</p>
+            <button onClick={() => onNavigate('/')} className="mt-8 bg-brand-deep-navy hover:bg-brand-slate text-white px-8 py-3 rounded-xl font-bold uppercase tracking-widest text-xs transition-all shadow-lg">Return Home</button>
           </div>
         );
     }
@@ -3544,7 +3544,7 @@ export default function App() {
 
   return (
     <SiteSettingsContext.Provider value={{ settings, getContent }}>
-      <div className="bg-white selection:bg-[#2368D6] selection:text-white flex flex-col min-h-screen font-sans">
+      <div className="bg-white selection:bg-status-info selection:text-white flex flex-col min-h-screen font-sans">
         <Header currentPath={currentPath} onNavigate={onNavigate} />
         
         <main className="flex-grow pt-20">
