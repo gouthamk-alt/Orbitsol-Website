@@ -513,7 +513,7 @@ const SMEsFoundersView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void
             }
           ].map((item, idx) => (
             <div key={idx} className="bg-white p-10 rounded border border-slate-100 shadow-sm relative group overflow-hidden">
-              <div className="text-6xl font-serif font-black absolute -right-4 -top-4 opacity-80 group-hover:opacity-100 transition-opacity">{item.step}</div>
+              <div className="text-6xl font-serif font-black absolute right-4 top-4 opacity-80 group-hover:opacity-100 transition-opacity">{item.step}</div>
               <h4 className="font-serif text-xl font-bold text-[#0A192F] mb-4">{item.title}</h4>
               <p className="text-slate-500 text-sm leading-relaxed">{item.desc}</p>
             </div>
@@ -923,7 +923,7 @@ const StrataManagementView = ({ onNavigate }: { onNavigate: (path: ViewPath) => 
             }
           ].map((item, idx) => (
             <div key={idx} className="bg-white p-10 rounded-2xl border border-slate-100 shadow-sm relative group overflow-hidden hover:shadow-lg transition-all">
-              <div className="text-6xl font-serif font-black absolute right-2 top-2 opacity-80 group-hover:opacity-100 transition-opacity">{item.step}</div>
+              <div className="text-6xl font-serif font-black absolute right-4 top-4 opacity-80 group-hover:opacity-100 transition-opacity">{item.step}</div>
               <h4 className="font-serif text-xl font-bold text-[#0A192F] mb-4">{item.title}</h4>
               <p className="text-slate-500 text-sm leading-relaxed">{item.desc}</p>
             </div>
@@ -1175,7 +1175,7 @@ const PropertyRealEstateView = ({ onNavigate }: { onNavigate: (path: ViewPath) =
             }
           ].map((item, idx) => (
             <div key={idx} className="bg-white p-10 rounded-2xl border border-slate-100 shadow-sm relative group overflow-hidden hover:shadow-lg transition-all">
-              <div className="text-6xl font-serif font-black absolute -right-4 -top-4 opacity-80 group-hover:opacity-100 transition-opacity">{item.step}</div>
+              <div className="text-6xl font-serif font-black absolute right-4 top-4 opacity-80 group-hover:opacity-100 transition-opacity">{item.step}</div>
               <h4 className="font-serif text-xl font-bold text-[#0A192F] mb-4">{item.title}</h4>
               <p className="text-slate-500 text-sm leading-relaxed">{item.desc}</p>
             </div>
@@ -1554,7 +1554,7 @@ const Header = ({ currentPath, onNavigate }: { currentPath: ViewPath, onNavigate
     { label: 'About', path: '/about' },
   ];
 
-  const rawLogoUrl = getContent('global.logoUrl', '/orbitsol-logoback.PNG');
+  const rawLogoUrl = getContent('global.logoUrl', '/logo.png');
   const logoUrl = getAssetUrl(rawLogoUrl);
 
   return (
@@ -1571,8 +1571,8 @@ const Header = ({ currentPath, onNavigate }: { currentPath: ViewPath, onNavigate
              className="h-20 w-auto object-contain" 
              onError={(e) => {
                const target = e.target as HTMLImageElement;
-               if (target.src !== getAssetUrl('/orbitsol-logoback.PNG')) {
-                 target.src = getAssetUrl('/orbitsol-logoback.PNG');
+               if (target.src !== getAssetUrl('/logo.png')) {
+                 target.src = getAssetUrl('/logo.png');
                }
              }}
            />
@@ -3125,11 +3125,11 @@ const PropertyInspectionView = ({ onNavigate }: { onNavigate: (path: ViewPath) =
 
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
              {[
-               { name: "InventoryBase", logo: "/inventorybase_logo_1.png.jpg" },
-               { name: "Inspection Express", logo: "/inspection_express_logo_1.png.jpg" },
-               { name: "PropertyMe", logo: "/propertyme_logo_1.png.jpg" },
-               { name: "Kaptur", logo: "/kaptur_logo_1.png.jpg" },
-               { name: "MRI Software", logo: "/mri_logo_1.png.webp" }
+               { name: "InventoryBase", logo: "/logo-inventorybase.jpg" },
+               { name: "Inspection Express", logo: "/logo-inspectionexpress.jpg" },
+               { name: "PropertyMe", logo: "/logo-propertyme.jpg" },
+               { name: "Kaptur", logo: "/logo-kaptur.jpg" },
+               { name: "MRI Software", logo: "/logo-mrisoftware.webp" }
              ].map((logo) => (
                 <div key={logo.name} className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex items-center justify-center group hover:shadow-md transition-all h-32">
                    <img 
