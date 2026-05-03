@@ -81,6 +81,15 @@ type ViewPath =
   | '/admin'
   | string;
 
+// --- Utilities ---
+const getAssetUrl = (url: string) => {
+  if (!url) return '';
+  if (url.startsWith('http') || url.startsWith('data:')) return url;
+  const baseUrl = (import.meta.env.BASE_URL || '/').replace(/\/$/, '');
+  const cleanUrl = url.startsWith('/') ? url : `/${url}`;
+  return `${baseUrl}${cleanUrl}`;
+};
+
 // --- Components ---
 
 const MarketingGrowthView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => (
@@ -130,8 +139,8 @@ const MarketingGrowthView = ({ onNavigate }: { onNavigate: (path: ViewPath) => v
               content: "Smaller teams that need a marketing function without building one in-house can engage OrbitSol as a fractional desk, scaled up or down based on the quarter's priorities. The same project leader, specialists, and reporting cadence apply, with a leaner footprint."
             }
           ].map((block, idx) => (
-            <div key={idx} className="p-10 rounded-2xl border border-slate-100 h-full bg-[#F8FAFC] flex flex-col shadow-sm">
-              <h3 className="font-serif text-2xl font-bold text-[#0A192F] mb-6">{block.title}</h3>
+            <div key={idx} className="p-10 rounded-2xl border border-slate-100 h-full bg-brand-pale-blue flex flex-col shadow-sm">
+              <h3 className="font-serif text-2xl font-bold text-brand-deep-navy mb-6">{block.title}</h3>
               <p className="text-slate-500 text-sm leading-relaxed mb-8">{block.content}</p>
               {block.points && (
                 <div className="mt-auto pt-8 border-t border-slate-200">
@@ -156,7 +165,7 @@ const MarketingGrowthView = ({ onNavigate }: { onNavigate: (path: ViewPath) => v
     <section className="py-24 bg-white font-sans">
       <div className="max-w-4xl mx-auto px-6">
         <div className="mb-16">
-           <h2 className="font-serif text-3xl font-bold text-[#0A192F] mb-6">Why Agencies Choose to Work With Us</h2>
+           <h2 className="font-serif text-3xl font-bold text-brand-deep-navy mb-6">Why Agencies Choose to Work With Us</h2>
            <p className="text-slate-500 leading-relaxed">
              Most agency-to-agency offshore arrangements break down for one of three reasons: the work needs constant supervision, the quality varies between operators, or the relationship gets confused about who is the client and who is the agency. OrbitSol is structured to avoid all three.
            </p>
@@ -168,10 +177,10 @@ const MarketingGrowthView = ({ onNavigate }: { onNavigate: (path: ViewPath) => v
             { t: "In-house specialists", d: "We hire and train specialists in-house rather than maintaining a freelancer roster, which keeps the quality consistent across briefs." },
             { t: "Documented standards", d: "We document the way you like the work to be done, so the team gets faster on your account over time rather than re-learning every brief." }
           ].map((item, idx) => (
-            <div key={idx} className="flex gap-6 p-8 bg-[#F8FAFC] rounded-2xl border border-slate-100 shadow-sm">
-              <div className="text-[#2368D6] font-serif text-2xl font-bold">0{idx + 1}</div>
+            <div key={idx} className="flex gap-6 p-8 bg-brand-pale-blue rounded-2xl border border-slate-100 shadow-sm">
+              <div className="text-status-info font-serif text-2xl font-bold">0{idx + 1}</div>
               <div>
-                <h4 className="text-[#0A192F] font-bold mb-2">{item.t}</h4>
+                <h4 className="text-brand-deep-navy font-bold mb-2">{item.t}</h4>
                 <p className="text-slate-500 text-sm leading-relaxed">{item.d}</p>
               </div>
             </div>
@@ -183,7 +192,7 @@ const MarketingGrowthView = ({ onNavigate }: { onNavigate: (path: ViewPath) => v
     {/* Block D — Engagement Models */}
     <section className="py-24 bg-slate-50 font-sans border-y border-slate-200">
       <div className="max-w-7xl mx-auto px-6">
-        <h2 className="font-serif text-3xl font-bold text-[#0A192F] mb-16">Engagement Models</h2>
+        <h2 className="font-serif text-3xl font-bold text-brand-deep-navy mb-16">Engagement Models</h2>
         <div className="grid md:grid-cols-3 gap-8">
           {[
             { t: "Option 1 - Project basis", d: "A defined deliverable with a fixed scope and price. This works best for one-off work like a website rebuild, a brand refresh, or a launch campaign, where you have a clear brief and a deadline." },
@@ -191,8 +200,8 @@ const MarketingGrowthView = ({ onNavigate }: { onNavigate: (path: ViewPath) => v
             { t: "Option 3 - Embedded growth desk", d: "A dedicated team allocated to your business or to a key account. They join your stand-ups, sit on your Slack, and own a quarterly roadmap. This works best for agencies scaling a single large account, and for in-house teams that want a marketing function without building one in-house." }
           ].map((model, idx) => (
             <div key={idx} className="p-10 rounded-2xl border border-slate-200 bg-white shadow-md flex flex-col h-full">
-              <div className="text-[#2368D6] font-black text-2xl mb-6">0{idx + 1}</div>
-              <h4 className="font-serif text-xl font-bold text-[#0A192F] mb-4">{model.t}</h4>
+              <div className="text-status-info font-black text-2xl mb-6">0{idx + 1}</div>
+              <h4 className="font-serif text-xl font-bold text-brand-deep-navy mb-4">{model.t}</h4>
               <p className="text-slate-500 text-sm leading-relaxed">{model.d}</p>
             </div>
           ))}
@@ -218,7 +227,7 @@ const MarketingGrowthView = ({ onNavigate }: { onNavigate: (path: ViewPath) => v
     <section className="bg-brand-deep-navy py-16 px-6 text-center text-white border-t border-white/10 font-sans">
       <div className="max-w-4xl mx-auto">
         <h2 className="font-serif text-3xl md:text-4xl font-bold mb-10">Tired of chasing freelancers and managing edits? Send us the brief and we will scope the desk.</h2>
-        <button onClick={() => onNavigate('/contact')} className="bg-status-info hover:bg-status-info/90 transition-colors px-10 py-4 rounded text-xs font-bold uppercase tracking-[0.2em] shadow-xl">
+        <button onClick={() => onNavigate('/contact')} className="bg-status-info hover:bg-brand-primary-start transition-all px-10 py-4 rounded-xl text-xs font-bold uppercase tracking-[0.2em] shadow-xl">
           Send a marketing enquiry
         </button>
       </div>
@@ -311,7 +320,7 @@ const RemoteOperationsView = ({ onNavigate }: { onNavigate: (path: ViewPath) => 
       <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-12 gap-16 items-start">
         <div className="lg:col-span-5">
           <p className="text-[#2368D6] font-bold tracking-widest uppercase text-xs mb-4">What sets us apart.</p>
-          <h2 className="font-serif text-3xl md:text-4xl font-bold text-[#0A192F] mb-8 leading-tight text-balance">Three things most virtual assistant providers do not do.</h2>
+          <h2 className="font-serif text-3xl md:text-4xl font-bold text-brand-deep-navy mb-8 leading-tight text-balance">Three things most virtual assistant providers do not do.</h2>
           <p className="text-slate-600 leading-relaxed mb-6">
             There are hundreds of offshore virtual assistant providers in our markets, and most of them are interchangeable. We are not, and these are the reasons why.
           </p>
@@ -504,7 +513,7 @@ const SMEsFoundersView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void
             }
           ].map((item, idx) => (
             <div key={idx} className="bg-white p-10 rounded border border-slate-100 shadow-sm relative group overflow-hidden">
-              <div className="text-6xl font-serif font-black absolute -right-4 -top-4 opacity-5 group-hover:opacity-10 transition-opacity">{item.step}</div>
+              <div className="text-6xl font-serif font-black absolute -right-4 -top-4 opacity-80 group-hover:opacity-100 transition-opacity">{item.step}</div>
               <h4 className="font-serif text-xl font-bold text-[#0A192F] mb-4">{item.title}</h4>
               <p className="text-slate-500 text-sm leading-relaxed">{item.desc}</p>
             </div>
@@ -578,7 +587,7 @@ const DigitalMarketingView = ({ onNavigate }: { onNavigate: (path: ViewPath) => 
             OrbitSol helps businesses plan, build, and run the marketing work that is difficult to keep moving in-house, including brand identity, websites, content, search engine optimisation, generative engine optimisation, paid campaigns, conversion rate optimisation, dashboards, user-experience research, collateral, video, training, and e-learning. We can deliver a single project, a monthly retainer, or a managed offshore team. You receive a project leader who owns the relationship, with a set of specialists working behind them.
           </p>
           <div className="flex flex-wrap gap-4">
-            <button onClick={() => onNavigate('/contact')} className="bg-[#2368D6] hover:bg-blue-500 text-white px-10 py-4 rounded-xl font-bold uppercase tracking-widest text-xs shadow-xl transition-all">
+            <button onClick={() => onNavigate('/contact')} className="bg-status-info hover:bg-brand-primary-start text-white px-10 py-4 rounded-xl font-bold uppercase tracking-widest text-xs shadow-xl transition-all">
               Send a marketing enquiry
             </button>
             <button onClick={() => window.location.href=`mailto:${contactEmail}`} className="border border-white/20 text-white hover:bg-white/10 px-10 py-4 rounded-xl font-bold uppercase tracking-widest text-xs transition-all shadow-sm">
@@ -862,13 +871,12 @@ const StrataManagementView = ({ onNavigate }: { onNavigate: (path: ViewPath) => 
             <h2 className="text-[11px] font-bold text-status-info uppercase tracking-widest mb-8">What We Handle</h2>
             <ul className="space-y-4">
               {[
-                "Owner and committee correspondence.",
-                "Meeting agendas, notices, minutes, and action tracking.",
-                "Levy queries, arrears follow-up, and payment-plan administration.",
-                "Insurance claim follow-up, renewals, and certificate requests.",
-                "Maintenance and work-order coordination.",
-                "Records, compliance documentation, and file management.",
-                "Dashboard and key-performance-indicator reporting for portfolio health."
+                "Owner/committee correspondence and levy queries",
+                "Meeting agendas, notices, minutes, and action tracking",
+                "Maintain and update the strata roll, S184, S22, and insurance renewals",
+                "Booking & schedule for fire inspections (annual, half‑yearly, routine) and follow‑up AMC and Certificates",
+                "Records, compliance documentation, and file management",
+                "Dashboard and key‑performance‑indicator reporting for portfolio health"
               ].map((item, idx) => (
                 <li key={idx} className="flex items-start gap-4">
                   <Check className="mt-1 text-status-info flex-shrink-0" size={16} />
@@ -915,7 +923,7 @@ const StrataManagementView = ({ onNavigate }: { onNavigate: (path: ViewPath) => 
             }
           ].map((item, idx) => (
             <div key={idx} className="bg-white p-10 rounded-2xl border border-slate-100 shadow-sm relative group overflow-hidden hover:shadow-lg transition-all">
-              <div className="text-6xl font-serif font-black absolute -right-4 -top-4 opacity-5 group-hover:opacity-10 transition-opacity">{item.step}</div>
+              <div className="text-6xl font-serif font-black absolute right-2 top-2 opacity-80 group-hover:opacity-100 transition-opacity">{item.step}</div>
               <h4 className="font-serif text-xl font-bold text-[#0A192F] mb-4">{item.title}</h4>
               <p className="text-slate-500 text-sm leading-relaxed">{item.desc}</p>
             </div>
@@ -1103,7 +1111,7 @@ const PropertyRealEstateView = ({ onNavigate }: { onNavigate: (path: ViewPath) =
         <div>
           <h2 className="font-serif text-3xl font-bold text-[#0A192F] mb-8">Our Delivery Model</h2>
           <p className="text-slate-600 leading-relaxed mb-6">
-            A dedicated project leader, trained operators, documented standard operating procedures, and quality control before delivery. We work in the platforms you already use, including InventoryBase, Inventory Hive, Kaptur, PropertyMe, Inspection Express, Rentfind, Microsoft Word templates, and a wide range of custom client platforms.
+            A dedicated project leader, trained operators, documented standard operating procedures, and quality control before delivery. We work in the platforms you already use, including InventoryBase, Inventory Hive, PropertyMe, Inspection Express, Rentfind, Microsoft Word templates, and a wide range of custom client platforms.
           </p>
           <p className="text-slate-600 leading-relaxed mb-8">
             Where the platform is new to us, we run a one-off learning sprint with a senior operator before any live work begins. 
@@ -1167,7 +1175,7 @@ const PropertyRealEstateView = ({ onNavigate }: { onNavigate: (path: ViewPath) =
             }
           ].map((item, idx) => (
             <div key={idx} className="bg-white p-10 rounded-2xl border border-slate-100 shadow-sm relative group overflow-hidden hover:shadow-lg transition-all">
-              <div className="text-6xl font-serif font-black absolute -right-4 -top-4 opacity-5 group-hover:opacity-10 transition-opacity">{item.step}</div>
+              <div className="text-6xl font-serif font-black absolute -right-4 -top-4 opacity-80 group-hover:opacity-100 transition-opacity">{item.step}</div>
               <h4 className="font-serif text-xl font-bold text-[#0A192F] mb-4">{item.title}</h4>
               <p className="text-slate-500 text-sm leading-relaxed">{item.desc}</p>
             </div>
@@ -1182,7 +1190,7 @@ const PropertyRealEstateView = ({ onNavigate }: { onNavigate: (path: ViewPath) =
         <h2 className="text-[11px] font-bold text-slate-400 uppercase tracking-widest text-center mb-16">Property & Real Estate FAQ</h2>
         <div className="space-y-4">
           <FAQItem question="What turnaround times do you offer?" answer="Standard turnaround is 24 hours, express is 6 hours, and super-express is 3 hours where the scope allows it. Administrative tasks are typically same-day or next-business-day." />
-          <FAQItem question="Which platforms do you work in?" answer="InventoryBase, Inventory Hive, Kaptur, PropertyMe, Inspection Express, Rentfind, the major customer-relationship-management and property management platforms used in Australia and the United Kingdom, Microsoft Word templates, and a wide range of custom client platforms. Where the platform is new to us, we train a senior operator before any live work." />
+          <FAQItem question="Which platforms do you work in?" answer="InventoryBase, Inventory Hive, PropertyMe, Inspection Express, Rentfind, the major customer-relationship-management and property management platforms used in Australia and the United Kingdom, Microsoft Word templates, and a wide range of custom client platforms. Where the platform is new to us, we train a senior operator before any live work." />
           <FAQItem question="Do you handle photo tagging?" answer="Yes. Photo tagging is included in the report price by default." />
           <FAQItem question="Can you handle a backlog?" answer="Yes. We regularly take on backlogs of several hundred reports and clear them inside a fortnight." />
           <FAQItem question="How do you handle dispute-grade documentation?" answer="With the level of detail you would want in front of an arbitrator. We can also flag items the inspector should photograph more thoroughly during the visit." />
@@ -1546,11 +1554,8 @@ const Header = ({ currentPath, onNavigate }: { currentPath: ViewPath, onNavigate
     { label: 'About', path: '/about' },
   ];
 
-  const rawLogoUrl = getContent('global.logoUrl', '');
-  const base = '';
-  const logoUrl = rawLogoUrl && rawLogoUrl.startsWith('/') && !rawLogoUrl.startsWith('//')
-    ? `${base}${rawLogoUrl}` 
-    : rawLogoUrl;
+  const rawLogoUrl = getContent('global.logoUrl', '/orbitsol-logoback.PNG');
+  const logoUrl = getAssetUrl(rawLogoUrl);
 
   return (
     <header 
@@ -1560,24 +1565,17 @@ const Header = ({ currentPath, onNavigate }: { currentPath: ViewPath, onNavigate
       <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
         {/* Logo */}
         <div className="flex items-center cursor-pointer" onClick={() => onNavigate('/')}>
-          {logoUrl && !logoError ? (
-             <img 
-               src={logoUrl} 
-               alt={getContent('global.siteName', 'OrbitSol')} 
-               className={`h-10 w-auto object-contain ${logoError ? 'hidden' : 'block'}`} 
-               onError={() => setLogoError(true)}
-             />
-          ) : null}
-          {(logoError || !logoUrl) && (
-            <div className="flex flex-col">
-              <div className="font-serif text-2xl font-black text-brand-deep-navy leading-none tracking-tight">
-                {getContent('global.siteName', 'OrbitSol')}
-              </div>
-              <div className="text-[9px] font-bold tracking-[0.25em] text-slate-400 uppercase mt-1.5">
-                {getContent('global.tagline', 'BRINGING WORLDS TOGETHER')}
-              </div>
-            </div>
-          )}
+           <img 
+             src={logoUrl} 
+             alt={getContent('global.siteName', 'OrbitSol')} 
+             className="h-20 w-auto object-contain" 
+             onError={(e) => {
+               const target = e.target as HTMLImageElement;
+               if (target.src !== getAssetUrl('/orbitsol-logoback.PNG')) {
+                 target.src = getAssetUrl('/orbitsol-logoback.PNG');
+               }
+             }}
+           />
         </div>
 
         {/* Desktop Nav */}
@@ -1809,7 +1807,7 @@ const AboutView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
             { t: "Confidentiality", d: "NDAs and named access are standard practice." }
           ].map((p, idx) => (
             <div key={idx} className="p-8 rounded bg-[#112240] border border-white/5">
-               <div className="text-[#2368D6] font-black text-3xl mb-6 opacity-20">0{idx + 1}</div>
+               <div className="text-[#2368D6] font-black text-3xl mb-6 opacity-80">0{idx + 1}</div>
                <h4 className="font-bold mb-4 text-sm leading-tight group-hover:text-blue-300">{p.t}</h4>
                <p className="text-blue-100/50 text-xs leading-relaxed">{p.d}</p>
             </div>
@@ -2002,14 +2000,7 @@ const Footer = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => {
   return (
     <footer className="bg-brand-deep-navy text-white/70 pt-20 pb-10 mt-auto font-sans">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 mb-16">
-          <div className="lg:col-span-1">
-            <div className="font-serif text-2xl font-bold text-white mb-2">{getContent('global.siteName', 'OrbitSol')}</div>
-            <div className="text-sm text-status-info mb-6">{getContent('global.tagline', 'Bringing Worlds Together.')}</div>
-            <p className="text-sm leading-relaxed">
-              {getContent('global.footerDesc', 'Managed offshore workflows for property, strata, transcription, remote operations, marketing production, and process automation.')}
-            </p>
-          </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
           <div>
             <h4 className="font-serif text-white text-lg font-semibold mb-6">Who We Work With</h4>
             <ul className="space-y-3 text-sm">
@@ -2055,8 +2046,10 @@ const Footer = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => {
             </ul>
           </div>
         </div>
-        <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs">
-          <div>© {new Date().getFullYear()} OrbitSol. All rights reserved.</div>
+        <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-8 text-xs">
+          <div className="flex flex-col md:flex-row items-center gap-8">
+            <div>© {new Date().getFullYear()} OrbitSol. All rights reserved.</div>
+          </div>
           <div className="flex gap-6">
             <button className="hover:text-white">Privacy policy</button>
             <button className="hover:text-white">Terms of service</button>
@@ -2228,7 +2221,7 @@ const HomeView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => {
               className="cursor-pointer group p-10 rounded-2xl bg-brand-slate border border-white/5 hover:border-status-info/50 hover:bg-brand-slate/80 transition-all duration-300 flex flex-col h-full shadow-2xl"
             >
               <div className="flex-grow">
-                <div className="text-status-info font-serif text-5xl font-black mb-8 opacity-20 group-hover:opacity-40 transition-opacity">{item.id}</div>
+                <div className="text-status-info font-serif text-5xl font-black mb-8 opacity-80 group-hover:opacity-100 transition-opacity">{item.id}</div>
                 <h3 className="font-serif text-2xl font-bold mb-6 group-hover:text-status-info transition-colors uppercase tracking-tight">{item.title}</h3>
                 <p className="text-white/50 text-sm leading-relaxed mb-6 font-sans">{item.desc}</p>
               </div>
@@ -3109,7 +3102,7 @@ const PropertyInspectionView = ({ onNavigate }: { onNavigate: (path: ViewPath) =
                { s: "03", t: "You review and deliver", d: "The final report lands in your platform or inbox, ready for your sign-off and client delivery." }
             ].map((p) => (
                <div key={p.s}>
-                  <div className="text-[#2368D6] font-black text-4xl mb-6 opacity-20">{p.s}</div>
+                  <div className="text-[#2368D6] font-black text-4xl mb-6 opacity-80">{p.s}</div>
                   <h4 className="font-bold text-[#0A192F] mb-4 text-lg">{p.t}</h4>
                   <p className="text-slate-500 text-sm leading-relaxed">{p.d}</p>
                </div>
@@ -3118,14 +3111,43 @@ const PropertyInspectionView = ({ onNavigate }: { onNavigate: (path: ViewPath) =
       </div>
     </section>
 
-    {/* Section 4 - Platforms and Templates */}
-    <section className="py-24 bg-white font-sans border-b border-slate-100 overflow-hidden">
+    {/* Section 4 - Platforms and Templates (Integrated Integrations) */}
+    <section className="py-24 bg-brand-pale-blue font-sans border-y border-slate-100 overflow-hidden">
        <div className="max-w-7xl mx-auto px-6">
-          <h2 className="font-serif text-3xl font-bold text-[#0A192F] mb-16 text-center">We adapt to your stack, rather than asking you to change it.</h2>
-          <div className="flex flex-wrap justify-center items-center gap-12 grayscale opacity-40">
-             {["InventoryBase", "Inspection Express", "Kaptur", "PropertyMe", "Rentfind", "Microsoft Word templates", "Custom client platforms"].map((logo) => (
-                <span key={logo} className="font-black tracking-widest text-[#0A192F] text-xs uppercase">{logo}</span>
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-12 mb-16">
+            <div className="max-w-xl">
+              <h2 className="font-serif text-3xl md:text-4xl font-bold text-brand-deep-navy mb-4">Seamless integrations.</h2>
+              <p className="text-txt-secondary leading-relaxed">
+                Connect the tools you use every day. We adapt to your tech stack, ensuring report data flows directly into your management platforms without manual entry.
+              </p>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+             {[
+               { name: "InventoryBase", logo: "/inventorybase_logo_1.png.jpg" },
+               { name: "Inspection Express", logo: "/inspection_express_logo_1.png.jpg" },
+               { name: "PropertyMe", logo: "/propertyme_logo_1.png.jpg" },
+               { name: "Kaptur", logo: "/kaptur_logo_1.png.jpg" },
+               { name: "MRI Software", logo: "/mri_logo_1.png.webp" }
+             ].map((logo) => (
+                <div key={logo.name} className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex items-center justify-center group hover:shadow-md transition-all h-32">
+                   <img 
+                     src={getAssetUrl(logo.logo)} 
+                     alt={logo.name} 
+                     className="max-h-12 max-w-[80%] w-auto object-contain transition-all mix-blend-multiply"
+                     referrerPolicy="no-referrer"
+                   />
+                </div>
              ))}
+          </div>
+
+          <div className="mt-12 flex flex-wrap justify-center gap-8 text-[10px] font-bold text-txt-muted uppercase tracking-[0.2em] opacity-60">
+             <span>Microsoft Word templates</span>
+             <span className="opacity-30">|</span>
+             <span>Custom client platforms</span>
+             <span className="opacity-30">|</span>
+             <span>Google Drive Synchronisation</span>
           </div>
        </div>
     </section>
