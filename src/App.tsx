@@ -139,8 +139,8 @@ const MarketingGrowthView = ({ onNavigate }: { onNavigate: (path: ViewPath) => v
               content: "Smaller teams that need a marketing function without building one in-house can engage OrbitSol as a fractional desk, scaled up or down based on the quarter's priorities. The same project leader, specialists, and reporting cadence apply, with a leaner footprint."
             }
           ].map((block, idx) => (
-            <div key={idx} className="p-10 rounded-2xl border border-slate-100 h-full bg-brand-pale-blue flex flex-col shadow-sm">
-              <h3 className="font-serif text-2xl font-bold text-brand-deep-navy mb-6">{block.title}</h3>
+            <div key={idx} className="p-10 rounded-2xl border border-slate-100 h-full bg-[#F5F7FA] flex flex-col shadow-sm">
+              <h3 className="font-serif text-2xl font-bold text-[#081A33] mb-6">{block.title}</h3>
               <p className="text-slate-500 text-sm leading-relaxed mb-8">{block.content}</p>
               {block.points && (
                 <div className="mt-auto pt-8 border-t border-slate-200">
@@ -148,7 +148,7 @@ const MarketingGrowthView = ({ onNavigate }: { onNavigate: (path: ViewPath) => v
                   <ul className="space-y-3">
                     {block.points.map((p, pIdx) => (
                       <li key={pIdx} className="flex items-start gap-3">
-                        <Check className="mt-1 text-[#2368D6] flex-shrink-0" size={14} />
+                        <Check className="mt-1 text-[#194083] flex-shrink-0" size={14} />
                         <span className="text-slate-600 text-xs leading-relaxed">{p}</span>
                       </li>
                     ))}
@@ -165,7 +165,7 @@ const MarketingGrowthView = ({ onNavigate }: { onNavigate: (path: ViewPath) => v
     <section className="py-24 bg-white font-sans">
       <div className="max-w-4xl mx-auto px-6">
         <div className="mb-16">
-           <h2 className="font-serif text-3xl font-bold text-brand-deep-navy mb-6">Why Agencies Choose to Work With Us</h2>
+           <h2 className="font-serif text-3xl font-bold text-[#081A33] mb-6">Why Agencies Choose to Work With Us</h2>
            <p className="text-slate-500 leading-relaxed">
              Most agency-to-agency offshore arrangements break down for one of three reasons: the work needs constant supervision, the quality varies between operators, or the relationship gets confused about who is the client and who is the agency. OrbitSol is structured to avoid all three.
            </p>
@@ -177,10 +177,10 @@ const MarketingGrowthView = ({ onNavigate }: { onNavigate: (path: ViewPath) => v
             { t: "In-house specialists", d: "We hire and train specialists in-house rather than maintaining a freelancer roster, which keeps the quality consistent across briefs." },
             { t: "Documented standards", d: "We document the way you like the work to be done, so the team gets faster on your account over time rather than re-learning every brief." }
           ].map((item, idx) => (
-            <div key={idx} className="flex gap-6 p-8 bg-brand-pale-blue rounded-2xl border border-slate-100 shadow-sm">
-              <div className="text-status-info font-serif text-2xl font-bold">0{idx + 1}</div>
+            <div key={idx} className="flex gap-6 p-8 bg-[#F5F7FA] rounded-2xl border border-slate-100 shadow-sm">
+              <div className="text-[#194083] font-serif text-2xl font-bold">0{idx + 1}</div>
               <div>
-                <h4 className="text-brand-deep-navy font-bold mb-2">{item.t}</h4>
+                <h4 className="text-[#081A33] font-bold mb-2">{item.t}</h4>
                 <p className="text-slate-500 text-sm leading-relaxed">{item.d}</p>
               </div>
             </div>
@@ -190,9 +190,9 @@ const MarketingGrowthView = ({ onNavigate }: { onNavigate: (path: ViewPath) => v
     </section>
 
     {/* Block D — Engagement Models */}
-    <section className="py-24 bg-slate-50 font-sans border-y border-slate-200">
+    <section className="py-24 bg-[#F5F7FA] font-sans border-y border-slate-100">
       <div className="max-w-7xl mx-auto px-6">
-        <h2 className="font-serif text-3xl font-bold text-brand-deep-navy mb-16">Engagement Models</h2>
+        <h2 className="font-serif text-3xl font-bold text-[#081A33] mb-16">Engagement Models</h2>
         <div className="grid md:grid-cols-3 gap-8">
           {[
             { t: "Option 1 - Project basis", d: "A defined deliverable with a fixed scope and price. This works best for one-off work like a website rebuild, a brand refresh, or a launch campaign, where you have a clear brief and a deadline." },
@@ -200,8 +200,8 @@ const MarketingGrowthView = ({ onNavigate }: { onNavigate: (path: ViewPath) => v
             { t: "Option 3 - Embedded growth desk", d: "A dedicated team allocated to your business or to a key account. They join your stand-ups, sit on your Slack, and own a quarterly roadmap. This works best for agencies scaling a single large account, and for in-house teams that want a marketing function without building one in-house." }
           ].map((model, idx) => (
             <div key={idx} className="p-10 rounded-2xl border border-slate-200 bg-white shadow-md flex flex-col h-full">
-              <div className="text-status-info font-black text-2xl mb-6">0{idx + 1}</div>
-              <h4 className="font-serif text-xl font-bold text-brand-deep-navy mb-4">{model.t}</h4>
+              <div className="text-[#194083] font-black text-2xl mb-6">0{idx + 1}</div>
+              <h4 className="font-serif text-xl font-bold text-[#081A33] mb-4">{model.t}</h4>
               <p className="text-slate-500 text-sm leading-relaxed">{model.d}</p>
             </div>
           ))}
@@ -224,10 +224,10 @@ const MarketingGrowthView = ({ onNavigate }: { onNavigate: (path: ViewPath) => v
     </section>
 
     {/* Block F — CTA */}
-    <section className="bg-brand-deep-navy py-16 px-6 text-center text-white border-t border-white/10 font-sans">
+    <section className="bg-[#081A33] py-16 px-6 text-center text-white border-t border-white/10 font-sans">
       <div className="max-w-4xl mx-auto">
         <h2 className="font-serif text-3xl md:text-4xl font-bold mb-10">Tired of chasing freelancers and managing edits? Send us the brief and we will scope the desk.</h2>
-        <button onClick={() => onNavigate('/contact')} className="bg-status-info hover:bg-brand-primary-start transition-all px-10 py-4 rounded-xl text-xs font-bold uppercase tracking-[0.2em] shadow-xl">
+        <button onClick={() => onNavigate('/contact')} className="bg-[#194083] hover:opacity-90 transition-all px-10 py-4 rounded-xl text-xs font-bold uppercase tracking-[0.2em] shadow-xl">
           Send a marketing enquiry
         </button>
       </div>
@@ -252,7 +252,7 @@ const RemoteOperationsView = ({ onNavigate }: { onNavigate: (path: ViewPath) => 
             OrbitSol helps you move repeatable work into a managed offshore team without asking you to recruit, train, and supervise every person yourself. Whether you need a dedicated virtual assistant, an industry-trained desk, an operations analyst, or a remote operations manager, we work as a staffing and operations partner, which means we hire the right people for the role, train them on your way of working, and manage them on your behalf, so you receive the output without taking on extra headcount. Pricing starts at $5 per hour.
           </p>
           <div className="flex flex-wrap gap-4">
-            <button onClick={() => { document.getElementById('levels')?.scrollIntoView({ behavior: 'smooth' }); }} className="bg-[#2368D6] hover:bg-blue-500 text-white px-8 py-3.5 rounded font-bold uppercase tracking-widest text-xs shadow-lg transition-all">
+            <button onClick={() => { document.getElementById('levels')?.scrollIntoView({ behavior: 'smooth' }); }} className="bg-[#1B4D83] hover:opacity-90 text-white px-8 py-3.5 rounded font-bold uppercase tracking-widest text-xs shadow-lg transition-all">
               View the four levels
             </button>
             <button onClick={() => onNavigate('/contact')} className="border border-white/20 text-white hover:bg-white/10 px-8 py-3.5 rounded font-bold uppercase tracking-widest text-xs transition-all">
@@ -267,8 +267,8 @@ const RemoteOperationsView = ({ onNavigate }: { onNavigate: (path: ViewPath) => 
     <section id="levels" className="py-24 bg-white font-sans">
       <div className="max-w-7xl mx-auto px-6">
         <div className="max-w-3xl mb-20">
-          <p className="text-[#2368D6] font-bold tracking-widest uppercase text-xs mb-4">The four levels.</p>
-          <h2 className="font-serif text-4xl font-bold text-brand-deep-navy mb-6">Start where the work is, and move up as it scales.</h2>
+          <p className="text-[#1B4D83] font-bold tracking-widest uppercase text-xs mb-4">The four levels.</p>
+          <h2 className="font-serif text-4xl font-bold text-[#0A192F] mb-6">Start where the work is, and move up as it scales.</h2>
           <p className="text-slate-500 leading-relaxed text-lg">
             We understand growth plans can be fluid and dynamic, and we tailor our solutions accordingly. Most engagements with us start at Level 01 or Level 02 and graduate to Level 03 or Level 04 once you have seen what the team can do, and the pricing is published so it is easy to plan against.
           </p>
@@ -302,7 +302,7 @@ const RemoteOperationsView = ({ onNavigate }: { onNavigate: (path: ViewPath) => 
             }
           ].map((item, idx) => (
             <div key={idx} className="group p-8 rounded bg-[#F8FAFC] border border-slate-100 hover:shadow-xl hover:translate-y-[-4px] transition-all duration-300 flex flex-col h-full">
-              <div className="text-[10px] font-bold text-[#2368D6] tracking-widest mb-4">{item.level}</div>
+              <div className="text-[10px] font-bold text-[#1B4D83] tracking-widest mb-4">{item.level}</div>
               <h3 className="font-serif text-xl font-bold text-[#0A192F] mb-4">{item.title}</h3>
               <p className="text-slate-500 text-xs leading-relaxed mb-8 flex-grow">{item.desc}</p>
               <div className="border-t border-slate-200 pt-6">
@@ -316,11 +316,11 @@ const RemoteOperationsView = ({ onNavigate }: { onNavigate: (path: ViewPath) => 
     </section>
 
     {/* Section 3 - Where We Differ */}
-    <section className="py-24 bg-[#F0F7FF] font-sans">
+    <section className="py-24 bg-[#F8FAFC] font-sans">
       <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-12 gap-16 items-start">
         <div className="lg:col-span-5">
-          <p className="text-[#2368D6] font-bold tracking-widest uppercase text-xs mb-4">What sets us apart.</p>
-          <h2 className="font-serif text-3xl md:text-4xl font-bold text-brand-deep-navy mb-8 leading-tight text-balance">Three things most virtual assistant providers do not do.</h2>
+          <p className="text-[#1B4D83] font-bold tracking-widest uppercase text-xs mb-4">What sets us apart.</p>
+          <h2 className="font-serif text-3xl md:text-4xl font-bold text-[#0A192F] mb-8 leading-tight text-balance">Three things most virtual assistant providers do not do.</h2>
           <p className="text-slate-600 leading-relaxed mb-6">
             There are hundreds of offshore virtual assistant providers in our markets, and most of them are interchangeable. We are not, and these are the reasons why.
           </p>
@@ -331,7 +331,7 @@ const RemoteOperationsView = ({ onNavigate }: { onNavigate: (path: ViewPath) => 
             { t: "02 - We can hire for any task, not just the standard ones", d: "We practically operate as a staffing solutions agency. We recruit, train, and manage virtual assistants and specialists on your behalf. So if a new role comes up that does not fit any of our standard desks, we will scope it, find the right person, and put them to work for you." },
             { t: "03 - We manage our own team", d: "Project leaders, quality control protocols, backups, training, and reporting all sit with OrbitSol, so you manage outcomes rather than a scattered freelancer or virtual assistant bench." }
           ].map((point, idx) => (
-            <div key={idx} className="bg-white p-8 rounded border border-blue-100 shadow-sm">
+            <div key={idx} className="bg-white p-8 rounded border border-slate-100 shadow-sm">
               <h4 className="font-bold text-[#0A192F] mb-2 font-serif text-lg">{point.t}</h4>
               <p className="text-slate-500 text-sm leading-relaxed">{point.d}</p>
             </div>
@@ -343,7 +343,7 @@ const RemoteOperationsView = ({ onNavigate }: { onNavigate: (path: ViewPath) => 
     {/* Section 4 - How We Hire */}
     <section className="py-24 bg-white font-sans border-b border-slate-100">
       <div className="max-w-7xl mx-auto px-6 text-center mb-20">
-        <p className="text-[#2368D6] font-bold tracking-widest uppercase text-xs mb-4">How we hire.</p>
+        <p className="text-[#1B4D83] font-bold tracking-widest uppercase text-xs mb-4">How we hire.</p>
         <h2 className="font-serif text-4xl font-bold text-[#0A192F]">The team is the work.</h2>
       </div>
       <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-3 gap-12">
@@ -409,13 +409,13 @@ const RemoteOperationsView = ({ onNavigate }: { onNavigate: (path: ViewPath) => 
     </section>
 
     {/* Section 7 - Closing CTA */}
-    <section className="bg-[#0A192F] py-24 px-6 text-center text-white border-t border-white/10 font-sans">
+    <section className="bg-[#081A33] py-24 px-6 text-center text-white border-t border-white/10 font-sans">
       <div className="max-w-4xl mx-auto">
         <h2 className="font-serif text-3xl md:text-5xl font-bold mb-6">Ready to move a recurring function into a managed offshore desk?</h2>
         <p className="text-blue-100/60 mb-12 text-lg">
           Send us the task list, the target hours, or the output you need, and we will suggest the leanest starting model, whether it is a single virtual assistant or a full operations desk.
         </p>
-        <button onClick={() => onNavigate('/contact')} className="bg-[#2368D6] hover:bg-blue-500 transition-colors px-10 py-4 rounded text-xs font-bold uppercase tracking-[0.2em] shadow-xl">
+        <button onClick={() => onNavigate('/contact')} className="bg-[#194083] hover:opacity-90 transition-colors px-10 py-4 rounded text-xs font-bold uppercase tracking-[0.2em] shadow-xl">
           Send staffing requirement
         </button>
       </div>
@@ -430,7 +430,7 @@ const SMEsFoundersView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void
     <section className="relative primary-gradient text-white pt-32 pb-24 overflow-hidden font-sans">
       <div className="absolute top-10 right-10 text-[18vw] font-serif font-black text-white/[0.03] pointer-events-none select-none tracking-tighter">SME</div>
       <div className="max-w-7xl mx-auto px-6 relative z-10">
-        <div className="text-xs uppercase tracking-[0.2em] font-bold text-white/60 mb-6 underline decoration-status-info underline-offset-8">
+        <div className="text-xs uppercase tracking-[0.2em] font-bold text-white/60 mb-6 underline decoration-[#194083] underline-offset-8">
           Who we work with / SMEs and Founders
         </div>
         <div className="max-w-4xl">
@@ -463,7 +463,7 @@ const SMEsFoundersView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void
                 "Recruiting and managing new role types where the task requires it."
               ].map((item, idx) => (
                 <li key={idx} className="flex items-start gap-4">
-                  <Check className="mt-1 text-[#2368D6] flex-shrink-0" size={14} />
+                  <Check className="mt-1 text-[#194083] flex-shrink-0" size={14} />
                   <span className="text-slate-600 font-medium text-sm leading-relaxed">{item}</span>
                 </li>
               ))}
@@ -471,13 +471,13 @@ const SMEsFoundersView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void
           </div>
           <div className="pt-4 lg:pt-10">
             <div className="mb-16">
-              <h3 className="text-[11px] font-bold text-[#2368D6] uppercase tracking-widest mb-6">Why this matters</h3>
-              <p className="text-2xl text-[#0A192F] font-serif font-medium leading-snug">
+              <h3 className="text-[11px] font-bold text-[#194083] uppercase tracking-widest mb-6">Why this matters</h3>
+              <p className="text-2xl text-[#081A33] font-serif font-medium leading-snug">
                 Many owner-led businesses have outgrown a basic virtual assistant but cannot yet justify a full-time chief of staff or operations manager.
               </p>
             </div>
             <div className="border-t border-slate-100 pt-10">
-              <h3 className="font-serif text-2xl font-bold text-[#0A192F] mb-6">Our Delivery Model</h3>
+              <h3 className="font-serif text-2xl font-bold text-[#081A33] mb-6">Our Delivery Model</h3>
               <p className="text-slate-500 leading-relaxed text-lg mb-6">
                 Fractional or dedicated support, usually starting at twenty hours per week and scaling as the work becomes clearer.
               </p>
@@ -514,7 +514,7 @@ const SMEsFoundersView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void
           ].map((item, idx) => (
             <div key={idx} className="bg-white p-10 rounded border border-slate-100 shadow-sm relative group overflow-hidden">
               <div className="text-6xl font-serif font-black absolute right-4 top-4 opacity-80 group-hover:opacity-100 transition-opacity">{item.step}</div>
-              <h4 className="font-serif text-xl font-bold text-[#0A192F] mb-4">{item.title}</h4>
+              <h4 className="font-serif text-xl font-bold text-[#081A33] mb-4">{item.title}</h4>
               <p className="text-slate-500 text-sm leading-relaxed">{item.desc}</p>
             </div>
           ))}
@@ -525,16 +525,16 @@ const SMEsFoundersView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void
     {/* Block D — Proof */}
     <section className="py-24 bg-white font-sans overflow-hidden">
        <div className="max-w-4xl mx-auto px-6 text-center">
-          <div className="inline-block p-1 bg-blue-50 rounded-full mb-8">
-             <div className="px-4 py-1 bg-white border border-blue-100 rounded-full text-[10px] font-bold text-[#2368D6] uppercase tracking-widest">Client Proof</div>
+          <div className="inline-block p-1 bg-slate-100 rounded-full mb-8">
+             <div className="px-4 py-1 bg-white border border-slate-100 rounded-full text-[10px] font-bold text-[#194083] uppercase tracking-widest">Client Proof</div>
           </div>
-          <p className="text-2xl md:text-3xl font-serif text-[#0A192F] leading-snug italic mb-10">
+          <p className="text-2xl md:text-3xl font-serif text-[#081A33] leading-snug italic mb-10">
              "The OrbitSol team have been instrumental in allowing us to scale our operations without the overhead of local hiring. Their ability to document processes while executing them is a game-changer for any growing business."
           </p>
           <div className="flex items-center justify-center gap-4">
              <div className="w-12 h-12 rounded-full bg-slate-200"></div>
              <div className="text-left">
-                <div className="font-bold text-[#0A192F] text-sm">Managing Director</div>
+                <div className="font-bold text-[#081A33] text-sm">Managing Director</div>
                 <div className="text-slate-400 text-xs tracking-widest uppercase">Property Technology Group</div>
              </div>
           </div>
@@ -561,7 +561,7 @@ const SMEsFoundersView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void
       <div className="max-w-4xl mx-auto">
         <h2 className="font-serif text-3xl md:text-5xl font-bold mb-6 italic">Send us the work you keep pushing to the end of the day.</h2>
         <div className="mt-12">
-          <button onClick={() => onNavigate('/contact')} className="bg-[#2368D6] hover:bg-blue-500 transition-colors px-12 py-4 rounded text-xs font-bold uppercase tracking-[0.2em] shadow-xl">
+          <button onClick={() => onNavigate('/contact')} className="bg-[#1B4D83] hover:opacity-90 transition-colors px-12 py-4 rounded text-xs font-bold uppercase tracking-[0.2em] shadow-xl">
             Scope founder support
           </button>
         </div>
@@ -578,7 +578,7 @@ const DigitalMarketingView = ({ onNavigate }: { onNavigate: (path: ViewPath) => 
       {/* Section 1 - Hero */}
     <section className="relative primary-gradient text-white pt-32 pb-24 overflow-hidden font-sans">
       <div className="max-w-7xl mx-auto px-6 relative z-10">
-        <div className="text-xs uppercase tracking-[0.2em] font-bold text-white/60 mb-6 underline decoration-status-info underline-offset-8">Digital Marketing and Creative.</div>
+        <div className="text-xs uppercase tracking-[0.2em] font-bold text-white/60 mb-6 underline decoration-[#1B4D83] underline-offset-8">Digital Marketing and Creative.</div>
         <div className="max-w-4xl">
           <h1 className="font-serif text-4xl md:text-5xl lg:text-7xl font-bold leading-tight mb-8">
             A growth desk you can actually rely on.
@@ -587,7 +587,7 @@ const DigitalMarketingView = ({ onNavigate }: { onNavigate: (path: ViewPath) => 
             OrbitSol helps businesses plan, build, and run the marketing work that is difficult to keep moving in-house, including brand identity, websites, content, search engine optimisation, generative engine optimisation, paid campaigns, conversion rate optimisation, dashboards, user-experience research, collateral, video, training, and e-learning. We can deliver a single project, a monthly retainer, or a managed offshore team. You receive a project leader who owns the relationship, with a set of specialists working behind them.
           </p>
           <div className="flex flex-wrap gap-4">
-            <button onClick={() => onNavigate('/contact')} className="bg-status-info hover:bg-brand-primary-start text-white px-10 py-4 rounded-xl font-bold uppercase tracking-widest text-xs shadow-xl transition-all">
+            <button onClick={() => onNavigate('/contact')} className="bg-[#1B4D83] hover:opacity-90 text-white px-10 py-4 rounded-xl font-bold uppercase tracking-widest text-xs shadow-xl transition-all">
               Send a marketing enquiry
             </button>
             <button onClick={() => window.location.href=`mailto:${contactEmail}`} className="border border-white/20 text-white hover:bg-white/10 px-10 py-4 rounded-xl font-bold uppercase tracking-widest text-xs transition-all shadow-sm">
@@ -682,7 +682,7 @@ const DigitalMarketingView = ({ onNavigate }: { onNavigate: (path: ViewPath) => 
               <ul className="space-y-2 mt-auto">
                 {service.items.map((item, idx) => (
                   <li key={idx} className="flex items-start gap-3">
-                    <Check className="mt-1 text-[#2368D6] flex-shrink-0" size={14} />
+                    <Check className="mt-1 text-[#1B4D83] flex-shrink-0" size={14} />
                     <span className="text-slate-600 text-xs leading-relaxed">{item}</span>
                   </li>
                 ))}
@@ -706,7 +706,7 @@ const DigitalMarketingView = ({ onNavigate }: { onNavigate: (path: ViewPath) => 
             { t: "Option 2 - Retainer", d: "A monthly hours-bank for ongoing work. This works best for marketing teams that need consistent capacity but have variable work types from week to week." },
             { t: "Option 3 - Embedded growth desk", d: "A dedicated team allocated to your business. They join your stand-ups, sit on your Slack, and own a quarterly roadmap. This works best for businesses that want a marketing function without building one in-house." }
           ].map((item, idx) => (
-            <div key={idx} className="p-10 rounded bg-[#112240] border border-white/5 flex flex-col h-full">
+             <div key={idx} className="p-10 rounded bg-[#112240] border border-white/5 flex flex-col h-full">
               <h4 className="font-serif text-xl font-bold mb-4">{item.t}</h4>
               <p className="text-blue-100/50 text-sm leading-relaxed">{item.d}</p>
             </div>
@@ -716,7 +716,7 @@ const DigitalMarketingView = ({ onNavigate }: { onNavigate: (path: ViewPath) => 
     </section>
 
     {/* Section 4 - Pricing */}
-    <section className="py-20 bg-slate-50 text-center font-sans">
+    <section className="py-20 bg-[#F8FAFC] text-center font-sans">
        <div className="max-w-4xl mx-auto px-6">
           <p className="text-slate-600 text-lg">
             Pricing starts at $5 per hour. Project, retainer, and embedded-desk pricing is quoted on a discovery call once we understand the scope.
@@ -729,7 +729,7 @@ const DigitalMarketingView = ({ onNavigate }: { onNavigate: (path: ViewPath) => 
       <div className="max-w-4xl mx-auto px-6">
         <h2 className="font-serif text-3xl md:text-5xl font-bold text-[#0A192F] mb-12">If you are running marketing on too many freelancers and not enough rhythm, let us fix that.</h2>
         <div className="flex flex-wrap justify-center gap-6 items-center">
-           <button onClick={() => window.location.href=`mailto:${contactEmail}`} className="bg-[#2368D6] hover:bg-blue-500 text-white px-10 py-4 rounded font-bold uppercase tracking-widest text-xs shadow-xl transition-all">
+           <button onClick={() => window.location.href=`mailto:${contactEmail}`} className="bg-[#1B4D83] hover:opacity-90 text-white px-10 py-4 rounded font-bold uppercase tracking-widest text-xs shadow-xl transition-all">
              Email us at {contactEmail}
            </button>
            <button onClick={() => onNavigate('/contact')} className="text-slate-400 font-bold uppercase tracking-widest text-xs hover:text-[#0A192F] transition-colors">
@@ -748,23 +748,23 @@ const ProcessAutomationView = ({ onNavigate }: { onNavigate: (path: ViewPath) =>
   return (
   <>
     {/* Section 1 - Hero */}
-    <section className="relative bg-gradient-to-br from-[#0A192F] to-[#112240] text-white pt-32 pb-24 overflow-hidden font-sans">
+    <section className="relative primary-gradient text-white pt-32 pb-24 overflow-hidden font-sans">
       <div className="max-w-7xl mx-auto px-6 relative z-10 flex flex-col md:flex-row items-center gap-16">
         <div className="md:w-3/5">
-          <div className="text-blue-300/60 font-bold uppercase tracking-[0.2em] text-xs mb-6 underline decoration-[#2368D6] underline-offset-8">Process and Automation.</div>
+          <div className="text-blue-300/60 font-bold uppercase tracking-[0.2em] text-xs mb-6 underline decoration-[#1B4D83] underline-offset-8">Process and Automation.</div>
           <h1 className="font-serif text-4xl md:text-5xl lg:text-7xl font-bold leading-tight mb-8">
             Make recurring work easier to run, easier to measure, and safer to scale.
           </h1>
           <p className="text-lg md:text-xl text-blue-100/70 leading-relaxed mb-10 max-w-2xl">
             Many businesses rely on knowledge that lives in a few people's heads, which is fine until one of them takes a day off. OrbitSol helps turn that knowledge into clear standard operating procedures, dashboards, handover materials, and practical automations, so your team can run the work consistently and improve it over time. We document the work, automate the boring parts, and keep humans where they matter.
           </p>
-          <button onClick={() => onNavigate('/contact')} className="bg-[#2368D6] hover:bg-blue-500 text-white px-10 py-4 rounded font-bold uppercase tracking-widest text-xs shadow-xl transition-all">
+          <button onClick={() => onNavigate('/contact')} className="bg-[#1B4D83] hover:opacity-90 text-white px-10 py-4 rounded font-bold uppercase tracking-widest text-xs shadow-xl transition-all">
             Send a workflow enquiry
           </button>
         </div>
         <div className="md:w-2/5 hidden md:block">
            <div className="relative">
-              <div className="absolute inset-0 bg-blue-500/10 blur-3xl rounded-full"></div>
+              <div className="absolute inset-0 bg-[#1B4D83]/10 blur-3xl rounded-full"></div>
               <svg className="relative w-full h-auto text-blue-400/40" viewBox="0 0 200 200" fill="none">
                  <rect x="10" y="80" width="40" height="40" rx="4" stroke="currentColor" strokeWidth="2" />
                  <path d="M50 100 H80" stroke="currentColor" strokeWidth="2" strokeDasharray="4 4" />
@@ -791,7 +791,7 @@ const ProcessAutomationView = ({ onNavigate }: { onNavigate: (path: ViewPath) =>
             { t: "AI-assisted tooling", d: "Practical AI workflows with sensible checks for security and accuracy." },
             { t: "Vendor accountability tracking", d: "Service-level tracking for the third parties your operation depends on." }
           ].map((card, idx) => (
-            <div key={idx} className="p-10 rounded-2xl border border-slate-100 bg-[#F8FAFC] shadow-sm hover:border-blue-100 transition-all flex flex-col h-full hover:shadow-lg">
+            <div key={idx} className="p-10 rounded-2xl border border-slate-100 bg-[#F8FAFC] shadow-sm hover:border-[#d1c7bc] transition-all flex flex-col h-full hover:shadow-lg">
               <h4 className="font-serif text-xl font-bold text-[#0A192F] mb-6 tracking-tight uppercase">{card.t}</h4>
               <p className="text-slate-500 text-sm leading-relaxed">{card.d}</p>
             </div>
@@ -834,7 +834,7 @@ const ProcessAutomationView = ({ onNavigate }: { onNavigate: (path: ViewPath) =>
         <p className="text-xl text-blue-100/70 mb-12 max-w-2xl mx-auto">
           Send us the process, the people involved, and the output you need, and we will help turn it into something easier to run.
         </p>
-        <button onClick={() => onNavigate('/contact')} className="bg-[#2368D6] hover:bg-blue-500 transition-colors px-12 py-4 rounded-xl text-xs font-bold uppercase tracking-[0.2em] shadow-xl">
+        <button onClick={() => onNavigate('/contact')} className="bg-[#1B4D83] hover:opacity-90 transition-colors px-12 py-4 rounded-xl text-xs font-bold uppercase tracking-[0.2em] shadow-xl">
           Send a workflow enquiry
         </button>
       </div>
@@ -868,7 +868,7 @@ const StrataManagementView = ({ onNavigate }: { onNavigate: (path: ViewPath) => 
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid lg:grid-cols-2 gap-16 items-start">
           <div>
-            <h2 className="text-[11px] font-bold text-status-info uppercase tracking-widest mb-8">What We Handle</h2>
+            <h2 className="text-[11px] font-bold text-[#1B4D83] uppercase tracking-widest mb-8">What We Handle</h2>
             <ul className="space-y-4">
               {[
                 "Owner/committee correspondence and levy queries",
@@ -879,18 +879,18 @@ const StrataManagementView = ({ onNavigate }: { onNavigate: (path: ViewPath) => 
                 "Dashboard and key‑performance‑indicator reporting for portfolio health"
               ].map((item, idx) => (
                 <li key={idx} className="flex items-start gap-4">
-                  <Check className="mt-1 text-status-info flex-shrink-0" size={16} />
+                  <Check className="mt-1 text-[#1B4D83] flex-shrink-0" size={16} />
                   <span className="text-slate-600 font-medium text-sm leading-relaxed">{item}</span>
                 </li>
               ))}
             </ul>
           </div>
           <div className="pt-4 lg:pt-10">
-            <p className="text-xl text-brand-deep-navy leading-relaxed mb-10">
+            <p className="text-xl text-[#0A192F] leading-relaxed mb-10">
               We understand that strata portfolios generate a constant flow of administration, queries, and documentation, and offshore support only helps when the team is trained, supervised, and embedded properly.
             </p>
             <div className="border-t border-slate-100 pt-10">
-              <h3 className="font-serif text-2xl font-bold text-brand-deep-navy mb-6">Our delivery model:</h3>
+              <h3 className="font-serif text-2xl font-bold text-[#0A192F] mb-6">Our delivery model:</h3>
               <p className="text-slate-500 leading-relaxed mb-6">
                 A dedicated project leader, trained strata associates, documented standard operating procedures, and weekly reporting. We log into your platform and work alongside your team rather than passing tasks back and forth through email.
               </p>
@@ -931,12 +931,12 @@ const StrataManagementView = ({ onNavigate }: { onNavigate: (path: ViewPath) => 
         </div>
       </div>
     </section>
-
+    
     {/* Block D — Proof */}
     <section className="py-24 bg-white font-sans overflow-hidden">
        <div className="max-w-4xl mx-auto px-6 text-center">
-          <div className="inline-block p-1 bg-blue-50 rounded-full mb-8">
-             <div className="px-4 py-1 bg-white border border-blue-100 rounded-full text-[10px] font-bold text-[#2368D6] uppercase tracking-widest">Sector Capability</div>
+          <div className="inline-block p-1 bg-slate-100 rounded-full mb-8">
+             <div className="px-4 py-1 bg-white border border-slate-200 rounded-full text-[10px] font-bold text-[#1B4D83] uppercase tracking-widest">Sector Capability</div>
           </div>
           <p className="text-2xl md:text-3xl font-serif text-[#0A192F] leading-snug italic mb-10">
              "OrbitSol's strata associates operate as an extension of our portfolio management team, working directly in our systems to handle the administrative volume that previously overwhelmed our strata managers."
@@ -984,7 +984,7 @@ const StrataManagementView = ({ onNavigate }: { onNavigate: (path: ViewPath) => 
     <section className="bg-[#0A192F] py-24 px-6 text-center text-white font-sans">
       <div className="max-w-4xl mx-auto">
         <h2 className="font-serif text-3xl md:text-5xl font-bold mb-10">Losing hours to strata admin? Send us the function and we will scope the desk.</h2>
-        <button onClick={() => onNavigate('/contact')} className="bg-[#2368D6] hover:bg-blue-500 transition-colors px-10 py-4 rounded-xl text-xs font-bold uppercase tracking-[0.2em] shadow-xl">
+        <button onClick={() => onNavigate('/contact')} className="bg-[#1B4D83] hover:opacity-90 transition-colors px-10 py-4 rounded-xl text-xs font-bold uppercase tracking-[0.2em] shadow-xl">
           Scope a strata desk
         </button>
       </div>
@@ -1061,15 +1061,15 @@ const PropertyRealEstateView = ({ onNavigate }: { onNavigate: (path: ViewPath) =
               ]
             }
           ].map((block, idx) => (
-            <div key={idx} className="p-10 rounded border border-slate-100 bg-[#F8FAFC] flex flex-col h-full">
-              <h3 className="font-serif text-2xl font-bold text-[#0A192F] mb-6">{block.title}</h3>
+            <div key={idx} className="p-10 rounded border border-slate-100 bg-[#F5F7FA] flex flex-col h-full">
+              <h3 className="font-serif text-2xl font-bold text-[#081A33] mb-6">{block.title}</h3>
               <p className="text-slate-500 text-sm leading-relaxed mb-8">{block.desc}</p>
               <div className="mt-auto pt-8 border-t border-slate-200/60">
                 <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4">Detailed Scope:</h4>
                 <ul className="space-y-3">
                   {block.scope.map((s, sIdx) => (
                     <li key={sIdx} className="flex items-start gap-3">
-                      <Check className="mt-1 text-[#2368D6] flex-shrink-0" size={14} />
+                      <Check className="mt-1 text-[#194083] flex-shrink-0" size={14} />
                       <span className="text-slate-600 text-xs leading-relaxed">{s}</span>
                     </li>
                   ))}
@@ -1082,9 +1082,9 @@ const PropertyRealEstateView = ({ onNavigate }: { onNavigate: (path: ViewPath) =
     </section>
 
     {/* Block C — Why This Matters */}
-    <section className="py-24 bg-[#F8FAFC] font-sans">
+    <section className="py-24 bg-[#F5F7FA]/50 font-sans">
       <div className="max-w-4xl mx-auto px-6">
-        <p className="text-2xl md:text-3xl font-serif text-[#0A192F] leading-snug text-center mb-16">
+        <p className="text-2xl md:text-3xl font-serif text-[#081A33] leading-snug text-center mb-16">
           Across all three buyer types, we understand that the work that grows an agency is the work that lives in front of clients, while the work that gets stuck is administrative, repeatable, and deadline-driven.
         </p>
         <div className="grid md:grid-cols-3 gap-8 mb-16">
@@ -1094,7 +1094,7 @@ const PropertyRealEstateView = ({ onNavigate }: { onNavigate: (path: ViewPath) =
             { t: "Inventory firms", d: "Can only quote new work when last week's reports are out the door." }
           ].map((item, idx) => (
             <div key={idx} className="text-center">
-              <h4 className="font-bold text-[#0A192F] mb-2">{item.t}</h4>
+              <h4 className="font-bold text-[#081A33] mb-2">{item.t}</h4>
               <p className="text-slate-500 text-sm">{item.d}</p>
             </div>
           ))}
@@ -1109,25 +1109,25 @@ const PropertyRealEstateView = ({ onNavigate }: { onNavigate: (path: ViewPath) =
     <section className="py-24 bg-white font-sans border-y border-slate-100">
       <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
         <div>
-          <h2 className="font-serif text-3xl font-bold text-[#0A192F] mb-8">Our Delivery Model</h2>
+          <h2 className="font-serif text-3xl font-bold text-[#081A33] mb-8">Our Delivery Model</h2>
           <p className="text-slate-600 leading-relaxed mb-6">
             A dedicated project leader, trained operators, documented standard operating procedures, and quality control before delivery. We work in the platforms you already use, including InventoryBase, Inventory Hive, PropertyMe, Inspection Express, Rentfind, Microsoft Word templates, and a wide range of custom client platforms.
           </p>
           <p className="text-slate-600 leading-relaxed mb-8">
             Where the platform is new to us, we run a one-off learning sprint with a senior operator before any live work begins. 
           </p>
-          <div className="grid grid-cols-2 gap-6 bg-slate-50 p-8 rounded border border-slate-100">
+          <div className="grid grid-cols-2 gap-6 bg-[#F5F7FA] p-8 rounded border border-slate-100">
             <div>
                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Standard Turnaround</p>
-               <p className="text-xl font-serif font-bold text-[#0A192F]">24 Hours</p>
+               <p className="text-xl font-serif font-bold text-[#081A33]">24 Hours</p>
             </div>
             <div>
                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Express Options</p>
-               <p className="text-xl font-serif font-bold text-[#2368D6]">3 - 6 Hours</p>
+               <p className="text-xl font-serif font-bold text-[#194083]">3 - 6 Hours</p>
             </div>
           </div>
         </div>
-        <div className="bg-[#0A192F] p-10 rounded text-white shadow-2xl relative overflow-hidden">
+        <div className="bg-[#081A33] p-10 rounded text-white shadow-2xl relative overflow-hidden">
            <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full blur-3xl -mr-16 -mt-16"></div>
            <h3 className="font-serif text-xl font-bold mb-6">Speed Benchmarks</h3>
            <ul className="space-y-4 text-sm text-blue-100/70">
@@ -1153,7 +1153,7 @@ const PropertyRealEstateView = ({ onNavigate }: { onNavigate: (path: ViewPath) =
     </section>
 
     {/* Block E — How We Work */}
-    <section className="py-24 bg-[#F8FAFC] font-sans">
+    <section className="py-24 bg-[#F5F7FA] font-sans">
       <div className="max-w-7xl mx-auto px-6">
         <h2 className="text-[11px] font-bold text-slate-400 uppercase tracking-widest text-center mb-16">How We Work</h2>
         <div className="grid md:grid-cols-3 gap-8">
@@ -1176,7 +1176,7 @@ const PropertyRealEstateView = ({ onNavigate }: { onNavigate: (path: ViewPath) =
           ].map((item, idx) => (
             <div key={idx} className="bg-white p-10 rounded-2xl border border-slate-100 shadow-sm relative group overflow-hidden hover:shadow-lg transition-all">
               <div className="text-6xl font-serif font-black absolute right-4 top-4 opacity-80 group-hover:opacity-100 transition-opacity">{item.step}</div>
-              <h4 className="font-serif text-xl font-bold text-[#0A192F] mb-4">{item.title}</h4>
+              <h4 className="font-serif text-xl font-bold text-[#081A33] mb-4">{item.title}</h4>
               <p className="text-slate-500 text-sm leading-relaxed">{item.desc}</p>
             </div>
           ))}
@@ -1202,11 +1202,11 @@ const PropertyRealEstateView = ({ onNavigate }: { onNavigate: (path: ViewPath) =
     </section>
 
     {/* Block G — Closing Call to Action */}
-    <section className="bg-[#0A192F] py-24 px-6 text-center text-white font-sans">
+    <section className="bg-[#081A33] py-24 px-6 text-center text-white font-sans">
       <div className="max-w-4xl mx-auto">
         <h2 className="font-serif text-3xl md:text-5xl font-bold mb-6">Stop letting production and admin set your growth ceiling.</h2>
         <div className="flex flex-wrap justify-center gap-6 mt-12">
-          <button onClick={() => onNavigate('/contact')} className="bg-[#2368D6] hover:bg-blue-500 transition-colors px-10 py-4 rounded-xl text-xs font-bold uppercase tracking-[0.2em] shadow-xl">
+          <button onClick={() => onNavigate('/contact')} className="bg-[#194083] hover:opacity-90 transition-colors px-10 py-4 rounded-xl text-xs font-bold uppercase tracking-[0.2em] shadow-xl">
             Request a no-cost trial
           </button>
         </div>
@@ -1244,19 +1244,19 @@ const BlogSidebar = ({
           placeholder="Search here..." 
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full p-4 pr-12 bg-white border border-slate-100 rounded-xl outline-none focus:border-[#2368D6] text-sm text-slate-600 shadow-sm"
+          className="w-full p-4 pr-12 bg-white border border-slate-100 rounded-xl outline-none focus:border-[#194083] text-sm text-slate-600 shadow-sm"
         />
-        <button className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-300 hover:text-[#2368D6]">
+        <button className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-300 hover:text-[#194083]">
           <Search size={18} />
         </button>
       </div>
 
-      <h3 className="text-xs font-bold text-[#0A192F] uppercase tracking-widest mb-6 pb-4 border-b border-slate-100">Categories</h3>
+      <h3 className="text-xs font-bold text-[#081A33] uppercase tracking-widest mb-6 pb-4 border-b border-slate-100">Categories</h3>
       <ul className="space-y-4">
         <li>
           <button 
             onClick={onClearFilters}
-            className={`${!selectedCategory ? 'text-[#2368D6]' : 'text-slate-500'} hover:text-[#2368D6] text-sm transition-colors uppercase tracking-widest font-medium`}
+            className={`${!selectedCategory ? 'text-[#194083]' : 'text-slate-500'} hover:text-[#194083] text-sm transition-colors uppercase tracking-widest font-medium`}
           >
             All Categories
           </button>
@@ -1265,7 +1265,7 @@ const BlogSidebar = ({
           <li key={cat}>
             <button 
               onClick={() => setSelectedCategory(cat)}
-              className={`${selectedCategory === cat ? 'text-[#2368D6]' : 'text-slate-500'} hover:text-[#2368D6] text-sm transition-colors uppercase tracking-widest font-medium`}
+              className={`${selectedCategory === cat ? 'text-[#194083]' : 'text-slate-500'} hover:text-[#194083] text-sm transition-colors uppercase tracking-widest font-medium`}
             >
               {cat}
             </button>
@@ -1275,7 +1275,7 @@ const BlogSidebar = ({
     </div>
 
     <div>
-      <h3 className="text-xs font-bold text-[#0A192F] uppercase tracking-widest mb-6 pb-4 border-b border-slate-100">Recent Posts</h3>
+      <h3 className="text-xs font-bold text-[#081A33] uppercase tracking-widest mb-6 pb-4 border-b border-slate-100">Recent Posts</h3>
       <div className="space-y-8">
         {insights.filter(i => i.id !== currentInsightId).slice(0, 5).map(post => (
           <div key={post.id} className="group cursor-pointer" onClick={() => { onSelectInsight(post); window.scrollTo(0, 0); }}>
@@ -1286,7 +1286,7 @@ const BlogSidebar = ({
                 </div>
               )}
               <div>
-                <h4 className="text-sm font-bold text-[#0A192F] group-hover:text-[#2368D6] transition-colors leading-snug line-clamp-2">
+                <h4 className="text-sm font-bold text-[#081A33] group-hover:text-[#194083] transition-colors leading-snug line-clamp-2">
                   {post.title}
                 </h4>
                 <p className="text-[10px] text-slate-400 mt-2 uppercase tracking-wider">{post.date}</p>
@@ -1297,12 +1297,12 @@ const BlogSidebar = ({
       </div>
     </div>
 
-    <div className="bg-brand-pale-blue p-10 rounded-3xl border border-slate-100/50">
-      <h3 className="text-xs font-bold text-brand-deep-navy uppercase tracking-widest mb-6">Orbit Newsletter</h3>
-      <p className="text-txt-secondary text-sm leading-relaxed mb-8">Practical, monthly operational insights delivered to your inbox.</p>
+    <div className="bg-[#FFF7EA] border border-[#FFF0E6]/50">
+      <h3 className="text-xs font-bold text-[#081A33] uppercase tracking-widest mb-6">Orbit Newsletter</h3>
+      <p className="text-slate-500 text-sm leading-relaxed mb-8">Practical, monthly operational insights delivered to your inbox.</p>
       <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
-        <input type="email" placeholder="Email address" className="w-full p-4 bg-white border border-slate-200/60 rounded-xl outline-none focus:border-status-info text-sm transition-all shadow-sm" required />
-        <button type="submit" className="w-full bg-status-info hover:bg-brand-primary-start text-white p-4 rounded-xl font-bold uppercase tracking-widest text-[10px] transition-all shadow-md">
+        <input type="email" placeholder="Email address" className="w-full p-4 bg-white border border-slate-200/60 rounded-xl outline-none focus:border-[#194083] text-sm transition-all shadow-sm" required />
+        <button type="submit" className="w-full bg-[#194083] hover:opacity-90 text-white p-4 rounded-xl font-bold uppercase tracking-widest text-[10px] transition-all shadow-md">
           Join the List
         </button>
       </form>
@@ -1357,7 +1357,7 @@ const InsightsView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) 
           <div className="lg:col-span-8">
             <button 
               onClick={() => setSelectedInsight(null)}
-              className="text-[#2368D6] font-bold text-xs uppercase tracking-widest flex items-center gap-2 mb-8 hover:translate-x-[-4px] transition-transform"
+              className="text-[#194083] font-bold text-xs uppercase tracking-widest flex items-center gap-2 mb-8 hover:translate-x-[-4px] transition-transform"
             >
               <ArrowRight className="rotate-180" size={14} /> Back to Insights
             </button>
@@ -1372,18 +1372,18 @@ const InsightsView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) 
             )}
             
             <div className="flex items-center gap-4 mb-6">
-              <span className="px-3 py-1 bg-blue-50 text-[#2368D6] text-[10px] font-bold rounded uppercase tracking-widest">
+              <span className="px-3 py-1 bg-[#FFF0E6] text-orange-500 text-[10px] font-bold rounded uppercase tracking-widest">
                 {selectedInsight.tag}
               </span>
               <span className="text-slate-400 text-xs">{selectedInsight.date}</span>
             </div>
 
-            <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-[#0A192F] mb-8 leading-tight">
+            <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-[#081A33] mb-8 leading-tight">
               {selectedInsight.title}
             </h1>
 
             <div 
-              className="prose prose-slate prose-lg max-w-none prose-headings:font-serif prose-headings:text-[#0A192F] prose-h1:text-4xl prose-h2:text-3xl prose-h3:text-2xl prose-p:text-slate-600 prose-p:leading-relaxed prose-a:text-[#2368D6] prose-strong:text-[#0A192F] mb-24"
+              className="prose prose-slate prose-lg max-w-none prose-headings:font-serif prose-headings:text-[#081A33] prose-h1:text-4xl prose-h2:text-3xl prose-h3:text-2xl prose-p:text-slate-600 prose-p:leading-relaxed prose-a:text-[#194083] prose-strong:text-[#081A33] mb-24"
               dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(selectedInsight.content) }}
             />
 
@@ -1391,25 +1391,25 @@ const InsightsView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) 
             <div className="pt-12 border-t border-slate-100 grid sm:grid-cols-2 gap-8">
               {prevPost ? (
                 <div 
-                  className="group cursor-pointer p-8 rounded-2xl border border-slate-50 hover:border-blue-100 hover:bg-blue-50/30 transition-all"
+                  className="group cursor-pointer p-8 rounded-2xl border border-slate-100 hover:border-[#FFF0E6] hover:bg-[#FFF7EA] transition-all"
                   onClick={() => { setSelectedInsight(prevPost); window.scrollTo(0, 0); }}
                 >
                   <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-2">
                     <ArrowRight className="rotate-180" size={12} /> Previous Post
                   </p>
-                  <h4 className="text-[#0A192F] font-bold group-hover:text-[#2368D6] transition-colors">{prevPost.title}</h4>
+                  <h4 className="text-[#081A33] font-bold group-hover:text-[#194083] transition-colors">{prevPost.title}</h4>
                 </div>
               ) : <div />}
               
               {nextPost ? (
                 <div 
-                  className="group cursor-pointer p-8 rounded-2xl border border-slate-50 hover:border-blue-100 hover:bg-blue-50/30 transition-all text-right"
+                  className="group cursor-pointer p-8 rounded-2xl border border-slate-100 hover:border-[#FFF0E6] hover:bg-[#FFF7EA] transition-all text-right"
                   onClick={() => { setSelectedInsight(nextPost); window.scrollTo(0, 0); }}
                 >
                   <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-2 justify-end">
                     Next Post <ArrowRight size={12} />
                   </p>
-                  <h4 className="text-[#0A192F] font-bold group-hover:text-[#2368D6] transition-colors">{nextPost.title}</h4>
+                  <h4 className="text-[#081A33] font-bold group-hover:text-[#194083] transition-colors">{nextPost.title}</h4>
                 </div>
               ) : <div />}
             </div>
@@ -1438,7 +1438,7 @@ const InsightsView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) 
   return (
     <>
       {/* Section 1 - Hero */}
-      <section className="relative bg-[#0A192F] text-white pt-32 pb-24 overflow-hidden font-sans border-b border-white/5">
+      <section className="relative bg-[#081A33] text-white pt-32 pb-24 overflow-hidden font-sans border-b border-white/5">
         <div className="max-w-7xl mx-auto px-6 relative z-10">
           <h1 className="font-serif text-4xl md:text-5xl lg:text-7xl font-bold leading-tight mb-8">
             The Journal.
@@ -1454,7 +1454,7 @@ const InsightsView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) 
           <div className="lg:col-span-8">
             {loading ? (
               <div className="flex justify-center items-center py-20">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#2368D6]"></div>
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#194083]"></div>
               </div>
             ) : filteredInsights.length > 0 ? (
               <div className="space-y-16">
@@ -1462,11 +1462,11 @@ const InsightsView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) 
                   <div className="mb-12 pb-8 border-b border-slate-100 flex items-center justify-between">
                     <p className="text-slate-500">
                       Showing {filteredInsights.length} results for 
-                      <span className="font-bold text-[#0A192F]"> {searchQuery || selectedCategory}</span>
+                      <span className="font-bold text-[#081A33]"> {searchQuery || selectedCategory}</span>
                     </p>
                     <button 
                       onClick={() => { setSearchQuery(''); setSelectedCategory(null); }}
-                      className="text-xs font-bold text-[#2368D6] uppercase tracking-widest"
+                      className="text-xs font-bold text-[#194083] uppercase tracking-widest"
                     >
                       Clear filters
                     </button>
@@ -1485,18 +1485,18 @@ const InsightsView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) 
                       </div>
                     )}
                     <div className="flex items-center gap-4 mb-4">
-                      <span className="text-[#2368D6] font-bold text-[10px] uppercase tracking-widest">{post.tag}</span>
+                      <span className="text-[#194083] font-bold text-[10px] uppercase tracking-widest">{post.tag}</span>
                       <span className="w-1 h-1 rounded-full bg-slate-300"></span>
                       <span className="text-slate-400 text-xs font-medium">{post.date}</span>
                     </div>
-                    <h2 className="font-serif text-3xl md:text-4xl font-bold text-[#0A192F] mb-6 group-hover:text-[#2368D6] transition-colors leading-tight">
+                    <h2 className="font-serif text-3xl md:text-4xl font-bold text-[#081A33] mb-6 group-hover:text-[#194083] transition-colors leading-tight">
                       {post.title}
                     </h2>
                     <p className="text-slate-500 text-lg leading-relaxed mb-8 max-w-3xl">
                       {post.summary}
                     </p>
-                    <button className="flex items-center gap-3 text-[#0A192F] font-bold text-xs uppercase tracking-[0.2em] group-hover:gap-5 transition-all">
-                      Read Full Article <ArrowRight size={14} className="text-[#2368D6]" />
+                    <button className="flex items-center gap-3 text-[#081A33] font-bold text-xs uppercase tracking-[0.2em] group-hover:gap-5 transition-all">
+                      Read Full Article <ArrowRight size={14} className="text-[#194083]" />
                     </button>
                   </div>
                 ))}
@@ -1590,7 +1590,7 @@ const Header = ({ currentPath, onNavigate }: { currentPath: ViewPath, onNavigate
                 <button
                   onClick={() => onNavigate(item.path as ViewPath)}
                   className={`text-xs uppercase tracking-widest font-bold transition-colors ${
-                    currentPath === item.path ? 'text-status-info' : 'text-brand-cool-gray hover:text-brand-deep-navy'
+                    currentPath === item.path ? 'text-[#194083]' : 'text-slate-500 hover:text-[#081A33]'
                   }`}
                 >
                   {item.label}
@@ -1598,7 +1598,7 @@ const Header = ({ currentPath, onNavigate }: { currentPath: ViewPath, onNavigate
               ) : (
                 <button
                   className={`text-xs uppercase tracking-widest font-bold transition-colors flex items-center gap-1 ${
-                    activeDropdown === item.label ? 'text-status-info' : 'text-brand-cool-gray hover:text-brand-deep-navy'
+                    activeDropdown === item.label ? 'text-[#194083]' : 'text-[#64748B] hover:text-[#081A33]'
                   }`}
                 >
                   {item.label}
@@ -1623,7 +1623,7 @@ const Header = ({ currentPath, onNavigate }: { currentPath: ViewPath, onNavigate
                             onNavigate(subItem.path as ViewPath);
                             setActiveDropdown(null);
                           }}
-                          className="w-full text-left px-8 py-3 text-xs font-bold text-brand-cool-gray hover:text-status-info hover:bg-brand-pale-blue transition-all uppercase tracking-widest border-l-2 border-transparent hover:border-status-info"
+                          className="w-full text-left px-8 py-3 text-xs font-bold text-[#64748B] hover:text-[#194083] hover:bg-[#FFF7EA] transition-all uppercase tracking-widest border-l-2 border-transparent hover:border-[#194083]"
                         >
                           {subItem.label}
                         </button>
@@ -1637,7 +1637,7 @@ const Header = ({ currentPath, onNavigate }: { currentPath: ViewPath, onNavigate
           
           <button
             onClick={() => onNavigate('/contact')}
-            className="bg-brand-deep-navy hover:bg-brand-slate text-white px-8 py-3.5 rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all shadow-md ml-4"
+            className="bg-[#081A33] hover:bg-slate-800 text-white px-8 py-3.5 rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all shadow-md ml-4"
           >
             Get a Quote
           </button>
@@ -1681,7 +1681,7 @@ const Header = ({ currentPath, onNavigate }: { currentPath: ViewPath, onNavigate
                             onNavigate(sub.path as ViewPath);
                             setIsMobileMenuOpen(false);
                           }}
-                          className="text-left text-sm font-medium text-slate-600 hover:text-[#2368D6] transition-colors"
+                          className="text-left text-sm font-medium text-slate-600 hover:text-[#194083] transition-colors"
                         >
                           {sub.label}
                         </button>
@@ -1696,7 +1696,7 @@ const Header = ({ currentPath, onNavigate }: { currentPath: ViewPath, onNavigate
                 onNavigate('/contact');
                 setIsMobileMenuOpen(false);
               }}
-              className="bg-[#2368D6] text-white hover:bg-blue-700 px-6 py-3 rounded-lg text-sm font-medium transition-colors mt-4 shadow-sm w-full"
+              className="bg-[#194083] text-white hover:opacity-90 px-6 py-3 rounded-lg text-sm font-medium transition-colors mt-4 shadow-sm w-full"
             >
               Contact Us
             </button>
@@ -1715,7 +1715,7 @@ const AboutView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
       {/* Section 1 - Hero */}
       <section className="relative bg-white pt-32 pb-24 overflow-hidden font-sans border-b border-slate-100">
         <div className="max-w-7xl mx-auto px-6 relative z-10 text-center">
-          <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-8 text-[#0A192F]">
+          <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-8 text-[#081A33]">
             {getContent('about.heroTitle', 'A decade as the behind-the-scenes engine for businesses around the world.')}
           </h1>
           <p className="text-lg md:text-xl text-slate-600 leading-relaxed max-w-4xl mx-auto">
@@ -1725,13 +1725,13 @@ const AboutView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
       </section>
 
     {/* Section 2 - Our Story */}
-    <section className="py-24 bg-[#F8FAFC] font-sans">
+    <section className="py-24 bg-[#F5F7FA] font-sans">
       <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-start">
         <div>
-          <h2 className="font-serif text-3xl font-bold text-brand-deep-navy mb-8">Our Story</h2>
+          <h2 className="font-serif text-3xl font-bold text-[#081A33] mb-8">Our Story</h2>
           <div className="space-y-6 text-slate-600 leading-relaxed">
             <p>
-              OrbitSol was founded in <a href="https://www.keralatourism.org/topic/kochi" target="_blank" rel="noopener noreferrer" className="text-[#2368D6] hover:underline">Kochi</a>, on India's southwest coast in the state of Kerala, by a team with deep experience in transcription and business-process-outsourcing.
+              Our Story was founded in <a href="https://www.keralatourism.org/topic/kochi" target="_blank" rel="noopener noreferrer" className="text-[#194083] hover:underline">Kochi</a>, on India's southwest coast in the state of Kerala, by a team with deep experience in transcription and business-process-outsourcing.
             </p>
             <p>
               The first OrbitSol clients were UK property inspection firms that needed accurate typing, and within two years the business had built relationships that would last more than a decade.
@@ -1755,7 +1755,7 @@ const AboutView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
               ].map((m, idx) => (
                 <div key={idx} className="flex gap-6 items-start relative z-10">
                    <div className="bg-white py-1">
-                      <span className="font-serif font-black text-[#2368D6] text-xl min-w-[60px] block">{m.year}</span>
+                      <span className="font-serif font-black text-[#194083] text-xl min-w-[60px] block">{m.year}</span>
                    </div>
                    <p className="text-slate-600 text-sm leading-relaxed pt-1">{m.event}</p>
                 </div>
@@ -1768,7 +1768,7 @@ const AboutView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
     {/* Section 3 - Team */}
     <section className="py-24 bg-white font-sans">
       <div className="max-w-7xl mx-auto px-6">
-        <h2 className="font-serif text-3xl font-bold text-[#0A192F] mb-16 text-center">Meet Our Team</h2>
+        <h2 className="font-serif text-3xl font-bold text-[#081A33] mb-16 text-center">Meet Our Team</h2>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
           {[
             { n: "Ann Mary Jerin", r: "Founder and Managing Director" },
@@ -1783,10 +1783,10 @@ const AboutView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
             { n: "Vibhija S.", r: "Senior Manager - Finance" }
           ].map((member, idx) => (
             <div key={idx} className="text-center group">
-               <div className="w-full aspect-square bg-brand-pale-blue rounded-full mb-4 border border-slate-100 flex items-center justify-center grayscale group-hover:grayscale-0 transition-all overflow-hidden">
-                  <span className="text-status-info opacity-10"><FileText size={48} /></span>
+               <div className="w-full aspect-square bg-[#FFF7EA] rounded-full mb-4 border border-[#FFF0E6] flex items-center justify-center grayscale group-hover:grayscale-0 transition-all overflow-hidden">
+                  <span className="text-[#194083] opacity-10"><FileText size={48} /></span>
                </div>
-               <h4 className="font-bold text-brand-deep-navy text-sm mb-1">{member.n}</h4>
+               <h4 className="font-bold text-[#081A33] text-sm mb-1">{member.n}</h4>
                <p className="text-slate-400 text-xs leading-tight">{member.r}</p>
             </div>
           ))}
@@ -1795,7 +1795,7 @@ const AboutView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
     </section>
 
     {/* Section 4 - Principles */}
-    <section className="py-24 bg-[#0A192F] text-white font-sans">
+    <section className="py-24 bg-[#081A33] text-white font-sans">
       <div className="max-w-7xl mx-auto px-6">
         <h2 className="font-serif text-3xl font-bold mb-16 text-center">Five things we never compromise on.</h2>
         <div className="grid md:grid-cols-5 gap-6">
@@ -1807,7 +1807,7 @@ const AboutView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
             { t: "Confidentiality", d: "NDAs and named access are standard practice." }
           ].map((p, idx) => (
             <div key={idx} className="p-8 rounded bg-[#112240] border border-white/5">
-               <div className="text-[#2368D6] font-black text-3xl mb-6 opacity-80">0{idx + 1}</div>
+               <div className="text-[#194083] font-black text-3xl mb-6 opacity-80">0{idx + 1}</div>
                <h4 className="font-bold mb-4 text-sm leading-tight group-hover:text-blue-300">{p.t}</h4>
                <p className="text-blue-100/50 text-xs leading-relaxed">{p.d}</p>
             </div>
@@ -1887,13 +1887,13 @@ const ContactView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) =
           <div className="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-8 shadow-inner">
             <Check size={40} />
           </div>
-          <h2 className="text-3xl font-serif font-bold text-[#0A192F] mb-4">Enquiry Received</h2>
+          <h2 className="text-3xl font-serif font-bold text-[#081A33] mb-4">Enquiry Received</h2>
           <p className="text-slate-600 mb-8 leading-relaxed">
             Thank you for reaching out. Your enquiry has been sent to our team at <strong>{contactEmail}</strong>. We will get back to you shortly.
           </p>
           <button 
             onClick={() => onNavigate('/')}
-            className="bg-[#0A192F] text-white px-8 py-3 rounded-xl font-bold uppercase tracking-widest text-xs transition-all hover:bg-slate-800"
+            className="bg-[#081A33] text-white px-8 py-3 rounded-xl font-bold uppercase tracking-widest text-xs transition-all hover:bg-slate-800"
           >
             Return Home
           </button>
@@ -1905,24 +1905,24 @@ const ContactView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) =
   return (
     <>
       {/* Section 1 - Hero */}
-      <section className="relative bg-brand-pale-blue pt-32 pb-24 overflow-hidden font-sans border-b border-slate-100">
+      <section className="relative bg-[#F5F7FA] pt-32 pb-24 overflow-hidden font-sans border-b border-slate-100">
         <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-16 items-start">
           <div>
-            <h1 className="font-serif text-4xl md:text-5xl font-bold leading-tight mb-8 text-brand-deep-navy">
+            <h1 className="font-serif text-4xl md:text-5xl font-bold leading-tight mb-8 text-[#081A33]">
               Send us the workflow, sample file, or task list you want handled.
             </h1>
-            <p className="text-lg text-txt-secondary leading-relaxed mb-12">
+            <p className="text-lg text-slate-500 leading-relaxed mb-12">
               Tell us what you need completed, where the input comes from, what the output should look like, and how often the work repeats.
             </p>
             <div className="space-y-6 pt-12 border-t border-slate-200">
                <div>
-                  <p className="text-[10px] font-bold text-txt-muted uppercase tracking-widest mb-2">Email Address</p>
-                  <a href={`mailto:${contactEmail}`} className="text-2xl font-serif font-bold text-status-info hover:underline">{contactEmail}</a>
+                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Email Address</p>
+                  <a href={`mailto:${contactEmail}`} className="text-2xl font-serif font-bold text-[#194083] hover:underline">{contactEmail}</a>
                </div>
                <div>
-                  <p className="text-[10px] font-bold text-txt-muted uppercase tracking-widest mb-2">Phone Number (Toll-free)</p>
-                  <p className="text-2xl font-serif font-bold text-brand-deep-navy">{contactPhone}</p>
-                  <p className="text-xs text-txt-muted mt-1">Reachable from any country</p>
+                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Phone Number (Toll-free)</p>
+                  <p className="text-2xl font-serif font-bold text-[#081A33]">{contactPhone}</p>
+                  <p className="text-xs text-slate-400 mt-1">Reachable from any country</p>
                </div>
             </div>
           </div>
@@ -1938,26 +1938,26 @@ const ContactView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) =
               <div className="grid sm:grid-cols-2 gap-6">
                  <div className="space-y-2">
                     <label className="text-[10px] font-bold text-txt-secondary uppercase tracking-widest">Name *</label>
-                    <input name="name" type="text" className="w-full p-3 bg-slate-50 border border-slate-200 rounded focus:border-status-info outline-none transition-colors" required />
+                    <input name="name" type="text" className="w-full p-3 bg-white border border-[#FFF0E6] rounded focus:border-[#194083] outline-none transition-colors" required />
                  </div>
                  <div className="space-y-2">
                     <label className="text-[10px] font-bold text-txt-secondary uppercase tracking-widest">Email *</label>
-                    <input name="email" type="email" className="w-full p-3 bg-slate-50 border border-slate-200 rounded focus:border-status-info outline-none transition-colors" required />
+                    <input name="email" type="email" className="w-full p-3 bg-white border border-[#FFF0E6] rounded focus:border-[#194083] outline-none transition-colors" required />
                  </div>
               </div>
               <div className="grid sm:grid-cols-2 gap-6">
                  <div className="space-y-2">
                     <label className="text-[10px] font-bold text-txt-secondary uppercase tracking-widest">Company</label>
-                    <input name="company" type="text" className="w-full p-3 bg-slate-50 border border-slate-200 rounded focus:border-status-info outline-none transition-colors" />
+                    <input name="company" type="text" className="w-full p-3 bg-white border border-[#FFF0E6] rounded focus:border-[#194083] outline-none transition-colors" />
                  </div>
                  <div className="space-y-2">
                     <label className="text-[10px] font-bold text-txt-secondary uppercase tracking-widest">Country</label>
-                    <input name="country" type="text" className="w-full p-3 bg-slate-50 border border-slate-200 rounded focus:border-status-info outline-none transition-colors" />
+                    <input name="country" type="text" className="w-full p-3 bg-white border border-[#FFF0E6] rounded focus:border-[#194083] outline-none transition-colors" />
                  </div>
               </div>
               <div className="space-y-2">
                  <label className="text-[10px] font-bold text-txt-secondary uppercase tracking-widest">Service Interest</label>
-                 <select name="service" className="w-full p-3 bg-slate-50 border border-slate-200 rounded focus:border-status-info outline-none transition-colors text-sm">
+                 <select name="service" className="w-full p-3 bg-white border border-[#FFF0E6] rounded focus:border-[#194083] outline-none transition-colors text-sm">
                     <option>Property Inspection Reports</option>
                     <option>Managed Remote Operations</option>
                     <option>Digital Marketing & Creative</option>
@@ -1968,12 +1968,12 @@ const ContactView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) =
               </div>
               <div className="space-y-2">
                  <label className="text-[10px] font-bold text-txt-secondary uppercase tracking-widest">What do you want handled? *</label>
-                 <textarea name="message" rows={4} className="w-full p-3 bg-slate-50 border border-slate-200 rounded focus:border-status-info outline-none transition-colors resize-none" required></textarea>
+                 <textarea name="message" rows={4} className="w-full p-3 bg-white border border-[#FFF0E6] rounded focus:border-[#194083] outline-none transition-colors resize-none" required></textarea>
               </div>
               <button 
                 type="submit" 
                 disabled={isSubmitting}
-                className="w-full bg-status-info hover:bg-brand-primary-start text-white py-4 rounded font-bold uppercase tracking-widest text-xs shadow-lg transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+                className="w-full bg-[#194083] hover:opacity-90 text-white py-4 rounded font-bold uppercase tracking-widest text-xs shadow-lg transition-all disabled:opacity-50 flex items-center justify-center gap-2"
               >
                 {isSubmitting ? (
                   <>
@@ -1998,7 +1998,7 @@ const Footer = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => {
   const { getContent } = React.useContext(SiteSettingsContext);
 
   return (
-    <footer className="bg-brand-deep-navy text-white/70 pt-20 pb-10 mt-auto font-sans">
+    <footer className="bg-[#081A33] text-white/70 pt-20 pb-10 mt-auto font-sans">
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
           <div>
@@ -2070,9 +2070,9 @@ const FAQItem = ({ question, answer }: { question: string; answer: string }) => 
         className="w-full flex justify-between items-center text-left focus:outline-none"
         onClick={() => setIsOpen(!isOpen)}
       >
-        <span className="font-serif text-xl font-medium text-brand-deep-navy pr-8">{question}</span>
+        <span className="font-serif text-xl font-medium text-[#081A33] pr-8">{question}</span>
         <ChevronDown 
-          className={`text-status-info transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} 
+          className={`text-[#194083] transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} 
           size={20} 
         />
       </button>
@@ -2120,7 +2120,7 @@ const HomeView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => {
               {getContent('home.heroDesc', 'OrbitSol helps property, strata, lettings, legal, and professional services firms move reporting, transcription, and admin work into a managed offshore operating layer.')}
             </p>
           <div className="flex flex-col sm:flex-row gap-4 mb-16">
-            <button onClick={() => onNavigate('/contact')} className="bg-brand-deep-navy hover:bg-brand-slate text-white px-8 py-3.5 rounded-xl font-bold uppercase tracking-widest text-xs shadow-lg transition-all">
+            <button onClick={() => onNavigate('/contact')} className="bg-[#194083] hover:opacity-90 text-white px-8 py-3.5 rounded-xl font-bold uppercase tracking-widest text-xs shadow-lg transition-all">
               Send a workflow enquiry
             </button>
             <button onClick={() => window.location.href=`mailto:${contactEmail}`} className="border border-white/20 text-white hover:bg-white/10 px-8 py-3.5 rounded font-bold uppercase tracking-widest text-xs transition-all">
@@ -2137,7 +2137,7 @@ const HomeView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => {
       </div>
     </section>
 
-    <section className="bg-brand-pale-blue border-b border-slate-100 py-5">
+    <section className="bg-[#F5F7FA] border-b border-slate-100 py-5">
       <div className="max-w-7xl mx-auto px-6 text-center text-[11px] font-semibold text-slate-400 uppercase tracking-widest">
         Property report production <span className="mx-3 opacity-20">|</span> Strata administration <span className="mx-3 opacity-20">|</span> Lettings inventories <span className="mx-3 opacity-20">|</span> Legal transcription <span className="mx-3 opacity-20">|</span> Remote operations
       </div>
@@ -2146,8 +2146,8 @@ const HomeView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => {
     <section id="who-we-serve" className="py-24 bg-white font-sans">
       <div className="max-w-7xl mx-auto px-6">
         <div className="mb-20">
-          <p className="text-status-info font-bold tracking-widest uppercase text-xs mb-4">Who we serve.</p>
-          <h2 className="font-serif text-4xl md:text-5xl lg:text-7xl font-bold text-brand-deep-navy mb-8 leading-[1.1] tracking-tight max-w-4xl">
+          <p className="text-[#194083] font-bold tracking-widest uppercase text-xs mb-4">Who we serve.</p>
+          <h2 className="font-serif text-4xl md:text-5xl lg:text-7xl font-bold text-[#081A33] mb-8 leading-[1.1] tracking-tight max-w-4xl">
             Built for teams whose work depends on accurate, repeatable operations.
           </h2>
           <p className="text-lg md:text-xl text-slate-500 leading-relaxed max-w-4xl">
@@ -2170,10 +2170,10 @@ const HomeView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => {
               className="group cursor-pointer p-10 rounded-2xl border border-slate-100 hover:border-blue-200 transition-all duration-300 bg-white flex flex-col h-full shadow-[0_4px_20px_rgba(0,0,0,0.02)] hover:shadow-xl"
             >
               <div className="flex-grow">
-                <h3 className="font-serif text-2xl font-bold text-brand-deep-navy mb-6 group-hover:text-status-info transition-colors">{service.title}</h3>
-                <p className="text-txt-secondary text-sm leading-relaxed mb-10 font-sans">Dedicated offshore support tailored to your industry's specific workflow requirements.</p>
+                <h3 className="font-serif text-2xl font-bold text-[#081A33] mb-6 group-hover:text-[#194083] transition-colors">{service.title}</h3>
+                <p className="text-slate-500 text-sm leading-relaxed mb-10 font-sans">Dedicated offshore support tailored to your industry's specific workflow requirements.</p>
               </div>
-              <div className="flex items-center gap-2 text-status-info text-sm font-bold font-sans">
+              <div className="flex items-center gap-2 text-[#194083] text-sm font-bold font-sans">
                 <span>Explore services</span>
                 <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
               </div>
@@ -2181,12 +2181,12 @@ const HomeView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => {
           ))}
           
           {/* Custom Desk Card */}
-          <div className="bg-[#F8FAFC] p-10 rounded-2xl flex flex-col items-center justify-center text-center shadow-[0_4px_20px_rgba(0,0,0,0.01)] border border-slate-100/50">
-             <h3 className="font-serif text-2xl font-bold text-brand-deep-navy mb-4">Don't see your sector?</h3>
-             <p className="text-txt-secondary text-sm mb-10 font-sans">We build custom desks for unique workflows.</p>
+          <div className="bg-[#F5F7FA] p-10 rounded-2xl flex flex-col items-center justify-center text-center shadow-[0_4px_20px_rgba(0,0,0,0.01)] border border-slate-100/50">
+             <h3 className="font-serif text-2xl font-bold text-[#081A33] mb-4">Don't see your sector?</h3>
+             <p className="text-slate-500 text-sm mb-10 font-sans">We build custom desks for unique workflows.</p>
              <button 
                onClick={(e) => { e.stopPropagation(); onNavigate('/contact'); }}
-               className="w-full bg-status-info hover:bg-status-info/90 text-white font-bold py-4 rounded-xl transition-colors shadow-md uppercase tracking-widest text-xs font-sans"
+               className="w-full bg-[#194083] hover:opacity-90 text-white font-bold py-4 rounded-xl transition-colors shadow-md uppercase tracking-widest text-xs font-sans"
              >
                Send an enquiry
              </button>
@@ -2195,10 +2195,10 @@ const HomeView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => {
       </div>
     </section>
 
-    <section id="what-we-do" className="py-24 bg-brand-deep-navy text-white font-sans overflow-hidden">
+    <section id="what-we-do" className="py-24 bg-[#081A33] text-white font-sans overflow-hidden">
       <div className="max-w-7xl mx-auto px-6">
         <div className="mb-20">
-          <div className="text-status-info font-bold tracking-widest uppercase text-[11px] mb-6 underline decoration-status-info underline-offset-8">What we do.</div>
+          <div className="text-[#194083] font-bold tracking-widest uppercase text-[11px] mb-6 underline decoration-[#194083] underline-offset-8">What we do.</div>
           <h2 className="font-serif text-4xl md:text-5xl lg:text-7xl font-bold mb-8 leading-[1.1] tracking-tight max-w-4xl">
             Multiple managed workflow lines, one operating partner.
           </h2>
@@ -2218,14 +2218,14 @@ const HomeView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => {
             <div
               key={item.id}
               onClick={() => onNavigate(item.path as ViewPath)}
-              className="cursor-pointer group p-10 rounded-2xl bg-brand-slate border border-white/5 hover:border-status-info/50 hover:bg-brand-slate/80 transition-all duration-300 flex flex-col h-full shadow-2xl"
+              className="cursor-pointer group p-10 rounded-2xl bg-slate-900 border border-white/5 hover:border-[#194083]/50 hover:bg-slate-900/80 transition-all duration-300 flex flex-col h-full shadow-2xl"
             >
               <div className="flex-grow">
-                <div className="text-status-info font-serif text-5xl font-black mb-8 opacity-80 group-hover:opacity-100 transition-opacity">{item.id}</div>
-                <h3 className="font-serif text-2xl font-bold mb-6 group-hover:text-status-info transition-colors uppercase tracking-tight">{item.title}</h3>
+                <div className="text-[#194083] font-serif text-5xl font-black mb-8 opacity-80 group-hover:opacity-100 transition-opacity">{item.id}</div>
+                <h3 className="font-serif text-2xl font-bold mb-6 group-hover:text-[#194083] transition-colors uppercase tracking-tight">{item.title}</h3>
                 <p className="text-white/50 text-sm leading-relaxed mb-6 font-sans">{item.desc}</p>
               </div>
-              <div className="flex items-center gap-2 text-status-info text-xs font-bold uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-all transform translate-x-[-10px] group-hover:translate-x-0 font-sans">
+              <div className="flex items-center gap-2 text-[#194083] text-xs font-bold uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-all transform translate-x-[-10px] group-hover:translate-x-0 font-sans">
                 <span>View Capability</span>
                 <ArrowRight size={14} />
               </div>
@@ -2252,7 +2252,7 @@ const SpeechContentDataView = ({ onNavigate }: { onNavigate: (path: ViewPath) =>
             OrbitSol helps businesses convert audio, video, documents, notes, recordings, and unstructured content into accurate, searchable, and workflow-ready outputs. We support audio transcription, AI transcript correction, caption preparation, subtitling support, meeting summaries, metadata tagging, document indexing, content classification, and structured data extraction, with trained human review built into every workflow.
           </p>
           <div className="flex flex-wrap gap-4">
-            <button onClick={() => onNavigate('/contact')} className="bg-[#2368D6] hover:bg-blue-500 text-white px-8 py-3.5 rounded-xl font-bold uppercase tracking-widest text-xs shadow-lg transition-all">
+            <button onClick={() => onNavigate('/contact')} className="bg-[#194083] hover:opacity-90 text-white px-8 py-3.5 rounded-xl font-bold uppercase tracking-widest text-xs shadow-lg transition-all">
               Send a sample file
             </button>
             <button onClick={() => onNavigate('/contact')} className="border border-white/20 text-white hover:bg-white/10 px-8 py-3.5 rounded-xl font-bold uppercase tracking-widest text-xs transition-all">
@@ -2266,7 +2266,7 @@ const SpeechContentDataView = ({ onNavigate }: { onNavigate: (path: ViewPath) =>
     {/* Section 2 - Opening Section */}
     <section className="py-24 bg-white font-sans border-b border-slate-100">
        <div className="max-w-4xl mx-auto px-6">
-          <h2 className="text-3xl md:text-4xl font-serif text-[#0A192F] font-bold mb-8 text-center">Your business already has the data. The problem is that much of it is trapped in unusable formats.</h2>
+          <h2 className="text-3xl md:text-4xl font-serif text-[#081A33] font-bold mb-8 text-center">Your business already has the data. The problem is that much of it is trapped in unusable formats.</h2>
           <div className="space-y-6 text-slate-600 leading-relaxed text-lg">
             <p>
               Calls, meetings, inspections, interviews, webinars, training videos, reports, forms, and document sets often hold valuable information, but they are difficult to search, analyse, share, or act on when they remain as raw recordings or as scattered files. OrbitSol turns that material into structured outputs your team can use inside daily operations, compliance, reporting, training, research, marketing, and client service workflows.
@@ -2279,7 +2279,7 @@ const SpeechContentDataView = ({ onNavigate }: { onNavigate: (path: ViewPath) =>
     </section>
 
     {/* Capability Strip (Section 9 partial) */}
-    <section className="py-8 bg-slate-50 border-b border-slate-100 overflow-hidden">
+    <section className="py-8 bg-[#F8FAFC] border-b border-slate-100 overflow-hidden">
        <div className="max-w-7xl mx-auto px-6 whitespace-nowrap">
           <div className="flex justify-between items-center text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] opacity-60">
              <span>Audio transcription</span>
@@ -2302,7 +2302,7 @@ const SpeechContentDataView = ({ onNavigate }: { onNavigate: (path: ViewPath) =>
     {/* Section 3 - What We Handle */}
     <section className="py-24 bg-white font-sans">
       <div className="max-w-7xl mx-auto px-6">
-        <h2 className="font-serif text-3xl font-bold text-[#0A192F] mb-16">What we handle.</h2>
+        <h2 className="font-serif text-3xl font-bold text-[#081A33] mb-16">What we handle.</h2>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {[
             { t: "Audio Transcription", d: "Legal, financial, academic, business, property, sermon, interview, and general audio transcription, prepared with the right balance of accuracy, formatting, and turnaround. Audio transcription has been one of OrbitSol's core services since the business began." },
@@ -2315,8 +2315,8 @@ const SpeechContentDataView = ({ onNavigate }: { onNavigate: (path: ViewPath) =>
             { t: "Property Report Production", d: "Property condition reports, inventories, check-ins, check-outs, inspection reports, and routine documentation produced from dictation, photos, video, and platform notes." },
             { t: "Content Library Cleanup", d: "Backlog cleanup for recordings, transcripts, training videos, archived webinars, research interviews, inspection files, document folders, and internal knowledge libraries." }
           ].map((card, idx) => (
-            <div key={idx} className="p-10 rounded-2xl border border-slate-100 bg-[#F8FAFC] shadow-sm hover:shadow-md transition-all">
-               <h4 className="font-serif text-xl font-bold text-[#0A192F] mb-4">{card.t}</h4>
+            <div key={idx} className="p-10 rounded-2xl border border-slate-100 bg-[#F5F7FA] shadow-sm hover:shadow-md transition-all">
+               <h4 className="font-serif text-xl font-bold text-[#081A33] mb-4">{card.t}</h4>
                <p className="text-slate-500 text-sm leading-relaxed">{card.d}</p>
             </div>
           ))}
@@ -2325,7 +2325,7 @@ const SpeechContentDataView = ({ onNavigate }: { onNavigate: (path: ViewPath) =>
     </section>
 
     {/* Section 4 - How the Workflow Runs */}
-    <section className="py-24 bg-[#0A192F] text-white font-sans overflow-hidden">
+    <section className="py-24 bg-[#081A33] text-white font-sans overflow-hidden">
        <div className="max-w-7xl mx-auto px-6">
           <h2 className="font-serif text-3xl font-bold mb-16">How the workflow runs.</h2>
           <div className="grid md:grid-cols-5 gap-8 relative">
@@ -2339,7 +2339,7 @@ const SpeechContentDataView = ({ onNavigate }: { onNavigate: (path: ViewPath) =>
                { s: "Delivery", d: "The final output is delivered in Word, Excel, PDF, plain text, SRT, VTT, CSV, structured summary format, platform upload, or any agreed client template." }
              ].map((step, idx) => (
                <div key={idx} className="space-y-4 relative z-10">
-                  <div className="w-10 h-10 rounded-full bg-[#2368D6] text-white flex items-center justify-center font-black text-sm mb-4 border-4 border-[#0A192F]">0{idx + 1}</div>
+                  <div className="w-10 h-10 rounded-full bg-[#194083] text-white flex items-center justify-center font-black text-sm mb-4 border-4 border-[#081A33]">0{idx + 1}</div>
                   <h4 className="font-bold text-lg leading-tight">{step.s}</h4>
                   <p className="text-blue-100/50 text-[11px] leading-relaxed">{step.d}</p>
                </div>
@@ -2351,7 +2351,7 @@ const SpeechContentDataView = ({ onNavigate }: { onNavigate: (path: ViewPath) =>
     {/* Section 5 - Use Cases */}
     <section className="py-24 bg-white font-sans">
       <div className="max-w-7xl mx-auto px-6">
-         <h2 className="font-serif text-3xl font-bold text-[#0A192F] mb-16 text-center">Use cases.</h2>
+         <h2 className="font-serif text-3xl font-bold text-[#081A33] mb-16 text-center">Use cases.</h2>
          <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {[
               { t: "Make recordings searchable", d: "Convert audio and video libraries into transcripts, summaries, tags, and metadata, so teams can find the information they need without listening to entire files." },
@@ -2362,8 +2362,8 @@ const SpeechContentDataView = ({ onNavigate }: { onNavigate: (path: ViewPath) =>
               { t: "Structure document-heavy workflows", d: "Classify, index, extract, and validate information from forms, reports, contracts, inspection files, research documents, and operational records." },
               { t: "Prepare content for wider audiences", d: "Support captions, subtitles, translation-ready text, accessibility workflows, and training content, so information can be used by more people in more contexts." }
             ].map((item, idx) => (
-              <div key={idx} className="p-8 bg-slate-50 border border-slate-100 rounded-2xl">
-                 <h4 className="font-bold text-[#0A192F] text-sm mb-3">{item.t}</h4>
+              <div key={idx} className="p-8 bg-[#FFF7EA] border border-[#FFF0E6] rounded-2xl">
+                 <h4 className="font-bold text-[#081A33] text-sm mb-3">{item.t}</h4>
                  <p className="text-slate-500 text-xs leading-relaxed">{item.d}</p>
               </div>
             ))}
@@ -2372,11 +2372,11 @@ const SpeechContentDataView = ({ onNavigate }: { onNavigate: (path: ViewPath) =>
     </section>
 
     {/* Section 6 & 7 - Who We Support & Output Formats */}
-    <section className="py-24 bg-slate-50 font-sans border-y border-slate-200">
+    <section className="py-24 bg-[#FFF7EA] font-sans border-y border-[#FFF0E6]">
       <div className="max-w-7xl mx-auto px-6">
          <div className="grid lg:grid-cols-2 gap-16">
             <div>
-               <h3 className="font-serif text-2xl font-bold text-[#0A192F] mb-8">Who we support</h3>
+               <h3 className="font-serif text-2xl font-bold text-[#081A33] mb-8">Who we support</h3>
                <div className="grid md:grid-cols-2 gap-4">
                   {[
                     "Property and Strata Teams",
@@ -2389,14 +2389,14 @@ const SpeechContentDataView = ({ onNavigate }: { onNavigate: (path: ViewPath) =>
                     "Founder-Led Businesses"
                   ].map((segment, idx) => (
                     <div key={idx} className="flex items-center gap-4 py-3 border-b border-slate-200">
-                       <Check size={16} className="text-[#2368D6]" />
+                       <Check size={16} className="text-[#194083]" />
                        <span className="text-slate-600 font-medium text-sm">{segment}</span>
                     </div>
                   ))}
                </div>
             </div>
             <div>
-               <h3 className="font-serif text-2xl font-bold text-[#0A192F] mb-4">We deliver in the format your workflow needs.</h3>
+               <h3 className="font-serif text-2xl font-bold text-[#081A33] mb-4">We deliver in the format your workflow needs.</h3>
                <p className="text-slate-500 text-sm leading-relaxed mb-8">
                  OrbitSol can prepare outputs for review, publication, filing, platform entry, search, reporting, or handover. The deliverable can be simple text, a structured spreadsheet, a caption file, a report, a summary, a tagged content library, or a platform-ready upload.
                </p>
@@ -2419,7 +2419,7 @@ const SpeechContentDataView = ({ onNavigate }: { onNavigate: (path: ViewPath) =>
     <section className="py-24 bg-white font-sans">
        <div className="max-w-7xl mx-auto px-6">
           <div className="max-w-4xl mx-auto text-center mb-16">
-             <h2 className="font-serif text-3xl md:text-5xl font-bold text-[#0A192F] mb-8">Because useful content intelligence needs more than automation.</h2>
+             <h2 className="font-serif text-3xl md:text-5xl font-bold text-[#081A33] mb-8">Because useful content intelligence needs more than automation.</h2>
              <p className="text-slate-600 leading-relaxed text-lg max-w-3xl mx-auto">
                Automated tools are useful for speed, but they still miss accents, names, context, industry terminology, speaker changes, formatting instructions, and judgement calls. That matters when the output is being used for legal records, property documentation, financial discussions, client reporting, accessibility, training, or decision-making.
              </p>
@@ -2433,8 +2433,8 @@ const SpeechContentDataView = ({ onNavigate }: { onNavigate: (path: ViewPath) =>
                { t: "Confidential handling", d: "Access, permissions, non-disclosure agreements, and secure transfer methods are agreed before work begins." },
                { t: "Managed delivery", d: "A named project leader coordinates the workflow, the escalations, the quality assurance, and the reporting." }
              ].map((point, idx) => (
-               <div key={idx} className="p-10 rounded-2xl bg-slate-50 border border-slate-100">
-                  <h4 className="font-bold text-[#0A192F] mb-4 text-lg">{point.t}</h4>
+               <div key={idx} className="p-10 rounded-2xl bg-[#FFF7EA] border border-[#FFF0E6]">
+                  <h4 className="font-bold text-[#081A33] mb-4 text-lg">{point.t}</h4>
                   <p className="text-slate-500 text-sm leading-relaxed">{point.d}</p>
                </div>
              ))}
@@ -2443,7 +2443,7 @@ const SpeechContentDataView = ({ onNavigate }: { onNavigate: (path: ViewPath) =>
     </section>
 
     {/* Section 10 - FAQ */}
-    <section className="py-24 bg-[#F8FAFC] font-sans border-y border-slate-200">
+    <section className="py-24 bg-[#FFF7EA]/50 font-sans border-y border-slate-200">
       <div className="max-w-3xl mx-auto px-6">
         <h2 className="text-[11px] font-bold text-slate-400 uppercase tracking-widest text-center mb-16">Frequently Asked Questions</h2>
         <div className="space-y-4">
@@ -2461,12 +2461,12 @@ const SpeechContentDataView = ({ onNavigate }: { onNavigate: (path: ViewPath) =>
     </section>
 
     {/* Section 11 - Closing CTA */}
-    <section className="bg-[#0A192F] py-24 px-6 text-center text-white font-sans">
+    <section className="bg-[#081A33] py-24 px-6 text-center text-white font-sans">
       <div className="max-w-4xl mx-auto">
         <h2 className="font-serif text-3xl md:text-5xl font-bold mb-6">Send us one file and the output you need from it.</h2>
         <p className="text-blue-100/60 mb-10 text-lg">Whether it is a recording, a video, a transcript, a document set, an inspection file, or a content library, we will review the input and suggest a workflow that turns it into something structured, searchable, and useful.</p>
         <div className="flex flex-wrap justify-center gap-4">
-          <button onClick={() => onNavigate('/contact')} className="bg-[#2368D6] hover:bg-blue-500 transition-colors px-10 py-4 rounded-xl text-xs font-bold uppercase tracking-[0.2em] shadow-xl">
+          <button onClick={() => onNavigate('/contact')} className="bg-[#194083] hover:opacity-90 transition-colors px-10 py-4 rounded-xl text-xs font-bold uppercase tracking-[0.2em] shadow-xl">
             Send a sample file
           </button>
           <button onClick={() => onNavigate('/contact')} className="border border-white/20 hover:bg-white/10 transition-colors px-10 py-4 rounded-xl text-xs font-bold uppercase tracking-[0.2em]">
@@ -2641,23 +2641,23 @@ const AdminView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#2368D6]"></div>
+      <div className="min-h-screen flex items-center justify-center bg-[#FFF7EA]">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#194083]"></div>
       </div>
     );
   }
 
   if (!isAdmin) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50 font-sans p-6">
+      <div className="min-h-screen flex items-center justify-center bg-[#FFF7EA] font-sans p-6">
         <div className="max-w-md w-full bg-white p-10 rounded-2xl shadow-xl text-center border border-slate-100">
            <Settings size={48} className="mx-auto text-slate-300 mb-6" />
-           <h1 className="text-2xl font-serif font-bold text-[#0A192F] mb-4">Admin Access</h1>
+           <h1 className="text-2xl font-serif font-bold text-[#081A33] mb-4">Admin Access</h1>
            <p className="text-slate-500 mb-8">This area is restricted to administrators only. Please sign in with an authorized account.</p>
            {!user ? (
              <button 
                onClick={handleLogin}
-               className="w-full bg-[#0A192F] hover:bg-slate-800 text-white px-8 py-4 rounded-xl font-bold uppercase tracking-widest text-xs transition-all shadow-md flex items-center justify-center gap-3"
+               className="w-full bg-[#081A33] hover:bg-slate-800 text-white px-8 py-4 rounded-xl font-bold uppercase tracking-widest text-xs transition-all shadow-md flex items-center justify-center gap-3"
              >
                <LogIn size={16} /> Sign in with Google
              </button>
@@ -2666,7 +2666,7 @@ const AdminView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
                 <p className="text-red-500 text-sm font-medium">Account {user.email} is not authorized.</p>
                 <button 
                   onClick={() => auth.signOut()}
-                  className="text-slate-400 hover:text-[#0A192F] font-bold text-xs uppercase tracking-widest"
+                  className="text-slate-400 hover:text-[#081A33] font-bold text-xs uppercase tracking-widest"
                 >
                   Sign Out
                 </button>
@@ -2678,31 +2678,31 @@ const AdminView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 font-sans pt-20">
+    <div className="min-h-screen bg-[#FFF7EA] font-sans pt-20">
       {/* Sidebar/Nav */}
       <div className="max-w-7xl mx-auto px-6 py-12">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
           <div>
-            <h1 className="font-serif text-3xl font-bold text-[#0A192F]">OrbitSol Admin</h1>
+            <h1 className="font-serif text-3xl font-bold text-[#081A33]">OrbitSol Admin</h1>
             <p className="text-slate-500 text-sm">Manage website content and insights.</p>
           </div>
           <div className="flex items-center gap-4">
             <div className="flex bg-white rounded-xl p-1 border border-slate-100 shadow-sm mr-4">
               <button 
                 onClick={() => setActiveTab('insights')}
-                className={`px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-widest transition-all ${activeTab === 'insights' ? 'bg-[#0A192F] text-white shadow-md' : 'text-slate-400 hover:text-[#0A192F]'}`}
+                className={`px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-widest transition-all ${activeTab === 'insights' ? 'bg-[#081A33] text-white shadow-md' : 'text-slate-400 hover:text-[#081A33]'}`}
               >
                 Insights
               </button>
               <button 
                 onClick={() => setActiveTab('settings')}
-                className={`px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-widest transition-all ${activeTab === 'settings' ? 'bg-[#0A192F] text-white shadow-md' : 'text-slate-400 hover:text-[#0A192F]'}`}
+                className={`px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-widest transition-all ${activeTab === 'settings' ? 'bg-[#081A33] text-white shadow-md' : 'text-slate-400 hover:text-[#081A33]'}`}
               >
                 Settings
               </button>
               <button 
                 onClick={() => setActiveTab('enquiries')}
-                className={`px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-widest transition-all ${activeTab === 'enquiries' ? 'bg-[#0A192F] text-white shadow-md' : 'text-slate-400 hover:text-[#0A192F]'}`}
+                className={`px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-widest transition-all ${activeTab === 'enquiries' ? 'bg-[#081A33] text-white shadow-md' : 'text-slate-400 hover:text-[#081A33]'}`}
               >
                 Enquiries
               </button>
@@ -2710,7 +2710,7 @@ const AdminView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
             {activeTab === 'insights' && (
               <button 
                 onClick={() => { setEditingInsight(null); setIsFormOpen(true); }}
-                className="bg-[#2368D6] hover:bg-blue-500 text-white px-6 py-3 rounded-xl font-bold flex items-center gap-2 text-xs uppercase tracking-widest shadow-lg transition-all"
+                className="bg-[#194083] hover:opacity-90 text-white px-6 py-3 rounded-xl font-bold flex items-center gap-2 text-xs uppercase tracking-widest shadow-lg transition-all"
               >
                 <Plus size={16} /> New Insight
               </button>
@@ -2726,8 +2726,8 @@ const AdminView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
         </div>
 
         {activeTab === 'insights' ? (
-          <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
-             <div className="border-b border-slate-100 bg-slate-50/50 px-8 py-4">
+          <div className="bg-white rounded-2xl shadow-sm border border-brand-warm-cream overflow-hidden">
+             <div className="border-b border-brand-warm-cream bg-brand-cream/50 px-8 py-4">
                 <h2 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Recent insights</h2>
              </div>
              <div className="overflow-x-auto">
@@ -2743,13 +2743,13 @@ const AdminView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
                  </thead>
                  <tbody className="divide-y divide-slate-50">
                    {insights.map((insight) => (
-                     <tr key={insight.id} className="hover:bg-slate-50/50 transition-colors">
+                     <tr key={insight.id} className="hover:bg-brand-cream/50 transition-colors">
                        <td className="px-8 py-5">
-                         <div className="font-bold text-[#0A192F] text-sm">{insight.title}</div>
+                         <div className="font-bold text-brand-deep-navy text-sm">{insight.title}</div>
                          <div className="text-slate-400 text-[10px] mt-1 truncate max-w-[300px]">{insight.summary}</div>
                        </td>
                        <td className="px-8 py-5">
-                         <span className="px-2 py-1 bg-blue-50 text-[#2368D6] text-[9px] font-bold rounded uppercase tracking-widest">{insight.tag}</span>
+                         <span className="px-2 py-1 bg-[#FFF0E6] text-[#F97316] text-[9px] font-bold rounded uppercase tracking-widest">{insight.tag}</span>
                        </td>
                        <td className="px-8 py-5">
                          <span className={`px-2 py-1 rounded text-[9px] font-bold uppercase tracking-widest ${insight.status === 'published' ? 'bg-green-50 text-green-600' : 'bg-orange-50 text-orange-600'}`}>
@@ -2763,7 +2763,7 @@ const AdminView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
                          <div className="flex justify-end gap-2">
                            <button 
                               onClick={() => { setEditingInsight(insight); setIsFormOpen(true); }}
-                              className="p-2 text-slate-400 hover:text-[#2368D6] transition-colors"
+                              className="p-2 text-slate-400 hover:text-brand-blue transition-colors"
                            >
                              <Edit size={16} />
                            </button>
@@ -2782,8 +2782,8 @@ const AdminView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
              </div>
           </div>
         ) : activeTab === 'enquiries' ? (
-          <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
-             <div className="border-b border-slate-100 bg-slate-50/50 px-8 py-4">
+          <div className="bg-white rounded-2xl shadow-sm border border-brand-warm-cream overflow-hidden">
+             <div className="border-b border-brand-warm-cream bg-brand-cream/50 px-8 py-4">
                 <h2 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">New Enquiries</h2>
              </div>
              <div className="overflow-x-auto">
@@ -2798,14 +2798,14 @@ const AdminView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
                  </thead>
                  <tbody className="divide-y divide-slate-50">
                    {enquiries.map((enq) => (
-                     <tr key={enq.id} className="hover:bg-slate-50/50 transition-colors align-top">
+                     <tr key={enq.id} className="hover:bg-brand-cream/50 transition-colors align-top">
                        <td className="px-8 py-5">
-                         <div className="font-bold text-[#0A192F] text-sm">{enq.name}</div>
+                         <div className="font-bold text-brand-deep-navy text-sm">{enq.name}</div>
                          <div className="text-slate-400 text-xs mt-1">{enq.email}</div>
                          <div className="text-[10px] text-slate-300 mt-1">{enq.company || 'No Company'} • {enq.country || 'No Country'}</div>
                        </td>
                        <td className="px-8 py-5">
-                         <span className="px-2 py-1 bg-blue-50 text-[#2368D6] text-[9px] font-bold rounded uppercase tracking-widest whitespace-nowrap">{enq.service}</span>
+                         <span className="px-2 py-1 bg-[#FFF0E6]/30 text-[#194083] text-[9px] font-bold rounded uppercase tracking-widest whitespace-nowrap">{enq.service}</span>
                        </td>
                        <td className="px-8 py-5">
                          <p className="text-slate-500 text-xs leading-relaxed max-w-md whitespace-pre-wrap">{enq.message}</p>
@@ -2835,7 +2835,7 @@ const AdminView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
                     <button
                       key={p}
                       onClick={() => setSelectedPage(p)}
-                      className={`w-full text-left px-4 py-3 rounded-xl text-xs font-bold uppercase tracking-widest transition-all ${selectedPage === p ? 'bg-[#0A192F] text-white' : 'hover:bg-slate-50 text-slate-600'}`}
+                      className={`w-full text-left px-4 py-3 rounded-xl text-xs font-bold uppercase tracking-widest transition-all ${selectedPage === p ? 'bg-[#081A33] text-white' : 'hover:bg-[#FFF7EA] text-slate-600'}`}
                     >
                       {p}
                     </button>
@@ -2847,11 +2847,11 @@ const AdminView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
             <div className="md:col-span-2">
               <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-100">
                 <div className="flex justify-between items-center mb-8">
-                  <h3 className="font-serif text-xl font-bold text-[#0A192F] capitalize">{selectedPage} Settings</h3>
+                  <h3 className="font-serif text-xl font-bold text-brand-deep-navy capitalize">{selectedPage} Settings</h3>
                   <button 
                     onClick={saveAllSettings}
                     disabled={savingSettings}
-                    className="bg-[#2368D6] hover:bg-blue-600 text-white px-6 py-2 rounded-xl font-bold text-xs uppercase tracking-widest shadow-md disabled:opacity-50 flex items-center gap-2"
+                    className="bg-[#194083] hover:opacity-90 text-white px-6 py-2 rounded-xl font-bold text-xs uppercase tracking-widest shadow-md disabled:opacity-50 flex items-center gap-2"
                   >
                     {savingSettings ? 'Saving...' : <><Save size={14} /> Save Page</>}
                   </button>
@@ -2861,7 +2861,7 @@ const AdminView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
                   {getFieldsForPage(selectedPage).map(field => (
                     <div key={field.id} className="space-y-2">
                       {field.type === 'info' ? (
-                        <div className="bg-blue-50 border border-blue-100 p-4 rounded-xl">
+                        <div className="bg-[#FFF0E6] border border-[#FFF0E6] p-4 rounded-xl">
                           <p className="text-[10px] font-bold text-blue-400 uppercase tracking-widest mb-2">{field.label}</p>
                           <p className="text-xs text-blue-700 whitespace-pre-line leading-relaxed">{field.content}</p>
                         </div>
@@ -2871,14 +2871,14 @@ const AdminView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
                           {field.type === 'textarea' ? (
                             <textarea 
                               rows={4}
-                              className="w-full p-4 bg-slate-50 border border-slate-100 rounded-xl focus:border-[#2368D6] outline-none transition-all"
+                              className="w-full p-4 bg-brand-cream border border-brand-warm-cream rounded-xl focus:border-status-info outline-none transition-all"
                               value={pageSettings[field.id] || ''}
                               onChange={(e) => handleSettingChange(field.id, e.target.value)}
                             />
                           ) : (
                             <input 
                               type="text"
-                              className="w-full p-4 bg-slate-50 border border-slate-100 rounded-xl focus:border-[#2368D6] outline-none transition-all"
+                              className="w-full p-4 bg-brand-cream border border-brand-warm-cream rounded-xl focus:border-status-info outline-none transition-all"
                               value={pageSettings[field.id] || ''}
                               onChange={(e) => handleSettingChange(field.id, e.target.value)}
                             />
@@ -2906,7 +2906,7 @@ const AdminView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsFormOpen(false)}
-              className="absolute inset-0 bg-[#0A192F]/80 backdrop-blur-sm"
+              className="absolute inset-0 bg-[#081A33]/80 backdrop-blur-sm"
             />
             <motion.div 
               initial={{ scale: 0.9, opacity: 0, y: 20 }}
@@ -2915,11 +2915,11 @@ const AdminView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
               className="relative w-full max-w-4xl bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]"
             >
               <form onSubmit={handleSaveInsight} className="flex flex-col h-full">
-                <div className="px-8 py-6 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
-                  <h3 className="font-serif text-xl font-bold text-[#0A192F]">
+               <div className="px-8 py-6 border-b border-[#FFF0E6] flex justify-between items-center bg-[#FFF7EA]/50">
+                  <h3 className="font-serif text-xl font-bold text-[#081A33]">
                     {editingInsight ? 'Edit Insight' : 'Create New Insight'}
                   </h3>
-                  <button type="button" onClick={() => setIsFormOpen(false)} className="text-slate-400 hover:text-[#0A192F] transition-colors">
+                  <button type="button" onClick={() => setIsFormOpen(false)} className="text-slate-400 hover:text-[#081A33] transition-colors">
                     <X size={24} />
                   </button>
                 </div>
@@ -2932,7 +2932,7 @@ const AdminView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
                         name="title" 
                         defaultValue={editingInsight?.title} 
                         required 
-                        className="w-full p-4 bg-slate-50 border border-slate-100 rounded-xl outline-none focus:border-[#2368D6] transition-all"
+                        className="w-full p-4 bg-slate-50 border border-slate-100 rounded-xl outline-none focus:border-brand-blue transition-all"
                         placeholder="Post title"
                       />
                     </div>
@@ -2942,7 +2942,7 @@ const AdminView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
                         name="tag" 
                         defaultValue={editingInsight?.tag} 
                         required 
-                        className="w-full p-4 bg-slate-50 border border-slate-100 rounded-xl outline-none focus:border-[#2368D6] transition-all"
+                        className="w-full p-4 bg-slate-50 border border-slate-100 rounded-xl outline-none focus:border-brand-blue transition-all"
                         placeholder="e.g. Operations"
                       />
                     </div>
@@ -2954,7 +2954,7 @@ const AdminView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
                       <input 
                         name="image" 
                         defaultValue={editingInsight?.image} 
-                        className="w-full p-4 bg-slate-50 border border-slate-100 rounded-xl outline-none focus:border-[#2368D6] transition-all"
+                        className="w-full p-4 bg-slate-50 border border-slate-100 rounded-xl outline-none focus:border-brand-blue transition-all"
                         placeholder="https://..."
                       />
                     </div>
@@ -2965,7 +2965,7 @@ const AdminView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
                         type="date"
                         defaultValue={editingInsight?.date || new Date().toISOString().split('T')[0]} 
                         required 
-                        className="w-full p-4 bg-slate-50 border border-slate-100 rounded-xl outline-none focus:border-[#2368D6] transition-all"
+                        className="w-full p-4 bg-slate-50 border border-slate-100 rounded-xl outline-none focus:border-brand-blue transition-all"
                       />
                     </div>
                   </div>
@@ -2977,7 +2977,7 @@ const AdminView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
                       defaultValue={editingInsight?.summary} 
                       required 
                       rows={2}
-                      className="w-full p-4 bg-slate-50 border border-slate-100 rounded-xl outline-none focus:border-[#2368D6] transition-all"
+                      className="w-full p-4 bg-slate-50 border border-slate-100 rounded-xl outline-none focus:border-brand-blue transition-all"
                       placeholder="Brief overview for the feed"
                     />
                   </div>
@@ -3002,7 +3002,7 @@ const AdminView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
                         name="author" 
                         defaultValue={editingInsight?.author || 'OrbitSol Team'} 
                         required 
-                        className="w-full p-4 bg-slate-50 border border-slate-100 rounded-xl outline-none focus:border-[#2368D6] transition-all"
+                        className="w-full p-4 bg-slate-50 border border-slate-100 rounded-xl outline-none focus:border-brand-blue transition-all"
                       />
                     </div>
                     <div className="space-y-2">
@@ -3010,7 +3010,7 @@ const AdminView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
                       <select 
                         name="status" 
                         defaultValue={editingInsight?.status || 'draft'} 
-                        className="w-full p-4 bg-slate-50 border border-slate-100 rounded-xl outline-none focus:border-[#2368D6] transition-all appearance-none"
+                        className="w-full p-4 bg-slate-50 border border-slate-100 rounded-xl outline-none focus:border-brand-blue transition-all appearance-none"
                       >
                         <option value="draft">Draft</option>
                         <option value="published">Published</option>
@@ -3019,17 +3019,17 @@ const AdminView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
                   </div>
                 </div>
 
-                <div className="px-8 py-6 border-t border-slate-100 bg-slate-50/50 flex justify-end gap-4">
+                <div className="px-8 py-6 border-t border-brand-warm-cream bg-brand-cream/50 flex justify-end gap-4">
                   <button 
                     type="button" 
                     onClick={() => setIsFormOpen(false)}
-                    className="px-6 py-3 text-slate-400 font-bold uppercase tracking-[0.1em] text-[10px] hover:text-[#0A192F] transition-colors"
+                    className="px-6 py-3 text-slate-400 font-bold uppercase tracking-[0.1em] text-[10px] hover:text-brand-deep-navy transition-colors"
                   >
                     Cancel
                   </button>
                   <button 
                     type="submit"
-                    className="bg-[#0A192F] hover:bg-slate-800 text-white px-8 py-3 rounded-xl font-bold uppercase tracking-[0.1em] text-[10px] shadow-lg transition-all flex items-center gap-2"
+                    className="bg-brand-deep-navy hover:bg-slate-800 text-white px-8 py-3 rounded-xl font-bold uppercase tracking-[0.1em] text-[10px] shadow-lg transition-all flex items-center gap-2"
                   >
                     <Save size={14} /> Save Changes
                   </button>
@@ -3046,13 +3046,13 @@ const AdminView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
 const PropertyInspectionView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => (
   <>
     {/* Section 1 - Hero */}
-    <section className="relative bg-gradient-to-br from-[#0A192F] to-[#112240] text-white pt-32 pb-24 overflow-hidden font-sans">
+    <section className="relative bg-gradient-to-br from-[#081A33] to-[#112240] text-white pt-32 pb-24 overflow-hidden font-sans">
       <div className="absolute right-[-5%] top-[10%] opacity-10 pointer-events-none hidden lg:block">
          <FileText size={400} className="text-blue-400" />
       </div>
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         <div className="max-w-3xl">
-          <div className="text-blue-300/60 font-bold uppercase tracking-[0.2em] text-xs mb-6 underline decoration-[#2368D6] underline-offset-8">Property Inspection Reports.</div>
+          <div className="text-blue-300/60 font-bold uppercase tracking-[0.2em] text-xs mb-6 underline decoration-[#194083] underline-offset-8">Property Inspection Reports.</div>
           <h1 className="font-serif text-4xl md:text-5xl lg:text-7xl font-bold leading-tight mb-8">
             Turn inspection inputs into client-ready reports through a managed production workflow.
           </h1>
@@ -3060,7 +3060,7 @@ const PropertyInspectionView = ({ onNavigate }: { onNavigate: (path: ViewPath) =
             Inspectors capture findings as audio, video, photos, forms, or platform notes, and OrbitSol turns those inputs into structured, formatted, quality-checked reports inside your template or system. The workflow is built for predictable turnaround, audit-ready documentation, white-label delivery, and scalable report capacity during peak periods. Standard turnaround is 24 hours, express is 6 hours, and super-express can be 3 hours or less.
           </p>
           <div className="flex flex-wrap gap-4">
-            <button onClick={() => onNavigate('/contact')} className="bg-[#2368D6] hover:bg-blue-500 text-white px-10 py-4 rounded-xl font-bold uppercase tracking-widest text-xs shadow-lg transition-all">
+            <button onClick={() => onNavigate('/contact')} className="bg-[#194083] hover:opacity-90 text-white px-10 py-4 rounded-xl font-bold uppercase tracking-widest text-xs shadow-lg transition-all">
               Send a sample report request
             </button>
           </div>
@@ -3071,7 +3071,7 @@ const PropertyInspectionView = ({ onNavigate }: { onNavigate: (path: ViewPath) =
     {/* Section 2 - What We Produce */}
     <section className="py-24 bg-white font-sans">
       <div className="max-w-7xl mx-auto px-6">
-        <h2 className="font-serif text-3xl font-bold text-[#0A192F] mb-16">What we produce.</h2>
+        <h2 className="font-serif text-3xl font-bold text-[#081A33] mb-16">What we produce.</h2>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 text-center sm:text-left">
           {[
             { t: "Property Condition Reports", d: "Entry, exit, routine, and interim inspections for Australia, New Zealand, and similar markets." },
@@ -3081,9 +3081,9 @@ const PropertyInspectionView = ({ onNavigate }: { onNavigate: (path: ViewPath) =
             { t: "Building Inspection Reports", d: "Pre-purchase, pre-sale, and structural inspection report typing from surveyor dictation." },
             { t: "Mid-term Inspections", d: "Routine landlord reports with photos, observations, and recommended actions." }
           ].map((card, idx) => (
-            <div key={idx} className="p-10 rounded-2xl border border-slate-100 bg-[#F8FAFC] shadow-sm hover:translate-y-[-4px] transition-all flex flex-col h-full items-center sm:items-start">
-               <FileCheck size={24} className="text-[#2368D6] mb-6" />
-               <h4 className="font-serif text-xl font-bold text-[#0A192F] mb-4">{card.t}</h4>
+            <div key={idx} className="p-10 rounded-2xl border border-[#FFF0E6] bg-[#FFF7EA]/50 shadow-sm hover:translate-y-[-4px] transition-all flex flex-col h-full items-center sm:items-start">
+               <FileCheck size={24} className="text-[#194083] mb-6" />
+               <h4 className="font-serif text-xl font-bold text-[#081A33] mb-4">{card.t}</h4>
                <p className="text-slate-500 text-sm leading-relaxed">{card.d}</p>
             </div>
           ))}
@@ -3092,9 +3092,9 @@ const PropertyInspectionView = ({ onNavigate }: { onNavigate: (path: ViewPath) =
     </section>
 
     {/* Section 3 - How We Work */}
-    <section className="py-24 bg-slate-50 font-sans border-y border-slate-200">
+    <section className="py-24 bg-[#FFF7EA] font-sans border-y border-[#FFF0E6]">
       <div className="max-w-7xl mx-auto px-6">
-         <h2 className="font-serif text-3xl font-bold text-[#0A192F] mb-16">How we work.</h2>
+         <h2 className="font-serif text-3xl font-bold text-[#081A33] mb-16">How we work.</h2>
          <div className="grid md:grid-cols-3 gap-12">
             {[
                { s: "01", t: "You inspect", d: "An inspector visits the property and captures findings room by room, using audio, photo, video, or platform-native notes." },
@@ -3102,8 +3102,8 @@ const PropertyInspectionView = ({ onNavigate }: { onNavigate: (path: ViewPath) =
                { s: "03", t: "You review and deliver", d: "The final report lands in your platform or inbox, ready for your sign-off and client delivery." }
             ].map((p) => (
                <div key={p.s}>
-                  <div className="text-[#2368D6] font-black text-4xl mb-6 opacity-80">{p.s}</div>
-                  <h4 className="font-bold text-[#0A192F] mb-4 text-lg">{p.t}</h4>
+                  <div className="text-[#194083] font-black text-4xl mb-6 opacity-80">{p.s}</div>
+                  <h4 className="font-bold text-[#081A33] mb-4 text-lg">{p.t}</h4>
                   <p className="text-slate-500 text-sm leading-relaxed">{p.d}</p>
                </div>
             ))}
@@ -3112,11 +3112,11 @@ const PropertyInspectionView = ({ onNavigate }: { onNavigate: (path: ViewPath) =
     </section>
 
     {/* Section 4 - Platforms and Templates (Integrated Integrations) */}
-    <section className="py-24 bg-brand-pale-blue font-sans border-y border-slate-100 overflow-hidden">
+    <section className="py-24 bg-[#FFF7EA] font-sans border-y border-[#FFF0E6] overflow-hidden">
        <div className="max-w-7xl mx-auto px-6">
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-12 mb-16">
             <div className="max-w-xl">
-              <h2 className="font-serif text-3xl md:text-4xl font-bold text-brand-deep-navy mb-4">Seamless integrations.</h2>
+              <h2 className="font-serif text-3xl md:text-4xl font-bold text-[#081A33] mb-4">Seamless integrations.</h2>
               <p className="text-txt-secondary leading-relaxed">
                 Connect the tools you use every day. We adapt to your tech stack, ensuring report data flows directly into your management platforms without manual entry.
               </p>
@@ -3169,7 +3169,7 @@ const PropertyInspectionView = ({ onNavigate }: { onNavigate: (path: ViewPath) =
                   "Quality you can audit.",
                   "Lower delivered cost."
                 ].map((benefit, idx) => (
-                  <div key={idx} className="p-8 border border-blue-100 rounded-2xl bg-[#F0F7FF] shadow-sm flex items-center justify-center text-center">
+                  <div key={idx} className="p-8 border border-[#1B4D83]/20 rounded-2xl bg-[#1B4D83]/5 shadow-sm flex items-center justify-center text-center">
                      <p className="text-[#0A192F] font-bold text-sm">{benefit}</p>
                   </div>
                 ))}
@@ -3179,7 +3179,7 @@ const PropertyInspectionView = ({ onNavigate }: { onNavigate: (path: ViewPath) =
     </section>
 
     {/* Section 6 - FAQ */}
-    <section className="py-24 bg-[#F8FAFC] font-sans">
+    <section className="py-24 bg-brand-cream font-sans">
       <div className="max-w-3xl mx-auto px-6">
         <h2 className="text-[11px] font-bold text-slate-400 uppercase tracking-widest text-center mb-16">Frequently Asked Questions</h2>
         <div className="space-y-4">
@@ -3198,7 +3198,7 @@ const PropertyInspectionView = ({ onNavigate }: { onNavigate: (path: ViewPath) =
       <div className="max-w-4xl mx-auto">
         <h2 className="font-serif text-3xl md:text-5xl font-bold mb-6">Send us one sample dictation and template, and see what comes back.</h2>
         <p className="text-blue-100/60 mb-10 text-lg">No commitment is required for a sample. We will produce one report in your format, so you can judge the quality, the turnaround, and the fit.</p>
-        <button onClick={() => onNavigate('/contact')} className="bg-[#2368D6] hover:bg-blue-500 transition-colors px-10 py-4 rounded-xl text-xs font-bold uppercase tracking-[0.2em] shadow-xl">
+        <button onClick={() => onNavigate('/contact')} className="bg-[#1B4D83] hover:opacity-90 transition-colors px-10 py-4 rounded-xl text-xs font-bold uppercase tracking-[0.2em] shadow-xl">
           Request a free sample
         </button>
       </div>
@@ -3231,7 +3231,7 @@ const LegalProfessionalServicesView = ({ onNavigate }: { onNavigate: (path: View
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid lg:grid-cols-12 gap-12 items-start">
           {/* Left: Scope List */}
-          <div className="lg:col-span-5 bg-[#F8FAFC] p-10 rounded shadow-sm border border-slate-200">
+          <div className="lg:col-span-5 bg-[#e0d7cd]/50 p-10 rounded shadow-sm border border-slate-200">
             <h2 className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-8 border-b border-slate-200 pb-4">Scope of Services</h2>
             <ul className="space-y-4">
               {[
@@ -3245,7 +3245,7 @@ const LegalProfessionalServicesView = ({ onNavigate }: { onNavigate: (path: View
                 "Research & case summary prep"
               ].map((item, idx) => (
                 <li key={idx} className="flex items-start gap-4">
-                  <span className="text-[#2368D6] font-bold mt-1">&bull;</span>
+                  <span className="text-[#1B4D83] font-bold mt-1">&bull;</span>
                   <span className="text-slate-600 font-medium text-sm leading-relaxed">{item}</span>
                 </li>
               ))}
@@ -3255,14 +3255,14 @@ const LegalProfessionalServicesView = ({ onNavigate }: { onNavigate: (path: View
           {/* Right: Context and Model */}
           <div className="lg:col-span-7 pt-4 lg:pt-10">
             <div className="mb-16">
-              <h3 className="text-[11px] font-bold text-[#2368D6] uppercase tracking-widest mb-6">Strategic Context</h3>
-              <p className="text-2xl text-[#0A192F] font-serif font-medium leading-snug">
+              <h3 className="text-[11px] font-bold text-brand-blue uppercase tracking-widest mb-6">Strategic Context</h3>
+              <p className="text-2xl text-brand-deep-navy font-serif font-medium leading-snug">
                 Professional services firms need confidentiality, accuracy, and reliable turnaround more than generic task completion.
               </p>
             </div>
             
             <div className="border-t border-slate-100 pt-10">
-              <h3 className="font-serif text-2xl font-bold text-[#0A192F] mb-6">Our Delivery Model</h3>
+              <h3 className="font-serif text-2xl font-bold text-brand-deep-navy mb-6">Our Delivery Model</h3>
               <p className="text-slate-500 leading-relaxed text-lg">
                 Non-disclosure agreements at firm and individual level, restricted file access, and a dedicated project leader as the single point of contact.
               </p>
@@ -3273,7 +3273,7 @@ const LegalProfessionalServicesView = ({ onNavigate }: { onNavigate: (path: View
     </section>
 
     {/* Block C — How We Work */}
-    <section className="py-24 bg-[#F8FAFC] font-sans">
+    <section className="py-24 bg-[#e0d7cd]/50 font-sans">
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid md:grid-cols-3 gap-8">
           {[
@@ -3293,10 +3293,10 @@ const LegalProfessionalServicesView = ({ onNavigate }: { onNavigate: (path: View
               desc: 'Full requirement scaling with a named project leader managing output and agreed reporting cadence.'
             }
           ].map((card) => (
-            <div key={card.id} className="bg-white p-8 rounded border-l-4 border-[#2368D6] shadow-sm hover:shadow-md transition-shadow flex flex-col h-full">
+            <div key={card.id} className="bg-white p-8 rounded border-l-4 border-brand-blue shadow-sm hover:shadow-md transition-shadow flex flex-col h-full">
               <div className="flex items-center gap-4 mb-6">
-                 <span className="text-[#2368D6] font-serif text-3xl font-bold">{card.id}</span>
-                 <h4 className="font-serif text-xl font-bold text-[#0A192F]">{card.title}</h4>
+                 <span className="text-brand-blue font-serif text-3xl font-bold">{card.id}</span>
+                 <h4 className="font-serif text-xl font-bold text-brand-deep-navy">{card.title}</h4>
               </div>
               <p className="text-slate-500 text-sm leading-relaxed">{card.desc}</p>
             </div>
@@ -3308,7 +3308,7 @@ const LegalProfessionalServicesView = ({ onNavigate }: { onNavigate: (path: View
     {/* Block D — Proof */}
     <section className="py-24 bg-white border-y border-slate-100 font-sans">
       <div className="max-w-4xl mx-auto px-6 text-center">
-        <div className="mb-8 text-[#2368D6] opacity-10">
+        <div className="mb-8 text-[#1B4D83] opacity-10">
           <FileText size={64} className="mx-auto" />
         </div>
         <p className="font-serif text-2xl md:text-3xl text-slate-500 italic leading-relaxed mb-10">
@@ -3319,7 +3319,7 @@ const LegalProfessionalServicesView = ({ onNavigate }: { onNavigate: (path: View
     </section>
 
     {/* Block E — Frequently Asked Questions */}
-    <section className="py-24 bg-[#F8FAFC] font-sans">
+    <section className="py-24 bg-brand-cream font-sans">
       <div className="max-w-3xl mx-auto px-6">
         <h2 className="text-[11px] font-bold text-slate-400 uppercase tracking-widest text-center mb-16">Common Questions</h2>
         <div className="bg-white rounded shadow-sm border border-slate-200 p-10 overflow-hidden">
@@ -3337,7 +3337,7 @@ const LegalProfessionalServicesView = ({ onNavigate }: { onNavigate: (path: View
     <section className="bg-brand-deep-navy py-16 px-6 text-center text-white border-t border-white/10 font-sans">
       <div className="max-w-4xl mx-auto">
         <h2 className="font-serif text-3xl md:text-4xl font-bold mb-10">Give your local team more time for billable and client-facing work.</h2>
-        <button onClick={() => onNavigate('/contact')} className="bg-[#2368D6] hover:bg-blue-500 transition-colors px-10 py-4 rounded text-xs font-bold uppercase tracking-[0.2em] shadow-xl">
+        <button onClick={() => onNavigate('/contact')} className="bg-brand-blue hover:bg-brand-blue/90 transition-colors px-10 py-4 rounded text-xs font-bold uppercase tracking-[0.2em] shadow-xl">
           Discuss a confidential pilot
         </button>
       </div>
