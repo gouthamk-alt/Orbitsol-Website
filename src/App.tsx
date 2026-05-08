@@ -20,7 +20,13 @@ import {
   LogOut,
   LogIn,
   Eye,
-  EyeOff
+  EyeOff,
+  Mic,
+  Video,
+  Layers,
+  Table,
+  Database,
+  Globe
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { adminService, Insight } from './services/adminService';
@@ -95,18 +101,27 @@ const getAssetUrl = (url: string) => {
 const MarketingGrowthView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => (
   <>
     {/* Block A — Hero */}
-    <section className="relative primary-gradient text-white pt-32 pb-24 overflow-hidden">
+    <section className="relative primary-gradient text-white pt-12 pb-8 overflow-hidden">
+      <div className="absolute inset-0 z-0">
+        <img 
+          src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2015&auto=format&fit=crop" 
+          alt="Marketing background" 
+          className="w-full h-full object-cover opacity-20 filter grayscale" 
+          referrerPolicy="no-referrer"
+        />
+        <div className="absolute inset-0 bg-[#081A33]/60 mix-blend-multiply"></div>
+      </div>
       <div className="absolute top-10 right-10 text-[18vw] font-serif font-black text-white/[0.03] pointer-events-none select-none tracking-tighter">MKT</div>
       <div className="max-w-7xl mx-auto px-6 relative z-10">
-        <div className="text-xs uppercase tracking-[0.2em] font-bold text-blue-300/60 mb-6 font-sans">
-          Who we work with / Marketing and Growth Teams
-        </div>
-        <div className="max-w-4xl">
-          <h1 className="font-serif text-4xl md:text-5xl lg:text-7xl font-bold leading-tight mb-8">
-            A capable offshore production team for marketing and branding agencies, and the growth teams inside other businesses.
+        <div className="max-w-2xl p-6 md:p-8 rounded-2xl backdrop-blur-sm bg-white/5 border border-white/10 shadow-2xl">
+          <div className="text-white/60 text-[10px] uppercase tracking-[0.2em] font-bold mb-4 font-sans">
+            Who we work with / Marketing and Growth Teams
+          </div>
+          <h1 className="font-serif text-3xl md:text-5xl font-bold leading-tight mb-6">
+            A capable offshore production team for marketing and branding agencies.
           </h1>
-          <p className="text-lg md:text-xl text-blue-100/70 leading-relaxed max-w-4xl">
-            OrbitSol works as a managed offshore production and execution desk for marketing agencies, branding agencies, and in-house growth teams. We can deliver work white-label under your brand, or we can sit inside your team as an embedded growth desk. Either way, you receive a project leader who owns the relationship, with a set of trained specialists working behind them, so production becomes a repeatable rhythm rather than a freelancer chase.
+          <p className="text-base md:text-lg text-white/70 leading-relaxed max-w-4xl font-sans">
+            OrbitSol works as a managed offshore production and execution desk for agencies and in-house growth teams.
           </p>
         </div>
       </div>
@@ -139,17 +154,17 @@ const MarketingGrowthView = ({ onNavigate }: { onNavigate: (path: ViewPath) => v
               content: "Smaller teams that need a marketing function without building one in-house can engage OrbitSol as a fractional desk, scaled up or down based on the quarter's priorities. The same project leader, specialists, and reporting cadence apply, with a leaner footprint."
             }
           ].map((block, idx) => (
-            <div key={idx} className="p-10 rounded-2xl border border-slate-100 h-full bg-[#F5F7FA] flex flex-col shadow-sm">
-              <h3 className="font-serif text-2xl font-bold text-[#081A33] mb-6">{block.title}</h3>
-              <p className="text-slate-500 text-sm leading-relaxed mb-8">{block.content}</p>
+            <div key={idx} className="p-8 rounded-2xl border border-white/10 h-full bg-[#081A33] text-white flex flex-col shadow-xl backdrop-blur-sm">
+              <h3 className="font-serif text-xl font-bold mb-4">{block.title}</h3>
+              <p className="text-white/90 text-xs leading-relaxed mb-6">{block.content}</p>
               {block.points && (
-                <div className="mt-auto pt-8 border-t border-slate-200">
-                  <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4">Where we typically plug in:</h4>
-                  <ul className="space-y-3">
+                <div className="mt-auto pt-6 border-t border-white/10">
+                  <h4 className="text-[9px] font-bold text-white/50 uppercase tracking-widest mb-3">Where we typically plug in:</h4>
+                  <ul className="space-y-2">
                     {block.points.map((p, pIdx) => (
                       <li key={pIdx} className="flex items-start gap-3">
-                        <Check className="mt-1 text-[#194083] flex-shrink-0" size={14} />
-                        <span className="text-slate-600 text-xs leading-relaxed">{p}</span>
+                        <Check className="mt-1 text-blue-400 flex-shrink-0" size={12} />
+                        <span className="text-white text-[11px] leading-relaxed">{p}</span>
                       </li>
                     ))}
                   </ul>
@@ -177,11 +192,11 @@ const MarketingGrowthView = ({ onNavigate }: { onNavigate: (path: ViewPath) => v
             { t: "In-house specialists", d: "We hire and train specialists in-house rather than maintaining a freelancer roster, which keeps the quality consistent across briefs." },
             { t: "Documented standards", d: "We document the way you like the work to be done, so the team gets faster on your account over time rather than re-learning every brief." }
           ].map((item, idx) => (
-            <div key={idx} className="flex gap-6 p-8 bg-[#F5F7FA] rounded-2xl border border-slate-100 shadow-sm">
-              <div className="text-[#194083] font-serif text-2xl font-bold">0{idx + 1}</div>
+            <div key={idx} className="flex gap-4 p-6 bg-[#081A33] text-white rounded-2xl border border-white/10 shadow-xl backdrop-blur-sm">
+              <div className="text-blue-400 font-serif text-xl font-bold">0{idx + 1}</div>
               <div>
-                <h4 className="text-[#081A33] font-bold mb-2">{item.t}</h4>
-                <p className="text-slate-500 text-sm leading-relaxed">{item.d}</p>
+                <h4 className="font-bold mb-1 text-sm">{item.t}</h4>
+                <p className="text-white/80 text-xs leading-relaxed">{item.d}</p>
               </div>
             </div>
           ))}
@@ -200,7 +215,7 @@ const MarketingGrowthView = ({ onNavigate }: { onNavigate: (path: ViewPath) => v
             { t: "Option 3 - Embedded growth desk", d: "A dedicated team allocated to your business or to a key account. They join your stand-ups, sit on your Slack, and own a quarterly roadmap. This works best for agencies scaling a single large account, and for in-house teams that want a marketing function without building one in-house." }
           ].map((model, idx) => (
             <div key={idx} className="p-10 rounded-2xl border border-slate-200 bg-white shadow-md flex flex-col h-full">
-              <div className="text-[#194083] font-black text-2xl mb-6">0{idx + 1}</div>
+              <div className="text-[#2368D6] font-black text-2xl mb-6">0{idx + 1}</div>
               <h4 className="font-serif text-xl font-bold text-[#081A33] mb-4">{model.t}</h4>
               <p className="text-slate-500 text-sm leading-relaxed">{model.d}</p>
             </div>
@@ -227,7 +242,7 @@ const MarketingGrowthView = ({ onNavigate }: { onNavigate: (path: ViewPath) => v
     <section className="bg-[#081A33] py-16 px-6 text-center text-white border-t border-white/10 font-sans">
       <div className="max-w-4xl mx-auto">
         <h2 className="font-serif text-3xl md:text-4xl font-bold mb-10">Tired of chasing freelancers and managing edits? Send us the brief and we will scope the desk.</h2>
-        <button onClick={() => onNavigate('/contact')} className="bg-[#194083] hover:opacity-90 transition-all px-10 py-4 rounded-xl text-xs font-bold uppercase tracking-[0.2em] shadow-xl">
+        <button onClick={() => onNavigate('/contact')} className="bg-[#2368D6] hover:opacity-90 transition-all px-10 py-4 rounded-xl text-xs font-bold uppercase tracking-[0.2em] shadow-xl">
           Send a marketing enquiry
         </button>
       </div>
@@ -241,18 +256,27 @@ const RemoteOperationsView = ({ onNavigate }: { onNavigate: (path: ViewPath) => 
   return (
     <>
       {/* Section 1 - Hero */}
-    <section className="relative primary-gradient text-white pt-32 pb-24 overflow-hidden font-sans">
+    <section className="relative primary-gradient text-white pt-12 pb-8 overflow-hidden font-sans">
+      <div className="absolute inset-0 z-0">
+        <img 
+          src="https://images.unsplash.com/photo-1497215728101-856f4ea42174?q=80&w=2070&auto=format&fit=crop" 
+          alt="Remote operations background" 
+          className="w-full h-full object-cover opacity-20 filter grayscale" 
+          referrerPolicy="no-referrer"
+        />
+        <div className="absolute inset-0 bg-[#081A33]/60 mix-blend-multiply"></div>
+      </div>
       <div className="max-w-7xl mx-auto px-6 relative z-10">
-        <div className="max-w-3xl">
-          <div className="text-white/60 font-bold uppercase tracking-[0.2em] text-xs mb-6 font-sans">Global delivery.</div>
-          <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-8">
+        <div className="max-w-2xl p-6 md:p-8 rounded-2xl backdrop-blur-sm bg-white/5 border border-white/10 shadow-2xl">
+          <div className="text-white/60 font-bold uppercase tracking-[0.2em] text-[10px] mb-4 font-sans">Global delivery.</div>
+          <h1 className="font-serif text-3xl md:text-5xl font-bold leading-tight mb-6">
             Managed remote operations and virtual assistants for repeatable business work.
           </h1>
-          <p className="text-lg md:text-xl text-blue-100/70 leading-relaxed max-w-3xl mb-10">
-            OrbitSol helps you move repeatable work into a managed offshore team without asking you to recruit, train, and supervise every person yourself. Whether you need a dedicated virtual assistant, an industry-trained desk, an operations analyst, or a remote operations manager, we work as a staffing and operations partner, which means we hire the right people for the role, train them on your way of working, and manage them on your behalf, so you receive the output without taking on extra headcount. Pricing starts at $5 per hour.
+          <p className="text-base md:text-lg text-white/70 leading-relaxed mb-8">
+            OrbitSol helps you move repeatable work into a managed offshore team without asking you to recruit, train, and supervise every person yourself.
           </p>
           <div className="flex flex-wrap gap-4">
-            <button onClick={() => { document.getElementById('levels')?.scrollIntoView({ behavior: 'smooth' }); }} className="bg-[#1B4D83] hover:opacity-90 text-white px-8 py-3.5 rounded font-bold uppercase tracking-widest text-xs shadow-lg transition-all">
+            <button onClick={() => { document.getElementById('levels')?.scrollIntoView({ behavior: 'smooth' }); }} className="bg-[#2368D6] hover:opacity-90 text-white px-8 py-3.5 rounded font-bold uppercase tracking-widest text-xs shadow-lg transition-all">
               View the four levels
             </button>
             <button onClick={() => onNavigate('/contact')} className="border border-white/20 text-white hover:bg-white/10 px-8 py-3.5 rounded font-bold uppercase tracking-widest text-xs transition-all">
@@ -267,8 +291,8 @@ const RemoteOperationsView = ({ onNavigate }: { onNavigate: (path: ViewPath) => 
     <section id="levels" className="py-24 bg-white font-sans">
       <div className="max-w-7xl mx-auto px-6">
         <div className="max-w-3xl mb-20">
-          <p className="text-[#1B4D83] font-bold tracking-widest uppercase text-xs mb-4">The four levels.</p>
-          <h2 className="font-serif text-4xl font-bold text-[#0A192F] mb-6">Start where the work is, and move up as it scales.</h2>
+          <p className="text-[#2368D6] font-bold tracking-widest uppercase text-xs mb-4">The four levels.</p>
+          <h2 className="font-serif text-4xl font-bold text-[#081A33] mb-6">Start where the work is, and move up as it scales.</h2>
           <p className="text-slate-500 leading-relaxed text-lg">
             We understand growth plans can be fluid and dynamic, and we tailor our solutions accordingly. Most engagements with us start at Level 01 or Level 02 and graduate to Level 03 or Level 04 once you have seen what the team can do, and the pricing is published so it is easy to plan against.
           </p>
@@ -301,13 +325,13 @@ const RemoteOperationsView = ({ onNavigate }: { onNavigate: (path: ViewPath) => 
               typical: "dedicated, long-horizon."
             }
           ].map((item, idx) => (
-            <div key={idx} className="group p-8 rounded bg-[#F8FAFC] border border-slate-100 hover:shadow-xl hover:translate-y-[-4px] transition-all duration-300 flex flex-col h-full">
-              <div className="text-[10px] font-bold text-[#1B4D83] tracking-widest mb-4">{item.level}</div>
-              <h3 className="font-serif text-xl font-bold text-[#0A192F] mb-4">{item.title}</h3>
-              <p className="text-slate-500 text-xs leading-relaxed mb-8 flex-grow">{item.desc}</p>
-              <div className="border-t border-slate-200 pt-6">
-                <div className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-2">TYPICAL ENGAGEMENT:</div>
-                <p className="text-slate-600 text-[11px] leading-relaxed italic">{item.typical}</p>
+            <div key={idx} className="group p-6 rounded-2xl bg-[#081A33] text-white border border-white/10 hover:shadow-2xl hover:translate-y-[-4px] transition-all duration-300 flex flex-col h-full uppercase tracking-tight">
+              <div className="text-[9px] font-bold text-blue-400 tracking-widest mb-3">{item.level}</div>
+              <h3 className="font-serif text-lg font-bold mb-3">{item.title}</h3>
+              <p className="text-white/80 text-[11px] leading-relaxed mb-6 flex-grow normal-case">{item.desc}</p>
+              <div className="border-t border-white/10 pt-4">
+                <div className="text-[8px] font-bold text-white/50 uppercase tracking-widest mb-1">TYPICAL ENGAGEMENT:</div>
+                <p className="text-white/70 text-[10px] leading-relaxed italic normal-case">{item.typical}</p>
               </div>
             </div>
           ))}
@@ -316,11 +340,11 @@ const RemoteOperationsView = ({ onNavigate }: { onNavigate: (path: ViewPath) => 
     </section>
 
     {/* Section 3 - Where We Differ */}
-    <section className="py-24 bg-[#F8FAFC] font-sans">
+    <section className="py-24 bg-[#F5F7FA] font-sans">
       <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-12 gap-16 items-start">
         <div className="lg:col-span-5">
-          <p className="text-[#1B4D83] font-bold tracking-widest uppercase text-xs mb-4">What sets us apart.</p>
-          <h2 className="font-serif text-3xl md:text-4xl font-bold text-[#0A192F] mb-8 leading-tight text-balance">Three things most virtual assistant providers do not do.</h2>
+          <p className="text-[#2368D6] font-bold tracking-widest uppercase text-xs mb-4">What sets us apart.</p>
+          <h2 className="font-serif text-3xl md:text-4xl font-bold text-[#081A33] mb-8 leading-tight text-balance">Three things most virtual assistant providers do not do.</h2>
           <p className="text-slate-600 leading-relaxed mb-6">
             There are hundreds of offshore virtual assistant providers in our markets, and most of them are interchangeable. We are not, and these are the reasons why.
           </p>
@@ -331,9 +355,9 @@ const RemoteOperationsView = ({ onNavigate }: { onNavigate: (path: ViewPath) => 
             { t: "02 - We can hire for any task, not just the standard ones", d: "We practically operate as a staffing solutions agency. We recruit, train, and manage virtual assistants and specialists on your behalf. So if a new role comes up that does not fit any of our standard desks, we will scope it, find the right person, and put them to work for you." },
             { t: "03 - We manage our own team", d: "Project leaders, quality control protocols, backups, training, and reporting all sit with OrbitSol, so you manage outcomes rather than a scattered freelancer or virtual assistant bench." }
           ].map((point, idx) => (
-            <div key={idx} className="bg-white p-8 rounded border border-slate-100 shadow-sm">
-              <h4 className="font-bold text-[#0A192F] mb-2 font-serif text-lg">{point.t}</h4>
-              <p className="text-slate-500 text-sm leading-relaxed">{point.d}</p>
+            <div key={idx} className="bg-[#081A33] text-white p-6 rounded-2xl border border-white/10 shadow-xl backdrop-blur-sm">
+              <h4 className="font-bold mb-2 font-serif text-base text-white">{point.t}</h4>
+              <p className="text-white/80 text-xs leading-relaxed">{point.d}</p>
             </div>
           ))}
         </div>
@@ -343,27 +367,27 @@ const RemoteOperationsView = ({ onNavigate }: { onNavigate: (path: ViewPath) => 
     {/* Section 4 - How We Hire */}
     <section className="py-24 bg-white font-sans border-b border-slate-100">
       <div className="max-w-7xl mx-auto px-6 text-center mb-20">
-        <p className="text-[#1B4D83] font-bold tracking-widest uppercase text-xs mb-4">How we hire.</p>
-        <h2 className="font-serif text-4xl font-bold text-[#0A192F]">The team is the work.</h2>
+        <p className="text-[#2368D6] font-bold tracking-widest uppercase text-xs mb-4">How we hire.</p>
+        <h2 className="font-serif text-4xl font-bold text-[#081A33]">The team is the work.</h2>
       </div>
       <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-3 gap-12">
         <div>
-          <h4 className="font-bold text-[#0A192F] mb-4 text-lg">We hire for English and analytical skills first</h4>
+          <h4 className="font-bold text-[#081A33] mb-4 text-lg">We hire for English and analytical skills first</h4>
           <p className="text-slate-500 text-sm leading-relaxed">Every virtual assistant and operator on every desk has strong written and spoken English, and we test for it before we hire.</p>
         </div>
         <div>
-          <h4 className="font-bold text-[#0A192F] mb-4 text-lg">We train before we deploy</h4>
+          <h4 className="font-bold text-[#081A33] mb-4 text-lg">We train before we deploy</h4>
           <p className="text-slate-500 text-sm leading-relaxed">Two to four weeks of industry-specific, platform-specific, and client-specific training is built in before any virtual assistant touches live work.</p>
         </div>
         <div>
-          <h4 className="font-bold text-[#0A192F] mb-4 text-lg">We invest in retention</h4>
+          <h4 className="font-bold text-[#081A33] mb-4 text-lg">We invest in retention</h4>
           <p className="text-slate-500 text-sm leading-relaxed">Average tenure on the core team is over four years, so the virtual assistant on your account is someone who plans to be here for the long run, and clients are not constantly retraining new people.</p>
         </div>
       </div>
     </section>
 
     {/* Section 5 - What You See */}
-    <section className="py-20 bg-[#F8FAFC] font-sans">
+    <section className="py-20 bg-[#F5F7FA] font-sans">
        <div className="max-w-4xl mx-auto px-6 text-center">
           <p className="text-slate-500 text-lg leading-relaxed italic">
             "As a client, you will have a dedicated project leader, an agreed standard operating procedure, a task queue, access controls, backup virtual assistant coverage, a weekly delivery report, and improvement notes that show where the workflow can be made better over time."
@@ -372,7 +396,7 @@ const RemoteOperationsView = ({ onNavigate }: { onNavigate: (path: ViewPath) => 
     </section>
 
     {/* Section 6 - FAQ */}
-    <section className="py-24 bg-white font-sans">
+    <section className="py-24 bg-[#F5F7FA] font-sans border-y border-slate-100">
       <div className="max-w-3xl mx-auto px-6">
         <h2 className="text-[11px] font-bold text-slate-400 uppercase tracking-widest text-center mb-16">Remote Operations FAQ</h2>
         <div className="space-y-4">
@@ -415,7 +439,7 @@ const RemoteOperationsView = ({ onNavigate }: { onNavigate: (path: ViewPath) => 
         <p className="text-blue-100/60 mb-12 text-lg">
           Send us the task list, the target hours, or the output you need, and we will suggest the leanest starting model, whether it is a single virtual assistant or a full operations desk.
         </p>
-        <button onClick={() => onNavigate('/contact')} className="bg-[#194083] hover:opacity-90 transition-colors px-10 py-4 rounded text-xs font-bold uppercase tracking-[0.2em] shadow-xl">
+        <button onClick={() => onNavigate('/contact')} className="bg-[#2368D6] hover:opacity-90 transition-colors px-10 py-4 rounded text-xs font-bold uppercase tracking-[0.2em] shadow-xl">
           Send staffing requirement
         </button>
       </div>
@@ -427,18 +451,27 @@ const RemoteOperationsView = ({ onNavigate }: { onNavigate: (path: ViewPath) => 
 const SMEsFoundersView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => (
   <>
     {/* Block A — Hero */}
-    <section className="relative primary-gradient text-white pt-32 pb-24 overflow-hidden font-sans">
+    <section className="relative primary-gradient text-white pt-12 pb-8 overflow-hidden font-sans">
+      <div className="absolute inset-0 z-0">
+        <img 
+          src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=2070&auto=format&fit=crop" 
+          alt="SME support background" 
+          className="w-full h-full object-cover opacity-20 filter grayscale" 
+          referrerPolicy="no-referrer"
+        />
+        <div className="absolute inset-0 bg-[#081A33]/60 mix-blend-multiply"></div>
+      </div>
       <div className="absolute top-10 right-10 text-[18vw] font-serif font-black text-white/[0.03] pointer-events-none select-none tracking-tighter">SME</div>
       <div className="max-w-7xl mx-auto px-6 relative z-10">
-        <div className="text-xs uppercase tracking-[0.2em] font-bold text-white/60 mb-6 underline decoration-[#194083] underline-offset-8">
-          Who we work with / SMEs and Founders
-        </div>
-        <div className="max-w-4xl">
-          <h1 className="font-serif text-4xl md:text-5xl lg:text-7xl font-bold leading-tight mb-8">
+        <div className="max-w-2xl p-6 md:p-8 rounded-2xl backdrop-blur-sm bg-white/5 border border-white/10 shadow-2xl">
+          <div className="text-white/60 text-[10px] uppercase tracking-[0.2em] font-bold mb-4">
+            Who we work with / SMEs and Founders
+          </div>
+          <h1 className="font-serif text-3xl md:text-5xl font-bold leading-tight mb-6">
             Hire a virtual chief of staff.
           </h1>
-          <p className="text-lg md:text-xl text-blue-100/70 leading-relaxed max-w-4xl">
-            We support business owners and managers who need an assistant who can also document a process, build a dashboard, manage a vendor, chase a renewal, schedule content, or keep a recurring workflow under control.
+          <p className="text-base md:text-lg text-white/70 leading-relaxed max-w-4xl font-sans">
+            We support business owners and managers who need an assistant who can also document a process, build a dashboard, or manage a vendor.
           </p>
         </div>
       </div>
@@ -448,9 +481,9 @@ const SMEsFoundersView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void
     <section className="py-24 bg-white border-b border-slate-100 font-sans">
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid lg:grid-cols-2 gap-16 items-start">
-          <div className="bg-[#F8FAFC] p-10 rounded-2xl shadow-sm border border-slate-100">
-            <h2 className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-8 border-b border-slate-200 pb-4">Scope of Support</h2>
-            <ul className="space-y-4">
+          <div className="bg-[#081A33] text-white p-8 rounded-2xl shadow-xl border border-white/10 backdrop-blur-sm">
+            <h2 className="text-[10px] font-bold uppercase tracking-widest text-white/70 mb-6 border-b border-white/10 pb-4">Scope of Support</h2>
+            <ul className="space-y-3">
               {[
                 "Inbox triage, calendar management, and travel coordination.",
                 "Founder task management.",
@@ -463,15 +496,15 @@ const SMEsFoundersView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void
                 "Recruiting and managing new role types where the task requires it."
               ].map((item, idx) => (
                 <li key={idx} className="flex items-start gap-4">
-                  <Check className="mt-1 text-[#194083] flex-shrink-0" size={14} />
-                  <span className="text-slate-600 font-medium text-sm leading-relaxed">{item}</span>
+                  <Check className="mt-1 text-[#2368D6] flex-shrink-0" size={14} />
+                  <span className="text-white font-medium text-sm leading-relaxed">{item}</span>
                 </li>
               ))}
             </ul>
           </div>
           <div className="pt-4 lg:pt-10">
             <div className="mb-16">
-              <h3 className="text-[11px] font-bold text-[#194083] uppercase tracking-widest mb-6">Why this matters</h3>
+              <h3 className="text-[11px] font-bold text-[#2368D6] uppercase tracking-widest mb-6">Why this matters</h3>
               <p className="text-2xl text-[#081A33] font-serif font-medium leading-snug">
                 Many owner-led businesses have outgrown a basic virtual assistant but cannot yet justify a full-time chief of staff or operations manager.
               </p>
@@ -491,7 +524,7 @@ const SMEsFoundersView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void
     </section>
 
     {/* Block C — How We Work */}
-    <section className="py-24 bg-[#F8FAFC] font-sans border-b border-slate-100">
+    <section className="py-24 bg-[#F5F7FA] font-sans border-b border-slate-100">
       <div className="max-w-7xl mx-auto px-6">
         <h2 className="text-[11px] font-bold text-slate-400 uppercase tracking-widest text-center mb-16">How We Work</h2>
         <div className="grid md:grid-cols-3 gap-8">
@@ -512,7 +545,7 @@ const SMEsFoundersView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void
               desc: "Once the pilot is approved, we scale the desk to your full requirement. An experienced project leader manages the relationship, and we report on output, turnaround, and improvement notes on an agreed cadence."
             }
           ].map((item, idx) => (
-            <div key={idx} className="bg-white p-10 rounded border border-slate-100 shadow-sm relative group overflow-hidden">
+            <div key={idx} className="bg-white p-10 rounded-2xl border border-slate-100 shadow-sm relative group overflow-hidden">
               <div className="text-6xl font-serif font-black absolute right-4 top-4 opacity-80 group-hover:opacity-100 transition-opacity">{item.step}</div>
               <h4 className="font-serif text-xl font-bold text-[#081A33] mb-4">{item.title}</h4>
               <p className="text-slate-500 text-sm leading-relaxed">{item.desc}</p>
@@ -526,7 +559,7 @@ const SMEsFoundersView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void
     <section className="py-24 bg-white font-sans overflow-hidden">
        <div className="max-w-4xl mx-auto px-6 text-center">
           <div className="inline-block p-1 bg-slate-100 rounded-full mb-8">
-             <div className="px-4 py-1 bg-white border border-slate-100 rounded-full text-[10px] font-bold text-[#194083] uppercase tracking-widest">Client Proof</div>
+             <div className="px-4 py-1 bg-white border border-slate-100 rounded-full text-[10px] font-bold text-[#2368D6] uppercase tracking-widest">Client Proof</div>
           </div>
           <p className="text-2xl md:text-3xl font-serif text-[#081A33] leading-snug italic mb-10">
              "The OrbitSol team have been instrumental in allowing us to scale our operations without the overhead of local hiring. Their ability to document processes while executing them is a game-changer for any growing business."
@@ -542,7 +575,7 @@ const SMEsFoundersView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void
     </section>
 
     {/* Block E — FAQ */}
-    <section className="py-24 bg-[#F8FAFC] font-sans border-y border-slate-100">
+    <section className="py-24 bg-[#F5F7FA] font-sans border-y border-slate-100">
       <div className="max-w-3xl mx-auto px-6">
         <h2 className="text-[11px] font-bold text-slate-400 uppercase tracking-widest text-center mb-16">Founder Support FAQ</h2>
         <div className="space-y-4">
@@ -557,11 +590,11 @@ const SMEsFoundersView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void
     </section>
 
     {/* Block F — Closing Call to Action */}
-    <section className="bg-[#0A192F] py-24 px-6 text-center text-white font-sans">
+    <section className="bg-[#081A33] py-24 px-6 text-center text-white font-sans">
       <div className="max-w-4xl mx-auto">
         <h2 className="font-serif text-3xl md:text-5xl font-bold mb-6 italic">Send us the work you keep pushing to the end of the day.</h2>
         <div className="mt-12">
-          <button onClick={() => onNavigate('/contact')} className="bg-[#1B4D83] hover:opacity-90 transition-colors px-12 py-4 rounded text-xs font-bold uppercase tracking-[0.2em] shadow-xl">
+          <button onClick={() => onNavigate('/contact')} className="bg-[#2368D6] hover:opacity-90 transition-colors px-12 py-4 rounded text-xs font-bold uppercase tracking-[0.2em] shadow-xl">
             Scope founder support
           </button>
         </div>
@@ -576,18 +609,18 @@ const DigitalMarketingView = ({ onNavigate }: { onNavigate: (path: ViewPath) => 
   return (
     <>
       {/* Section 1 - Hero */}
-    <section className="relative primary-gradient text-white pt-32 pb-24 overflow-hidden font-sans">
+    <section className="relative primary-gradient text-white pt-12 pb-8 overflow-hidden font-sans">
       <div className="max-w-7xl mx-auto px-6 relative z-10">
-        <div className="text-xs uppercase tracking-[0.2em] font-bold text-white/60 mb-6 underline decoration-[#1B4D83] underline-offset-8">Digital Marketing and Creative.</div>
-        <div className="max-w-4xl">
-          <h1 className="font-serif text-4xl md:text-5xl lg:text-7xl font-bold leading-tight mb-8">
+        <div className="max-w-2xl p-6 md:p-8 rounded-2xl backdrop-blur-sm bg-white/5 border border-white/10 shadow-2xl">
+          <div className="text-white/60 font-bold uppercase tracking-[0.2em] text-[10px] mb-4 underline decoration-[#2368D6] underline-offset-8">Digital Marketing and Creative.</div>
+          <h1 className="font-serif text-3xl md:text-5xl font-bold leading-tight mb-6">
             A growth desk you can actually rely on.
           </h1>
-          <p className="text-lg md:text-xl text-blue-100/70 leading-relaxed mb-10 max-w-4xl">
-            OrbitSol helps businesses plan, build, and run the marketing work that is difficult to keep moving in-house, including brand identity, websites, content, search engine optimisation, generative engine optimisation, paid campaigns, conversion rate optimisation, dashboards, user-experience research, collateral, video, training, and e-learning. We can deliver a single project, a monthly retainer, or a managed offshore team. You receive a project leader who owns the relationship, with a set of specialists working behind them.
+          <p className="text-base md:text-lg text-white/70 leading-relaxed max-w-4xl font-sans">
+            OrbitSol helps businesses plan, build, and run the marketing work that is difficult to keep moving in-house.
           </p>
           <div className="flex flex-wrap gap-4">
-            <button onClick={() => onNavigate('/contact')} className="bg-[#1B4D83] hover:opacity-90 text-white px-10 py-4 rounded-xl font-bold uppercase tracking-widest text-xs shadow-xl transition-all">
+            <button onClick={() => onNavigate('/contact')} className="bg-[#2368D6] hover:opacity-90 text-white px-10 py-4 rounded-xl font-bold uppercase tracking-widest text-xs shadow-lg transition-all">
               Send a marketing enquiry
             </button>
             <button onClick={() => window.location.href=`mailto:${contactEmail}`} className="border border-white/20 text-white hover:bg-white/10 px-10 py-4 rounded-xl font-bold uppercase tracking-widest text-xs transition-all shadow-sm">
@@ -677,12 +710,12 @@ const DigitalMarketingView = ({ onNavigate }: { onNavigate: (path: ViewPath) => 
             }
           ].map((service) => (
             <div key={service.id} id={service.id} className="scroll-mt-32 h-full flex flex-col">
-              <h3 className="font-serif text-2xl font-bold text-[#0A192F] mb-4">{service.title}</h3>
+              <h3 className="font-serif text-2xl font-bold text-[#081A33] mb-4">{service.title}</h3>
               <p className="text-slate-500 text-[13px] leading-relaxed mb-6">{service.desc}</p>
               <ul className="space-y-2 mt-auto">
                 {service.items.map((item, idx) => (
                   <li key={idx} className="flex items-start gap-3">
-                    <Check className="mt-1 text-[#1B4D83] flex-shrink-0" size={14} />
+                    <Check className="mt-1 text-[#2368D6] flex-shrink-0" size={14} />
                     <span className="text-slate-600 text-xs leading-relaxed">{item}</span>
                   </li>
                 ))}
@@ -694,7 +727,7 @@ const DigitalMarketingView = ({ onNavigate }: { onNavigate: (path: ViewPath) => 
     </section>
 
     {/* Section 3 - How We Engage */}
-    <section className="py-24 bg-[#0A192F] text-white font-sans">
+    <section className="py-24 bg-[#081A33] text-white font-sans">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-16">
           <p className="text-blue-300/80 font-bold tracking-widest uppercase text-xs mb-4">Engagement models.</p>
@@ -706,9 +739,9 @@ const DigitalMarketingView = ({ onNavigate }: { onNavigate: (path: ViewPath) => 
             { t: "Option 2 - Retainer", d: "A monthly hours-bank for ongoing work. This works best for marketing teams that need consistent capacity but have variable work types from week to week." },
             { t: "Option 3 - Embedded growth desk", d: "A dedicated team allocated to your business. They join your stand-ups, sit on your Slack, and own a quarterly roadmap. This works best for businesses that want a marketing function without building one in-house." }
           ].map((item, idx) => (
-             <div key={idx} className="p-10 rounded bg-[#112240] border border-white/5 flex flex-col h-full">
+             <div key={idx} className="p-10 rounded bg-[#081A33] border border-white/5 flex flex-col h-full">
               <h4 className="font-serif text-xl font-bold mb-4">{item.t}</h4>
-              <p className="text-blue-100/50 text-sm leading-relaxed">{item.d}</p>
+              <p className="text-blue-100/80 text-sm leading-relaxed">{item.d}</p>
             </div>
           ))}
         </div>
@@ -716,7 +749,7 @@ const DigitalMarketingView = ({ onNavigate }: { onNavigate: (path: ViewPath) => 
     </section>
 
     {/* Section 4 - Pricing */}
-    <section className="py-20 bg-[#F8FAFC] text-center font-sans">
+    <section className="py-20 bg-[#F5F7FA] text-center font-sans">
        <div className="max-w-4xl mx-auto px-6">
           <p className="text-slate-600 text-lg">
             Pricing starts at $5 per hour. Project, retainer, and embedded-desk pricing is quoted on a discovery call once we understand the scope.
@@ -727,12 +760,12 @@ const DigitalMarketingView = ({ onNavigate }: { onNavigate: (path: ViewPath) => 
     {/* Section 5 - Closing CTA */}
     <section className="py-24 bg-white text-center font-sans border-t border-slate-100">
       <div className="max-w-4xl mx-auto px-6">
-        <h2 className="font-serif text-3xl md:text-5xl font-bold text-[#0A192F] mb-12">If you are running marketing on too many freelancers and not enough rhythm, let us fix that.</h2>
+        <h2 className="font-serif text-3xl md:text-5xl font-bold text-[#081A33] mb-12">If you are running marketing on too many freelancers and not enough rhythm, let us fix that.</h2>
         <div className="flex flex-wrap justify-center gap-6 items-center">
-           <button onClick={() => window.location.href=`mailto:${contactEmail}`} className="bg-[#1B4D83] hover:opacity-90 text-white px-10 py-4 rounded font-bold uppercase tracking-widest text-xs shadow-xl transition-all">
+           <button onClick={() => window.location.href=`mailto:${contactEmail}`} className="bg-[#2368D6] hover:opacity-90 text-white px-10 py-4 rounded font-bold uppercase tracking-widest text-xs shadow-xl transition-all">
              Email us at {contactEmail}
            </button>
-           <button onClick={() => onNavigate('/contact')} className="text-slate-400 font-bold uppercase tracking-widest text-xs hover:text-[#0A192F] transition-colors">
+           <button onClick={() => onNavigate('/contact')} className="text-slate-400 font-bold uppercase tracking-widest text-xs hover:text-[#081A33] transition-colors">
              Or send a note via /contact
            </button>
         </div>
@@ -748,23 +781,34 @@ const ProcessAutomationView = ({ onNavigate }: { onNavigate: (path: ViewPath) =>
   return (
   <>
     {/* Section 1 - Hero */}
-    <section className="relative primary-gradient text-white pt-32 pb-24 overflow-hidden font-sans">
+    <section className="relative primary-gradient text-white pt-12 pb-8 overflow-hidden font-sans">
+      <div className="absolute inset-0 z-0">
+        <img 
+          src="https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=2070&auto=format&fit=crop" 
+          alt="Automation background" 
+          className="w-full h-full object-cover opacity-20 filter grayscale" 
+          referrerPolicy="no-referrer"
+        />
+        <div className="absolute inset-0 bg-[#081A33]/60 mix-blend-multiply"></div>
+      </div>
       <div className="max-w-7xl mx-auto px-6 relative z-10 flex flex-col md:flex-row items-center gap-16">
         <div className="md:w-3/5">
-          <div className="text-blue-300/60 font-bold uppercase tracking-[0.2em] text-xs mb-6 underline decoration-[#1B4D83] underline-offset-8">Process and Automation.</div>
-          <h1 className="font-serif text-4xl md:text-5xl lg:text-7xl font-bold leading-tight mb-8">
-            Make recurring work easier to run, easier to measure, and safer to scale.
-          </h1>
-          <p className="text-lg md:text-xl text-blue-100/70 leading-relaxed mb-10 max-w-2xl">
-            Many businesses rely on knowledge that lives in a few people's heads, which is fine until one of them takes a day off. OrbitSol helps turn that knowledge into clear standard operating procedures, dashboards, handover materials, and practical automations, so your team can run the work consistently and improve it over time. We document the work, automate the boring parts, and keep humans where they matter.
-          </p>
-          <button onClick={() => onNavigate('/contact')} className="bg-[#1B4D83] hover:opacity-90 text-white px-10 py-4 rounded font-bold uppercase tracking-widest text-xs shadow-xl transition-all">
-            Send a workflow enquiry
-          </button>
+          <div className="text-white/60 font-bold uppercase tracking-[0.2em] text-[10px] mb-4 underline decoration-[#2368D6] underline-offset-8">Process and Automation.</div>
+          <div className="max-w-2xl p-6 md:p-8 rounded-2xl backdrop-blur-sm bg-white/5 border border-white/10 shadow-2xl">
+            <h1 className="font-serif text-3xl md:text-5xl font-bold leading-tight mb-6">
+              Make recurring work easier to run, measure, and scale.
+            </h1>
+            <p className="text-base md:text-lg text-white/70 leading-relaxed mb-8">
+              We help turn knowledge into clear standard operating procedures, dashboards, and practical automations.
+            </p>
+            <button onClick={() => onNavigate('/contact')} className="bg-[#2368D6] hover:opacity-90 text-white px-10 py-4 rounded font-bold uppercase tracking-widest text-xs shadow-xl transition-all">
+              Send a workflow enquiry
+            </button>
+          </div>
         </div>
-        <div className="md:w-2/5 hidden md:block">
+        <div className="md:w-2/5 hidden md:block opacity-20">
            <div className="relative">
-              <div className="absolute inset-0 bg-[#1B4D83]/10 blur-3xl rounded-full"></div>
+              <div className="absolute inset-0 bg-[#2368D6]/10 blur-3xl rounded-full"></div>
               <svg className="relative w-full h-auto text-blue-400/40" viewBox="0 0 200 200" fill="none">
                  <rect x="10" y="80" width="40" height="40" rx="4" stroke="currentColor" strokeWidth="2" />
                  <path d="M50 100 H80" stroke="currentColor" strokeWidth="2" strokeDasharray="4 4" />
@@ -791,9 +835,9 @@ const ProcessAutomationView = ({ onNavigate }: { onNavigate: (path: ViewPath) =>
             { t: "AI-assisted tooling", d: "Practical AI workflows with sensible checks for security and accuracy." },
             { t: "Vendor accountability tracking", d: "Service-level tracking for the third parties your operation depends on." }
           ].map((card, idx) => (
-            <div key={idx} className="p-10 rounded-2xl border border-slate-100 bg-[#F8FAFC] shadow-sm hover:border-[#d1c7bc] transition-all flex flex-col h-full hover:shadow-lg">
-              <h4 className="font-serif text-xl font-bold text-[#0A192F] mb-6 tracking-tight uppercase">{card.t}</h4>
-              <p className="text-slate-500 text-sm leading-relaxed">{card.d}</p>
+            <div key={idx} className="p-8 rounded-2xl border border-white/10 bg-[#081A33] text-white shadow-xl hover:border-blue-400/50 transition-all flex flex-col h-full hover:shadow-2xl backdrop-blur-sm group">
+              <h4 className="font-serif text-lg font-bold mb-4 tracking-tight uppercase text-white">{card.t}</h4>
+              <p className="text-white/80 text-xs leading-relaxed">{card.d}</p>
             </div>
           ))}
         </div>
@@ -801,7 +845,7 @@ const ProcessAutomationView = ({ onNavigate }: { onNavigate: (path: ViewPath) =>
     </section>
 
     {/* Section 3 - How the Workflow Runs */}
-    <section className="py-24 bg-[#F8FAFC] font-sans border-y border-slate-200">
+    <section className="py-24 bg-[#F5F7FA] font-sans border-y border-slate-100">
       <div className="max-w-7xl mx-auto px-6">
         <h2 className="text-[11px] font-bold text-slate-400 uppercase tracking-widest text-center mb-16">How the Workflow Runs</h2>
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -822,19 +866,19 @@ const ProcessAutomationView = ({ onNavigate }: { onNavigate: (path: ViewPath) =>
     {/* Section 4 - Pricing */}
     <section className="py-24 bg-white font-sans text-center">
        <div className="max-w-4xl mx-auto px-6">
-          <p className="text-3xl md:text-4xl font-serif font-bold text-[#0A192F] mb-4 text-balance">Pricing starts at $5 per hour.</p>
+          <p className="text-3xl md:text-4xl font-serif font-bold text-[#081A33] mb-4 text-balance">Pricing starts at $5 per hour.</p>
           <p className="text-slate-500 italic">Engagement-specific pricing is quoted on a discovery call.</p>
        </div>
     </section>
 
     {/* Section 5 - Closing Call to Action */}
-    <section className="bg-[#0A192F] py-24 px-6 text-center text-white font-sans">
+    <section className="bg-[#081A33] py-24 px-6 text-center text-white font-sans">
       <div className="max-w-4xl mx-auto">
         <h2 className="font-serif text-3xl md:text-5xl font-bold mb-6">Tired of explaining the same workflow every week?</h2>
         <p className="text-xl text-blue-100/70 mb-12 max-w-2xl mx-auto">
           Send us the process, the people involved, and the output you need, and we will help turn it into something easier to run.
         </p>
-        <button onClick={() => onNavigate('/contact')} className="bg-[#1B4D83] hover:opacity-90 transition-colors px-12 py-4 rounded-xl text-xs font-bold uppercase tracking-[0.2em] shadow-xl">
+        <button onClick={() => onNavigate('/contact')} className="bg-[#2368D6] hover:opacity-90 transition-colors px-12 py-4 rounded-xl text-xs font-bold uppercase tracking-[0.2em] shadow-xl">
           Send a workflow enquiry
         </button>
       </div>
@@ -846,18 +890,27 @@ const ProcessAutomationView = ({ onNavigate }: { onNavigate: (path: ViewPath) =>
 const StrataManagementView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => (
   <>
     {/* Block A — Hero */}
-    <section className="relative primary-gradient text-white pt-32 pb-24 overflow-hidden font-sans">
+    <section className="relative primary-gradient text-white pt-12 pb-8 overflow-hidden font-sans">
+      <div className="absolute inset-0 z-0">
+        <img 
+          src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop" 
+          alt="Strata Management background" 
+          className="w-full h-full object-cover opacity-20 filter grayscale" 
+          referrerPolicy="no-referrer"
+        />
+        <div className="absolute inset-0 bg-[#081A33]/60 mix-blend-multiply"></div>
+      </div>
       <div className="absolute top-5 right-10 text-[18vw] font-serif font-black text-white/3 pointer-events-none select-none tracking-tighter">STR</div>
       <div className="max-w-7xl mx-auto px-6 relative z-10">
-        <div className="text-xs uppercase tracking-[0.2em] font-bold text-white/60 mb-6 font-sans">
-          Who we work with / Strata Management
-        </div>
-        <div className="max-w-4xl">
-          <h1 className="font-serif text-4xl md:text-5xl lg:text-7xl font-bold leading-tight mb-8">
-            A managed offshore strata desk that understands the daily pressure on portfolio teams.
+        <div className="max-w-2xl p-6 md:p-8 rounded-2xl backdrop-blur-sm bg-white/5 border border-white/10 shadow-2xl">
+          <div className="text-white/60 uppercase tracking-[0.2em] font-bold text-[10px] mb-4 font-sans">
+            Who we work with / Strata Management
+          </div>
+          <h1 className="font-serif text-3xl md:text-5xl font-bold leading-tight mb-6">
+            A managed offshore strata desk that understands the pressure.
           </h1>
-          <p className="text-lg md:text-xl text-blue-100/70 leading-relaxed max-w-4xl">
-            OrbitSol supports strata firms with correspondence, meeting preparation, levy queries, insurance follow-ups, owner communications, and file management. The desk works inside your platform, follows your rules, and gives managers more time to focus on the work that needs local judgement.
+          <p className="text-base md:text-lg text-white/70 leading-relaxed max-w-4xl font-sans">
+            OrbitSol supports strata firms with correspondence, meeting preparation, and file management.
           </p>
         </div>
       </div>
@@ -868,7 +921,7 @@ const StrataManagementView = ({ onNavigate }: { onNavigate: (path: ViewPath) => 
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid lg:grid-cols-2 gap-16 items-start">
           <div>
-            <h2 className="text-[11px] font-bold text-[#1B4D83] uppercase tracking-widest mb-8">What We Handle</h2>
+            <h2 className="text-[11px] font-bold text-[#2368D6] uppercase tracking-widest mb-8">What We Handle</h2>
             <ul className="space-y-4">
               {[
                 "Owner/committee correspondence and levy queries",
@@ -879,18 +932,18 @@ const StrataManagementView = ({ onNavigate }: { onNavigate: (path: ViewPath) => 
                 "Dashboard and key‑performance‑indicator reporting for portfolio health"
               ].map((item, idx) => (
                 <li key={idx} className="flex items-start gap-4">
-                  <Check className="mt-1 text-[#1B4D83] flex-shrink-0" size={16} />
+                  <Check className="mt-1 text-[#2368D6] flex-shrink-0" size={16} />
                   <span className="text-slate-600 font-medium text-sm leading-relaxed">{item}</span>
                 </li>
               ))}
             </ul>
           </div>
           <div className="pt-4 lg:pt-10">
-            <p className="text-xl text-[#0A192F] leading-relaxed mb-10">
+            <p className="text-xl text-[#081A33] leading-relaxed mb-10">
               We understand that strata portfolios generate a constant flow of administration, queries, and documentation, and offshore support only helps when the team is trained, supervised, and embedded properly.
             </p>
             <div className="border-t border-slate-100 pt-10">
-              <h3 className="font-serif text-2xl font-bold text-[#0A192F] mb-6">Our delivery model:</h3>
+              <h3 className="font-serif text-2xl font-bold text-[#081A33] mb-6">Our delivery model:</h3>
               <p className="text-slate-500 leading-relaxed mb-6">
                 A dedicated project leader, trained strata associates, documented standard operating procedures, and weekly reporting. We log into your platform and work alongside your team rather than passing tasks back and forth through email.
               </p>
@@ -901,7 +954,7 @@ const StrataManagementView = ({ onNavigate }: { onNavigate: (path: ViewPath) => 
     </section>
 
     {/* Block C — How We Work */}
-    <section className="py-24 bg-[#F8FAFC] font-sans border-b border-slate-100">
+    <section className="py-24 bg-[#F5F7FA] font-sans border-b border-slate-100">
       <div className="max-w-7xl mx-auto px-6">
         <h2 className="text-[11px] font-bold text-slate-400 uppercase tracking-widest text-center mb-16">How We Work</h2>
         <div className="grid md:grid-cols-3 gap-8">
@@ -922,10 +975,10 @@ const StrataManagementView = ({ onNavigate }: { onNavigate: (path: ViewPath) => 
               desc: "Once the pilot is approved, we scale the desk to your full requirement. A dedicated project leader manages the relationship, and we report on output, turnaround, and improvement notes on an agreed cadence."
             }
           ].map((item, idx) => (
-            <div key={idx} className="bg-white p-10 rounded-2xl border border-slate-100 shadow-sm relative group overflow-hidden hover:shadow-lg transition-all">
-              <div className="text-6xl font-serif font-black absolute right-4 top-4 opacity-80 group-hover:opacity-100 transition-opacity">{item.step}</div>
-              <h4 className="font-serif text-xl font-bold text-[#0A192F] mb-4">{item.title}</h4>
-              <p className="text-slate-500 text-sm leading-relaxed">{item.desc}</p>
+            <div key={idx} className="bg-[#081A33] text-white p-8 rounded-2xl border border-white/10 shadow-xl relative group overflow-hidden hover:shadow-2xl transition-all backdrop-blur-sm">
+              <div className="text-5xl font-serif font-black absolute right-2 top-2 opacity-20 group-hover:opacity-40 transition-opacity text-white">{item.step}</div>
+              <h4 className="font-serif text-lg font-bold mb-4 text-white">{item.title}</h4>
+              <p className="text-white/80 text-xs leading-relaxed">{item.desc}</p>
             </div>
           ))}
         </div>
@@ -936,15 +989,15 @@ const StrataManagementView = ({ onNavigate }: { onNavigate: (path: ViewPath) => 
     <section className="py-24 bg-white font-sans overflow-hidden">
        <div className="max-w-4xl mx-auto px-6 text-center">
           <div className="inline-block p-1 bg-slate-100 rounded-full mb-8">
-             <div className="px-4 py-1 bg-white border border-slate-200 rounded-full text-[10px] font-bold text-[#1B4D83] uppercase tracking-widest">Sector Capability</div>
+             <div className="px-4 py-1 bg-white border border-slate-200 rounded-full text-[10px] font-bold text-[#2368D6] uppercase tracking-widest">Sector Capability</div>
           </div>
-          <p className="text-2xl md:text-3xl font-serif text-[#0A192F] leading-snug italic mb-10">
+          <p className="text-2xl md:text-3xl font-serif text-[#081A33] leading-snug italic mb-10">
              "OrbitSol's strata associates operate as an extension of our portfolio management team, working directly in our systems to handle the administrative volume that previously overwhelmed our strata managers."
           </p>
           <div className="flex items-center justify-center gap-4">
              <div className="w-12 h-12 rounded-full bg-slate-200"></div>
              <div className="text-left">
-                <div className="font-bold text-[#0A192F] text-sm">Strata Principal</div>
+                <div className="font-bold text-[#081A33] text-sm">Strata Principal</div>
                 <div className="text-slate-400 text-xs tracking-widest uppercase">Strata Management Group</div>
              </div>
           </div>
@@ -952,7 +1005,7 @@ const StrataManagementView = ({ onNavigate }: { onNavigate: (path: ViewPath) => 
     </section>
 
     {/* Block E — FAQ */}
-    <section className="py-24 bg-[#F8FAFC] font-sans border-y border-slate-100">
+    <section className="py-24 bg-[#F5F7FA] font-sans border-y border-slate-100">
       <div className="max-w-3xl mx-auto px-6">
         <h2 className="text-[11px] font-bold text-slate-400 uppercase tracking-widest text-center mb-16">Strata Management FAQ</h2>
         <div className="space-y-4">
@@ -981,10 +1034,10 @@ const StrataManagementView = ({ onNavigate }: { onNavigate: (path: ViewPath) => 
     </section>
 
     {/* Block F — Closing CTA */}
-    <section className="bg-[#0A192F] py-24 px-6 text-center text-white font-sans">
+    <section className="bg-[#081A33] py-24 px-6 text-center text-white font-sans">
       <div className="max-w-4xl mx-auto">
         <h2 className="font-serif text-3xl md:text-5xl font-bold mb-10">Losing hours to strata admin? Send us the function and we will scope the desk.</h2>
-        <button onClick={() => onNavigate('/contact')} className="bg-[#1B4D83] hover:opacity-90 transition-colors px-10 py-4 rounded-xl text-xs font-bold uppercase tracking-[0.2em] shadow-xl">
+        <button onClick={() => onNavigate('/contact')} className="bg-[#2368D6] hover:opacity-90 transition-colors px-10 py-4 rounded-xl text-xs font-bold uppercase tracking-[0.2em] shadow-xl">
           Scope a strata desk
         </button>
       </div>
@@ -995,27 +1048,35 @@ const StrataManagementView = ({ onNavigate }: { onNavigate: (path: ViewPath) => 
 const PropertyRealEstateView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => (
   <>
     {/* Block A — Hero */}
-    <section className="relative primary-gradient text-white pt-32 pb-24 overflow-hidden font-sans">
-      <div className="absolute top-5 right-10 text-[18vw] font-serif font-black text-white/3 pointer-events-none select-none tracking-tighter">PRP</div>
+    <section className="relative primary-gradient text-white pt-12 pb-8 overflow-hidden font-sans">
+      <div className="absolute inset-0 z-0">
+        <img 
+          src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=2073&auto=format&fit=crop" 
+          alt="Property Real Estate background" 
+          className="w-full h-full object-cover opacity-20 filter grayscale" 
+          referrerPolicy="no-referrer"
+        />
+        <div className="absolute inset-0 bg-[#081A33]/60 mix-blend-multiply"></div>
+      </div>
       <div className="max-w-7xl mx-auto px-6 relative z-10">
-        <div className="text-white/60 text-xs uppercase tracking-[0.2em] font-bold mb-6">
-          Who we work with / Property and Real Estate
-        </div>
-        <div className="max-w-4xl">
-          <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-8 text-balance">
-            An offshore production and admin layer for the businesses that run residential and commercial property.
+        <div className="max-w-2xl p-6 md:p-8 rounded-2xl backdrop-blur-sm bg-white/5 border border-white/10 shadow-2xl">
+          <div className="text-white/60 text-[10px] uppercase tracking-[0.2em] font-bold mb-4 font-sans">
+            Who we work with / Property and Real Estate
+          </div>
+          <h1 className="font-serif text-3xl md:text-5xl font-bold leading-tight mb-6 tracking-tighter">
+            An offshore production and admin layer for property businesses.
           </h1>
-          <p className="text-lg md:text-xl text-blue-100/70 leading-relaxed max-w-4xl">
-            OrbitSol supports lettings agencies, property inventory and inspection firms, and real estate agencies through a single managed offshore desk. Whether your work is producing property condition reports (PCRs) and checkin/checkout reports, keeping a sales and property management agency moving, or scaling a white-label inspection production line, the same delivery discipline applies. You will have a well-oiled engine of smart systems and trained operators on your platforms, your templates, and your service standards.
+          <p className="text-base md:text-lg text-white/70 leading-relaxed font-sans">
+            OrbitSol supports lettings agencies, property inventory and inspection firms, and real estate agencies through a single managed offshore desk.
           </p>
         </div>
       </div>
     </section>
 
     {/* Block B — Who This Page Is For */}
-    <section className="py-24 bg-white font-sans border-b border-slate-100">
+    <section className="py-32 bg-white font-sans border-b border-slate-100">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="grid lg:grid-cols-3 gap-8">
+        <div className="grid lg:grid-cols-3 gap-10">
           {[
             {
               title: "Lettings and Inventory Firms",
@@ -1061,16 +1122,16 @@ const PropertyRealEstateView = ({ onNavigate }: { onNavigate: (path: ViewPath) =
               ]
             }
           ].map((block, idx) => (
-            <div key={idx} className="p-10 rounded border border-slate-100 bg-[#F5F7FA] flex flex-col h-full">
-              <h3 className="font-serif text-2xl font-bold text-[#081A33] mb-6">{block.title}</h3>
-              <p className="text-slate-500 text-sm leading-relaxed mb-8">{block.desc}</p>
-              <div className="mt-auto pt-8 border-t border-slate-200/60">
-                <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4">Detailed Scope:</h4>
-                <ul className="space-y-3">
+            <div key={idx} className="p-10 rounded-2xl border border-white/10 bg-[#081A33] text-white flex flex-col h-full shadow-2xl backdrop-blur-sm">
+              <h3 className="font-serif text-2xl font-bold mb-6">{block.title}</h3>
+              <p className="text-white/90 text-sm leading-relaxed mb-10">{block.desc}</p>
+              <div className="mt-auto pt-8 border-t border-white/10">
+                <h4 className="text-[10px] font-bold text-white/50 uppercase tracking-[0.2em] mb-6">Detailed Scope:</h4>
+                <ul className="space-y-4">
                   {block.scope.map((s, sIdx) => (
-                    <li key={sIdx} className="flex items-start gap-3">
-                      <Check className="mt-1 text-[#194083] flex-shrink-0" size={14} />
-                      <span className="text-slate-600 text-xs leading-relaxed">{s}</span>
+                    <li key={sIdx} className="flex items-start gap-4">
+                      <Check className="mt-1 text-blue-400 flex-shrink-0" size={14} />
+                      <span className="text-white/90 text-[13px] leading-relaxed">{s}</span>
                     </li>
                   ))}
                 </ul>
@@ -1123,14 +1184,14 @@ const PropertyRealEstateView = ({ onNavigate }: { onNavigate: (path: ViewPath) =
             </div>
             <div>
                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Express Options</p>
-               <p className="text-xl font-serif font-bold text-[#194083]">3 - 6 Hours</p>
+               <p className="text-xl font-serif font-bold text-[#2368D6]">3 - 6 Hours</p>
             </div>
           </div>
         </div>
         <div className="bg-[#081A33] p-10 rounded text-white shadow-2xl relative overflow-hidden">
            <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full blur-3xl -mr-16 -mt-16"></div>
            <h3 className="font-serif text-xl font-bold mb-6">Speed Benchmarks</h3>
-           <ul className="space-y-4 text-sm text-blue-100/70">
+           <ul className="space-y-4 text-sm text-blue-100/90">
               <li className="flex justify-between items-center pb-4 border-b border-white/10">
                  <span>Standard Inventory</span>
                  <span className="font-bold text-white">24h</span>
@@ -1206,7 +1267,7 @@ const PropertyRealEstateView = ({ onNavigate }: { onNavigate: (path: ViewPath) =
       <div className="max-w-4xl mx-auto">
         <h2 className="font-serif text-3xl md:text-5xl font-bold mb-6">Stop letting production and admin set your growth ceiling.</h2>
         <div className="flex flex-wrap justify-center gap-6 mt-12">
-          <button onClick={() => onNavigate('/contact')} className="bg-[#194083] hover:opacity-90 transition-colors px-10 py-4 rounded-xl text-xs font-bold uppercase tracking-[0.2em] shadow-xl">
+          <button onClick={() => onNavigate('/contact')} className="bg-[#2368D6] hover:opacity-90 transition-colors px-10 py-4 rounded-xl text-xs font-bold uppercase tracking-[0.2em] shadow-xl">
             Request a no-cost trial
           </button>
         </div>
@@ -1244,9 +1305,9 @@ const BlogSidebar = ({
           placeholder="Search here..." 
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full p-4 pr-12 bg-white border border-slate-100 rounded-xl outline-none focus:border-[#194083] text-sm text-slate-600 shadow-sm"
+          className="w-full p-4 pr-12 bg-white border border-slate-100 rounded-xl outline-none focus:border-[#2368D6] text-sm text-slate-600 shadow-sm"
         />
-        <button className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-300 hover:text-[#194083]">
+        <button className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-300 hover:text-[#2368D6]">
           <Search size={18} />
         </button>
       </div>
@@ -1256,7 +1317,7 @@ const BlogSidebar = ({
         <li>
           <button 
             onClick={onClearFilters}
-            className={`${!selectedCategory ? 'text-[#194083]' : 'text-slate-500'} hover:text-[#194083] text-sm transition-colors uppercase tracking-widest font-medium`}
+            className={`${!selectedCategory ? 'text-[#2368D6]' : 'text-slate-500'} hover:text-[#2368D6] text-sm transition-colors uppercase tracking-widest font-medium`}
           >
             All Categories
           </button>
@@ -1265,7 +1326,7 @@ const BlogSidebar = ({
           <li key={cat}>
             <button 
               onClick={() => setSelectedCategory(cat)}
-              className={`${selectedCategory === cat ? 'text-[#194083]' : 'text-slate-500'} hover:text-[#194083] text-sm transition-colors uppercase tracking-widest font-medium`}
+              className={`${selectedCategory === cat ? 'text-[#2368D6]' : 'text-slate-500'} hover:text-[#2368D6] text-sm transition-colors uppercase tracking-widest font-medium`}
             >
               {cat}
             </button>
@@ -1286,7 +1347,7 @@ const BlogSidebar = ({
                 </div>
               )}
               <div>
-                <h4 className="text-sm font-bold text-[#081A33] group-hover:text-[#194083] transition-colors leading-snug line-clamp-2">
+              <h4 className="text-sm font-bold text-[#081A33] group-hover:text-[#2368D6] transition-colors leading-snug line-clamp-2">
                   {post.title}
                 </h4>
                 <p className="text-[10px] text-slate-400 mt-2 uppercase tracking-wider">{post.date}</p>
@@ -1301,8 +1362,8 @@ const BlogSidebar = ({
       <h3 className="text-xs font-bold text-[#081A33] uppercase tracking-widest mb-6">Orbit Newsletter</h3>
       <p className="text-slate-500 text-sm leading-relaxed mb-8">Practical, monthly operational insights delivered to your inbox.</p>
       <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
-        <input type="email" placeholder="Email address" className="w-full p-4 bg-white border border-slate-200/60 rounded-xl outline-none focus:border-[#194083] text-sm transition-all shadow-sm" required />
-        <button type="submit" className="w-full bg-[#194083] hover:opacity-90 text-white p-4 rounded-xl font-bold uppercase tracking-widest text-[10px] transition-all shadow-md">
+        <input type="email" placeholder="Email address" className="w-full p-4 bg-white border border-slate-200/60 rounded-xl outline-none focus:border-[#2368D6] text-sm transition-all shadow-sm" required />
+        <button type="submit" className="w-full bg-[#2368D6] hover:opacity-90 text-white p-4 rounded-xl font-bold uppercase tracking-widest text-[10px] transition-all shadow-md">
           Join the List
         </button>
       </form>
@@ -1357,7 +1418,7 @@ const InsightsView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) 
           <div className="lg:col-span-8">
             <button 
               onClick={() => setSelectedInsight(null)}
-              className="text-[#194083] font-bold text-xs uppercase tracking-widest flex items-center gap-2 mb-8 hover:translate-x-[-4px] transition-transform"
+              className="text-[#2368D6] font-bold text-xs uppercase tracking-widest flex items-center gap-2 mb-8 hover:translate-x-[-4px] transition-transform"
             >
               <ArrowRight className="rotate-180" size={14} /> Back to Insights
             </button>
@@ -1383,7 +1444,7 @@ const InsightsView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) 
             </h1>
 
             <div 
-              className="prose prose-slate prose-lg max-w-none prose-headings:font-serif prose-headings:text-[#081A33] prose-h1:text-4xl prose-h2:text-3xl prose-h3:text-2xl prose-p:text-slate-600 prose-p:leading-relaxed prose-a:text-[#194083] prose-strong:text-[#081A33] mb-24"
+              className="prose prose-slate prose-lg max-w-none prose-headings:font-serif prose-headings:text-[#081A33] prose-h1:text-4xl prose-h2:text-3xl prose-h3:text-2xl prose-p:text-slate-600 prose-p:leading-relaxed prose-a:text-[#2368D6] prose-strong:text-[#081A33] mb-24"
               dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(selectedInsight.content) }}
             />
 
@@ -1397,7 +1458,7 @@ const InsightsView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) 
                   <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-2">
                     <ArrowRight className="rotate-180" size={12} /> Previous Post
                   </p>
-                  <h4 className="text-[#081A33] font-bold group-hover:text-[#194083] transition-colors">{prevPost.title}</h4>
+                  <h4 className="text-[#081A33] font-bold group-hover:text-[#2368D6] transition-colors">{prevPost.title}</h4>
                 </div>
               ) : <div />}
               
@@ -1409,7 +1470,7 @@ const InsightsView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) 
                   <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-2 justify-end">
                     Next Post <ArrowRight size={12} />
                   </p>
-                  <h4 className="text-[#081A33] font-bold group-hover:text-[#194083] transition-colors">{nextPost.title}</h4>
+                  <h4 className="text-[#081A33] font-bold group-hover:text-[#2368D6] transition-colors">{nextPost.title}</h4>
                 </div>
               ) : <div />}
             </div>
@@ -1438,7 +1499,7 @@ const InsightsView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) 
   return (
     <>
       {/* Section 1 - Hero */}
-      <section className="relative bg-[#081A33] text-white pt-32 pb-24 overflow-hidden font-sans border-b border-white/5">
+      <section className="relative bg-[#081A33] text-white pt-12 pb-8 overflow-hidden font-sans border-b border-white/5">
         <div className="max-w-7xl mx-auto px-6 relative z-10">
           <h1 className="font-serif text-4xl md:text-5xl lg:text-7xl font-bold leading-tight mb-8">
             The Journal.
@@ -1454,7 +1515,7 @@ const InsightsView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) 
           <div className="lg:col-span-8">
             {loading ? (
               <div className="flex justify-center items-center py-20">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#194083]"></div>
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#2368D6]"></div>
               </div>
             ) : filteredInsights.length > 0 ? (
               <div className="space-y-16">
@@ -1466,7 +1527,7 @@ const InsightsView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) 
                     </p>
                     <button 
                       onClick={() => { setSearchQuery(''); setSelectedCategory(null); }}
-                      className="text-xs font-bold text-[#194083] uppercase tracking-widest"
+                      className="text-xs font-bold text-[#2368D6] uppercase tracking-widest"
                     >
                       Clear filters
                     </button>
@@ -1485,18 +1546,18 @@ const InsightsView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) 
                       </div>
                     )}
                     <div className="flex items-center gap-4 mb-4">
-                      <span className="text-[#194083] font-bold text-[10px] uppercase tracking-widest">{post.tag}</span>
+                      <span className="text-[#2368D6] font-bold text-[10px] uppercase tracking-widest">{post.tag}</span>
                       <span className="w-1 h-1 rounded-full bg-slate-300"></span>
                       <span className="text-slate-400 text-xs font-medium">{post.date}</span>
                     </div>
-                    <h2 className="font-serif text-3xl md:text-4xl font-bold text-[#081A33] mb-6 group-hover:text-[#194083] transition-colors leading-tight">
+                    <h2 className="font-serif text-3xl md:text-4xl font-bold text-[#081A33] mb-6 group-hover:text-[#2368D6] transition-colors leading-tight">
                       {post.title}
                     </h2>
                     <p className="text-slate-500 text-lg leading-relaxed mb-8 max-w-3xl">
                       {post.summary}
                     </p>
                     <button className="flex items-center gap-3 text-[#081A33] font-bold text-xs uppercase tracking-[0.2em] group-hover:gap-5 transition-all">
-                      Read Full Article <ArrowRight size={14} className="text-[#194083]" />
+                      Read Full Article <ArrowRight size={14} className="text-[#2368D6]" />
                     </button>
                   </div>
                 ))}
@@ -1590,7 +1651,7 @@ const Header = ({ currentPath, onNavigate }: { currentPath: ViewPath, onNavigate
                 <button
                   onClick={() => onNavigate(item.path as ViewPath)}
                   className={`text-xs uppercase tracking-widest font-bold transition-colors ${
-                    currentPath === item.path ? 'text-[#194083]' : 'text-slate-500 hover:text-[#081A33]'
+                    currentPath === item.path ? 'text-[#2368D6]' : 'text-slate-500 hover:text-[#2368D6]'
                   }`}
                 >
                   {item.label}
@@ -1598,7 +1659,7 @@ const Header = ({ currentPath, onNavigate }: { currentPath: ViewPath, onNavigate
               ) : (
                 <button
                   className={`text-xs uppercase tracking-widest font-bold transition-colors flex items-center gap-1 ${
-                    activeDropdown === item.label ? 'text-[#194083]' : 'text-[#64748B] hover:text-[#081A33]'
+                    activeDropdown === item.label ? 'text-[#2368D6]' : 'text-[#64748B] hover:text-[#2368D6]'
                   }`}
                 >
                   {item.label}
@@ -1623,7 +1684,7 @@ const Header = ({ currentPath, onNavigate }: { currentPath: ViewPath, onNavigate
                             onNavigate(subItem.path as ViewPath);
                             setActiveDropdown(null);
                           }}
-                          className="w-full text-left px-8 py-3 text-xs font-bold text-[#64748B] hover:text-[#194083] hover:bg-[#FFF7EA] transition-all uppercase tracking-widest border-l-2 border-transparent hover:border-[#194083]"
+                          className="w-full text-left px-8 py-3 text-xs font-bold text-[#64748B] hover:text-[#2368D6] hover:bg-[#FFF7EA] transition-all uppercase tracking-widest border-l-2 border-transparent hover:border-[#2368D6]"
                         >
                           {subItem.label}
                         </button>
@@ -1637,7 +1698,7 @@ const Header = ({ currentPath, onNavigate }: { currentPath: ViewPath, onNavigate
           
           <button
             onClick={() => onNavigate('/contact')}
-            className="bg-[#081A33] hover:bg-slate-800 text-white px-8 py-3.5 rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all shadow-md ml-4"
+            className="bg-[#2368D6] hover:bg-slate-800 text-white px-8 py-3.5 rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all shadow-md ml-4"
           >
             Get a Quote
           </button>
@@ -1681,7 +1742,7 @@ const Header = ({ currentPath, onNavigate }: { currentPath: ViewPath, onNavigate
                             onNavigate(sub.path as ViewPath);
                             setIsMobileMenuOpen(false);
                           }}
-                          className="text-left text-sm font-medium text-slate-600 hover:text-[#194083] transition-colors"
+                          className="text-left text-sm font-medium text-slate-600 hover:text-[#2368D6] transition-colors"
                         >
                           {sub.label}
                         </button>
@@ -1696,7 +1757,7 @@ const Header = ({ currentPath, onNavigate }: { currentPath: ViewPath, onNavigate
                 onNavigate('/contact');
                 setIsMobileMenuOpen(false);
               }}
-              className="bg-[#194083] text-white hover:opacity-90 px-6 py-3 rounded-lg text-sm font-medium transition-colors mt-4 shadow-sm w-full"
+              className="bg-[#2368D6] text-white hover:opacity-90 px-6 py-3 rounded-lg text-sm font-medium transition-colors mt-4 shadow-sm w-full"
             >
               Contact Us
             </button>
@@ -1713,7 +1774,7 @@ const AboutView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
   return (
     <>
       {/* Section 1 - Hero */}
-      <section className="relative bg-white pt-32 pb-24 overflow-hidden font-sans border-b border-slate-100">
+      <section className="relative bg-white pt-12 pb-8 overflow-hidden font-sans border-b border-slate-100">
         <div className="max-w-7xl mx-auto px-6 relative z-10 text-center">
           <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-8 text-[#081A33]">
             {getContent('about.heroTitle', 'A decade as the behind-the-scenes engine for businesses around the world.')}
@@ -1731,7 +1792,7 @@ const AboutView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
           <h2 className="font-serif text-3xl font-bold text-[#081A33] mb-8">Our Story</h2>
           <div className="space-y-6 text-slate-600 leading-relaxed">
             <p>
-              Our Story was founded in <a href="https://www.keralatourism.org/topic/kochi" target="_blank" rel="noopener noreferrer" className="text-[#194083] hover:underline">Kochi</a>, on India's southwest coast in the state of Kerala, by a team with deep experience in transcription and business-process-outsourcing.
+              Our Story was founded in <a href="https://www.keralatourism.org/topic/kochi" target="_blank" rel="noopener noreferrer" className="text-[#2368D6] hover:underline">Kochi</a>, on India's southwest coast in the state of Kerala, by a team with deep experience in transcription and business-process-outsourcing.
             </p>
             <p>
               The first OrbitSol clients were UK property inspection firms that needed accurate typing, and within two years the business had built relationships that would last more than a decade.
@@ -1755,7 +1816,7 @@ const AboutView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
               ].map((m, idx) => (
                 <div key={idx} className="flex gap-6 items-start relative z-10">
                    <div className="bg-white py-1">
-                      <span className="font-serif font-black text-[#194083] text-xl min-w-[60px] block">{m.year}</span>
+                      <span className="font-serif font-black text-[#2368D6] text-xl min-w-[60px] block">{m.year}</span>
                    </div>
                    <p className="text-slate-600 text-sm leading-relaxed pt-1">{m.event}</p>
                 </div>
@@ -1784,7 +1845,7 @@ const AboutView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
           ].map((member, idx) => (
             <div key={idx} className="text-center group">
                <div className="w-full aspect-square bg-[#FFF7EA] rounded-full mb-4 border border-[#FFF0E6] flex items-center justify-center grayscale group-hover:grayscale-0 transition-all overflow-hidden">
-                  <span className="text-[#194083] opacity-10"><FileText size={48} /></span>
+                  <span className="text-[#2368D6] opacity-10"><FileText size={48} /></span>
                </div>
                <h4 className="font-bold text-[#081A33] text-sm mb-1">{member.n}</h4>
                <p className="text-slate-400 text-xs leading-tight">{member.r}</p>
@@ -1806,8 +1867,8 @@ const AboutView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
             { t: "Trusted Project Leaders", d: "A named person responsible for your account." },
             { t: "Confidentiality", d: "NDAs and named access are standard practice." }
           ].map((p, idx) => (
-            <div key={idx} className="p-8 rounded bg-[#112240] border border-white/5">
-               <div className="text-[#194083] font-black text-3xl mb-6 opacity-80">0{idx + 1}</div>
+            <div key={idx} className="p-8 rounded bg-[#081A33] border border-white/5">
+               <div className="text-[#2368D6] font-black text-3xl mb-6 opacity-80">0{idx + 1}</div>
                <h4 className="font-bold mb-4 text-sm leading-tight group-hover:text-blue-300">{p.t}</h4>
                <p className="text-blue-100/50 text-xs leading-relaxed">{p.d}</p>
             </div>
@@ -1905,7 +1966,7 @@ const ContactView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) =
   return (
     <>
       {/* Section 1 - Hero */}
-      <section className="relative bg-[#F5F7FA] pt-32 pb-24 overflow-hidden font-sans border-b border-slate-100">
+      <section className="relative bg-[#F5F7FA] pt-12 pb-8 overflow-hidden font-sans border-b border-slate-100">
         <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-16 items-start">
           <div>
             <h1 className="font-serif text-4xl md:text-5xl font-bold leading-tight mb-8 text-[#081A33]">
@@ -1917,7 +1978,7 @@ const ContactView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) =
             <div className="space-y-6 pt-12 border-t border-slate-200">
                <div>
                   <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Email Address</p>
-                  <a href={`mailto:${contactEmail}`} className="text-2xl font-serif font-bold text-[#194083] hover:underline">{contactEmail}</a>
+                  <a href={`mailto:${contactEmail}`} className="text-2xl font-serif font-bold text-[#2368D6] hover:underline">{contactEmail}</a>
                </div>
                <div>
                   <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Phone Number (Toll-free)</p>
@@ -1938,26 +1999,26 @@ const ContactView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) =
               <div className="grid sm:grid-cols-2 gap-6">
                  <div className="space-y-2">
                     <label className="text-[10px] font-bold text-txt-secondary uppercase tracking-widest">Name *</label>
-                    <input name="name" type="text" className="w-full p-3 bg-white border border-[#FFF0E6] rounded focus:border-[#194083] outline-none transition-colors" required />
+                    <input name="name" type="text" className="w-full p-3 bg-white border border-[#FFF0E6] rounded focus:border-[#2368D6] outline-none transition-colors" required />
                  </div>
                  <div className="space-y-2">
                     <label className="text-[10px] font-bold text-txt-secondary uppercase tracking-widest">Email *</label>
-                    <input name="email" type="email" className="w-full p-3 bg-white border border-[#FFF0E6] rounded focus:border-[#194083] outline-none transition-colors" required />
+                    <input name="email" type="email" className="w-full p-3 bg-white border border-[#FFF0E6] rounded focus:border-[#2368D6] outline-none transition-colors" required />
                  </div>
               </div>
               <div className="grid sm:grid-cols-2 gap-6">
                  <div className="space-y-2">
                     <label className="text-[10px] font-bold text-txt-secondary uppercase tracking-widest">Company</label>
-                    <input name="company" type="text" className="w-full p-3 bg-white border border-[#FFF0E6] rounded focus:border-[#194083] outline-none transition-colors" />
+                    <input name="company" type="text" className="w-full p-3 bg-white border border-[#FFF0E6] rounded focus:border-[#2368D6] outline-none transition-colors" />
                  </div>
                  <div className="space-y-2">
                     <label className="text-[10px] font-bold text-txt-secondary uppercase tracking-widest">Country</label>
-                    <input name="country" type="text" className="w-full p-3 bg-white border border-[#FFF0E6] rounded focus:border-[#194083] outline-none transition-colors" />
+                    <input name="country" type="text" className="w-full p-3 bg-white border border-[#FFF0E6] rounded focus:border-[#2368D6] outline-none transition-colors" />
                  </div>
               </div>
               <div className="space-y-2">
                  <label className="text-[10px] font-bold text-txt-secondary uppercase tracking-widest">Service Interest</label>
-                 <select name="service" className="w-full p-3 bg-white border border-[#FFF0E6] rounded focus:border-[#194083] outline-none transition-colors text-sm">
+                 <select name="service" className="w-full p-3 bg-white border border-[#FFF0E6] rounded focus:border-[#2368D6] outline-none transition-colors text-sm">
                     <option>Property Inspection Reports</option>
                     <option>Managed Remote Operations</option>
                     <option>Digital Marketing & Creative</option>
@@ -1968,12 +2029,12 @@ const ContactView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) =
               </div>
               <div className="space-y-2">
                  <label className="text-[10px] font-bold text-txt-secondary uppercase tracking-widest">What do you want handled? *</label>
-                 <textarea name="message" rows={4} className="w-full p-3 bg-white border border-[#FFF0E6] rounded focus:border-[#194083] outline-none transition-colors resize-none" required></textarea>
+                 <textarea name="message" rows={4} className="w-full p-3 bg-white border border-[#FFF0E6] rounded focus:border-[#2368D6] outline-none transition-colors resize-none" required></textarea>
               </div>
               <button 
                 type="submit" 
                 disabled={isSubmitting}
-                className="w-full bg-[#194083] hover:opacity-90 text-white py-4 rounded font-bold uppercase tracking-widest text-xs shadow-lg transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+                className="w-full bg-[#2368D6] hover:opacity-90 text-white py-4 rounded font-bold uppercase tracking-widest text-xs shadow-lg transition-all disabled:opacity-50 flex items-center justify-center gap-2"
               >
                 {isSubmitting ? (
                   <>
@@ -2070,9 +2131,9 @@ const FAQItem = ({ question, answer }: { question: string; answer: string }) => 
         className="w-full flex justify-between items-center text-left focus:outline-none"
         onClick={() => setIsOpen(!isOpen)}
       >
-        <span className="font-serif text-xl font-medium text-[#081A33] pr-8">{question}</span>
+        <span className="font-serif text-xl font-medium text-[#2368D6] pr-8">{question}</span>
         <ChevronDown 
-          className={`text-[#194083] transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} 
+          className={`text-[#2368D6] transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} 
           size={20} 
         />
       </button>
@@ -2100,27 +2161,36 @@ const HomeView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => {
 
   return (
     <>
-      <section className="relative primary-gradient text-white pt-32 pb-24 overflow-hidden">
-        <div className="absolute top-0 right-0 w-1/2 h-full opacity-10 pointer-events-none">
-          <svg viewBox="0 0 100 100" className="w-full h-full fill-current" preserveAspectRatio="none">
+      <section className="relative primary-gradient text-white pt-12 pb-8 overflow-hidden font-sans">
+      <div className="absolute inset-0 z-0">
+        <img 
+          src="https://images.unsplash.com/photo-1451187514994-6f51bd2ee36e?q=80&w=2070&auto=format&fit=crop" 
+          alt="Global connectivity background" 
+          className="w-full h-full object-cover opacity-10 filter grayscale" 
+          referrerPolicy="no-referrer"
+        />
+        <div className="absolute inset-0 bg-[#081A33]/40 mix-blend-multiply"></div>
+      </div>
+      <div className="absolute top-0 right-0 w-1/2 h-full opacity-10 pointer-events-none z-10">
+        <svg viewBox="0 0 100 100" className="w-full h-full fill-current" preserveAspectRatio="none">
             <circle cx="80" cy="50" r="40" stroke="white" strokeWidth="0.5" fill="none" />
             <circle cx="80" cy="50" r="30" stroke="white" strokeWidth="0.5" fill="none" strokeDasharray="2 2" />
             <circle cx="80" cy="50" r="20" stroke="white" strokeWidth="0.5" fill="none" />
           </svg>
         </div>
         <div className="max-w-7xl mx-auto px-6 relative z-10">
-          <div className="max-w-4xl">
-            <p className="text-white/80 font-medium tracking-widest uppercase text-xs mb-6 font-sans">
+          <div className="max-w-2xl p-6 md:p-8 rounded-3xl backdrop-blur-sm bg-white/5 border border-white/10 shadow-2xl">
+            <p className="text-white/60 font-medium tracking-widest uppercase text-[10px] mb-4 font-sans">
               {getContent('home.heroTag', 'Managed offshore operations / Powered by Practical AI')}
             </p>
-            <h1 className="font-serif text-5xl md:text-6xl font-bold leading-tight mb-8">
+            <h1 className="font-serif text-4xl md:text-5xl font-bold leading-tight mb-6">
               {getContent('home.heroTitle', 'Turn recurring work into managed workflows your team can rely on.')}
             </h1>
-            <p className="text-lg md:text-xl text-white/70 leading-relaxed mb-12 max-w-3xl font-sans">
+            <p className="text-base md:text-lg text-white/70 leading-relaxed mb-8 font-sans">
               {getContent('home.heroDesc', 'OrbitSol helps property, strata, lettings, legal, and professional services firms move reporting, transcription, and admin work into a managed offshore operating layer.')}
             </p>
-          <div className="flex flex-col sm:flex-row gap-4 mb-16">
-            <button onClick={() => onNavigate('/contact')} className="bg-[#194083] hover:opacity-90 text-white px-8 py-3.5 rounded-xl font-bold uppercase tracking-widest text-xs shadow-lg transition-all">
+          <div className="flex flex-col sm:flex-row gap-4 mb-10">
+            <button onClick={() => onNavigate('/contact')} className="bg-[#2368D6] hover:opacity-90 text-white px-8 py-3.5 rounded-xl font-bold uppercase tracking-widest text-xs shadow-lg transition-all">
               Send a workflow enquiry
             </button>
             <button onClick={() => window.location.href=`mailto:${contactEmail}`} className="border border-white/20 text-white hover:bg-white/10 px-8 py-3.5 rounded font-bold uppercase tracking-widest text-xs transition-all">
@@ -2146,8 +2216,8 @@ const HomeView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => {
     <section id="who-we-serve" className="py-24 bg-white font-sans">
       <div className="max-w-7xl mx-auto px-6">
         <div className="mb-20">
-          <p className="text-[#194083] font-bold tracking-widest uppercase text-xs mb-4">Who we serve.</p>
-          <h2 className="font-serif text-4xl md:text-5xl lg:text-7xl font-bold text-[#081A33] mb-8 leading-[1.1] tracking-tight max-w-4xl">
+          <p className="text-[#2368D6] font-bold tracking-widest uppercase text-xs mb-4">Who we serve.</p>
+          <h2 className="font-serif text-4xl md:text-5xl lg:text-[67px] font-bold text-[#081A33] mb-8 leading-[1.1] tracking-tight max-w-4xl">
             Built for teams whose work depends on accurate, repeatable operations.
           </h2>
           <p className="text-lg md:text-xl text-slate-500 leading-relaxed max-w-4xl">
@@ -2170,10 +2240,10 @@ const HomeView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => {
               className="group cursor-pointer p-10 rounded-2xl border border-slate-100 hover:border-blue-200 transition-all duration-300 bg-white flex flex-col h-full shadow-[0_4px_20px_rgba(0,0,0,0.02)] hover:shadow-xl"
             >
               <div className="flex-grow">
-                <h3 className="font-serif text-2xl font-bold text-[#081A33] mb-6 group-hover:text-[#194083] transition-colors">{service.title}</h3>
+                <h3 className="font-serif text-2xl font-bold text-[#081A33] mb-6 group-hover:text-[#2368D6] transition-colors">{service.title}</h3>
                 <p className="text-slate-500 text-sm leading-relaxed mb-10 font-sans">Dedicated offshore support tailored to your industry's specific workflow requirements.</p>
               </div>
-              <div className="flex items-center gap-2 text-[#194083] text-sm font-bold font-sans">
+              <div className="flex items-center gap-2 text-[#2368D6] text-sm font-bold font-sans">
                 <span>Explore services</span>
                 <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
               </div>
@@ -2186,7 +2256,7 @@ const HomeView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => {
              <p className="text-slate-500 text-sm mb-10 font-sans">We build custom desks for unique workflows.</p>
              <button 
                onClick={(e) => { e.stopPropagation(); onNavigate('/contact'); }}
-               className="w-full bg-[#194083] hover:opacity-90 text-white font-bold py-4 rounded-xl transition-colors shadow-md uppercase tracking-widest text-xs font-sans"
+               className="w-full bg-[#2368D6] hover:bg-[#2368D6]/90 text-white font-bold py-4 rounded-xl transition-colors shadow-md uppercase tracking-widest text-xs font-sans"
              >
                Send an enquiry
              </button>
@@ -2198,7 +2268,7 @@ const HomeView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => {
     <section id="what-we-do" className="py-24 bg-[#081A33] text-white font-sans overflow-hidden">
       <div className="max-w-7xl mx-auto px-6">
         <div className="mb-20">
-          <div className="text-[#194083] font-bold tracking-widest uppercase text-[11px] mb-6 underline decoration-[#194083] underline-offset-8">What we do.</div>
+          <div className="text-white font-bold tracking-widest uppercase text-[11px] mb-6 underline decoration-white/30 underline-offset-8">What we do.</div>
           <h2 className="font-serif text-4xl md:text-5xl lg:text-7xl font-bold mb-8 leading-[1.1] tracking-tight max-w-4xl">
             Multiple managed workflow lines, one operating partner.
           </h2>
@@ -2214,18 +2284,18 @@ const HomeView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => {
             { id: '03', title: 'Digital Marketing & Creative', path: '/what-we-do/digital-marketing/', desc: 'Managed creative production including web, content, SEO, and paid media.' },
             { id: '04', title: 'Speech, Content, & Data', path: '/what-we-do/speech-content-data-intelligence/', desc: 'Audio transcription, video, and documents turned into workflow-ready outputs.' },
             { id: '05', title: 'Managed Remote Operations', path: '/what-we-do/managed-remote-operations/', desc: 'Virtual assistants and dedicated operational desks to handle your daily business admin.' }
-          ].map((item) => (
+          ].map((item, idx) => (
             <div
               key={item.id}
               onClick={() => onNavigate(item.path as ViewPath)}
-              className="cursor-pointer group p-10 rounded-2xl bg-slate-900 border border-white/5 hover:border-[#194083]/50 hover:bg-slate-900/80 transition-all duration-300 flex flex-col h-full shadow-2xl"
+              className="cursor-pointer group p-10 rounded-2xl bg-white/5 border border-white/10 hover:border-white/30 hover:bg-white/10 transition-all duration-300 flex flex-col h-full shadow-2xl backdrop-blur-sm"
             >
               <div className="flex-grow">
-                <div className="text-[#194083] font-serif text-5xl font-black mb-8 opacity-80 group-hover:opacity-100 transition-opacity">{item.id}</div>
-                <h3 className="font-serif text-2xl font-bold mb-6 group-hover:text-[#194083] transition-colors uppercase tracking-tight">{item.title}</h3>
-                <p className="text-white/50 text-sm leading-relaxed mb-6 font-sans">{item.desc}</p>
+                <div className="text-white/30 font-serif text-5xl font-black mb-8 group-hover:text-white transition-colors">{item.id}</div>
+                <h3 className="font-serif text-2xl font-bold mb-6 group-hover:text-white transition-colors uppercase tracking-tight">{item.title}</h3>
+                <p className="text-white/70 text-sm leading-relaxed mb-6 font-sans">{item.desc}</p>
               </div>
-              <div className="flex items-center gap-2 text-[#194083] text-xs font-bold uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-all transform translate-x-[-10px] group-hover:translate-x-0 font-sans">
+              <div className="flex items-center gap-2 text-white text-xs font-bold uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-all transform translate-x-[-10px] group-hover:translate-x-0 font-sans">
                 <span>View Capability</span>
                 <ArrowRight size={14} />
               </div>
@@ -2241,18 +2311,27 @@ const HomeView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => {
 const SpeechContentDataView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => (
   <>
     {/* Section 1 - Hero */}
-    <section className="relative primary-gradient text-white pt-32 pb-24 overflow-hidden font-sans">
+    <section className="relative primary-gradient text-white pt-12 pb-8 overflow-hidden font-sans">
+      <div className="absolute inset-0 z-0">
+        <img 
+          src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop" 
+          alt="Data and Speech Intelligence background" 
+          className="w-full h-full object-cover opacity-20 filter grayscale" 
+          referrerPolicy="no-referrer"
+        />
+        <div className="absolute inset-0 bg-[#081A33]/60 mix-blend-multiply"></div>
+      </div>
       <div className="max-w-7xl mx-auto px-6 relative z-10">
-        <div className="max-w-3xl">
-          <div className="text-white/60 font-bold uppercase tracking-[0.2em] text-xs mb-6">Speech, Content, and Data Intelligence.</div>
-          <h1 className="font-serif text-4xl md:text-5xl lg:text-7xl font-bold leading-tight mb-8">
+        <div className="max-w-2xl p-6 md:p-8 rounded-2xl backdrop-blur-sm bg-white/5 border border-white/10 shadow-2xl">
+          <div className="text-white/80 font-bold uppercase tracking-[0.2em] text-[10px] mb-4">Speech, Content, and Data Intelligence.</div>
+          <h1 className="font-serif text-3xl md:text-5xl font-bold leading-tight mb-6">
             Turn speech, video, documents, and raw content into structured, usable business intelligence.
           </h1>
-          <p className="text-lg md:text-xl text-blue-100/70 leading-relaxed mb-10 max-w-4xl">
-            OrbitSol helps businesses convert audio, video, documents, notes, recordings, and unstructured content into accurate, searchable, and workflow-ready outputs. We support audio transcription, AI transcript correction, caption preparation, subtitling support, meeting summaries, metadata tagging, document indexing, content classification, and structured data extraction, with trained human review built into every workflow.
+          <p className="text-base md:text-lg text-white/70 leading-relaxed mb-8 max-w-4xl">
+            OrbitSol helps businesses convert audio, video, documents, notes, recordings, and unstructured content into accurate, searchable, and workflow-ready outputs.
           </p>
           <div className="flex flex-wrap gap-4">
-            <button onClick={() => onNavigate('/contact')} className="bg-[#194083] hover:opacity-90 text-white px-8 py-3.5 rounded-xl font-bold uppercase tracking-widest text-xs shadow-lg transition-all">
+            <button onClick={() => onNavigate('/contact')} className="bg-[#2368D6] hover:opacity-90 text-white px-8 py-3.5 rounded-xl font-bold uppercase tracking-widest text-xs shadow-lg transition-all">
               Send a sample file
             </button>
             <button onClick={() => onNavigate('/contact')} className="border border-white/20 text-white hover:bg-white/10 px-8 py-3.5 rounded-xl font-bold uppercase tracking-widest text-xs transition-all">
@@ -2279,7 +2358,7 @@ const SpeechContentDataView = ({ onNavigate }: { onNavigate: (path: ViewPath) =>
     </section>
 
     {/* Capability Strip (Section 9 partial) */}
-    <section className="py-8 bg-[#F8FAFC] border-b border-slate-100 overflow-hidden">
+    <section className="py-8 bg-[#F5F7FA] border-b border-slate-100 overflow-hidden">
        <div className="max-w-7xl mx-auto px-6 whitespace-nowrap">
           <div className="flex justify-between items-center text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] opacity-60">
              <span>Audio transcription</span>
@@ -2305,17 +2384,20 @@ const SpeechContentDataView = ({ onNavigate }: { onNavigate: (path: ViewPath) =>
         <h2 className="font-serif text-3xl font-bold text-[#081A33] mb-16">What we handle.</h2>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {[
-            { t: "Audio Transcription", d: "Legal, financial, academic, business, property, sermon, interview, and general audio transcription, prepared with the right balance of accuracy, formatting, and turnaround. Audio transcription has been one of OrbitSol's core services since the business began." },
-            { t: "AI Transcript Proofreading", d: "Machine-generated transcripts from tools such as Zoom, Teams, Otter, Fireflies, Whisper, or other automatic-speech-recognition systems are corrected against the source recording, with names, terminology, speaker labels, and context all checked properly." },
-            { t: "Captioning and Accessibility Support", d: "Caption files and accessibility-ready text outputs prepared for videos, webinars, training modules, internal communications, and digital content libraries." },
-            { t: "Subtitling and Localisation Support", d: "Subtitle preparation, timing support, and translation-ready workflows for teams that need content adapted for wider audiences. Where specialist language review is required, we can structure the workflow with the right review layer." },
-            { t: "Meeting Summaries and Action Notes", d: "Clean meeting records with decisions, action owners, deadlines, open questions, and next steps extracted from recordings, transcripts, or AI-generated notes." },
-            { t: "Metadata Tagging and Content Indexing", d: "Speaker labels, topic tags, content categories, timestamps, keywords, asset descriptions, and indexing fields that make content easier to search, retrieve, and reuse." },
-            { t: "Document Intelligence Support", d: "Document indexing, data extraction, form review, file naming, classification, validation checks, structured summaries, and workflow preparation." },
-            { t: "Property Report Production", d: "Property condition reports, inventories, check-ins, check-outs, inspection reports, and routine documentation produced from dictation, photos, video, and platform notes." },
-            { t: "Content Library Cleanup", d: "Backlog cleanup for recordings, transcripts, training videos, archived webinars, research interviews, inspection files, document folders, and internal knowledge libraries." }
+            { tag: "Audio", t: "Audio Transcription", d: "Legal, financial, academic, business, property, sermon, interview, and general audio transcription, prepared with the right balance of accuracy, formatting, and turnaround. Audio transcription has been one of OrbitSol's core services since the business began.", icon: <Mic size={24} /> },
+            { tag: "Correction", t: "AI Transcript Proofreading", d: "Machine-generated transcripts from tools such as Zoom, Teams, Otter, Fireflies, Whisper, or other automatic-speech-recognition systems are corrected against the source recording, with names, terminology, speaker labels, and context all checked properly.", icon: <FileText size={24} /> },
+            { tag: "Accessibility", t: "Captioning and Accessibility Support", d: "Caption files and accessibility-ready text outputs prepared for videos, webinars, training modules, internal communications, and digital content libraries.", icon: <Video size={24} /> },
+            { tag: "Content", t: "Subtitling and Localisation Support", d: "Subtitle preparation, timing support, and translation-ready workflows for teams that need content adapted for wider audiences. Where specialist language review is required, we can structure the workflow with the right review layer.", icon: <Globe size={24} /> },
+            { tag: "Intelligence", t: "Meeting Summaries and Action Notes", d: "Clean meeting records with decisions, action owners, deadlines, open questions, and next steps extracted from recordings, transcripts, or AI-generated notes.", icon: <Layers size={24} /> },
+            { tag: "Data", t: "Metadata Tagging and Content Indexing", d: "Speaker labels, topic tags, content categories, timestamps, keywords, asset descriptions, and indexing fields that make content easier to search, retrieve, and reuse.", icon: <Table size={24} /> },
+            { tag: "Documents", t: "Document Intelligence Support", d: "Document indexing, data extraction, form review, file naming, classification, validation checks, structured summaries, and workflow preparation.", icon: <Database size={24} /> },
+            { tag: "Reports", t: "Property Report Production", d: "Property condition reports, inventories, check-ins, check-outs, inspection reports, and routine documentation produced from dictation, photos, video, and platform notes.", icon: <Clipboard size={24} /> },
+            { tag: "Cleanup", t: "Content Library Cleanup", d: "Backlog cleanup for recordings, transcripts, training videos, archived webinars, research interviews, inspection files, document folders, and internal knowledge libraries.", icon: <Layers size={24} /> }
           ].map((card, idx) => (
-            <div key={idx} className="p-10 rounded-2xl border border-slate-100 bg-[#F5F7FA] shadow-sm hover:shadow-md transition-all">
+            <div key={idx} className="group p-10 rounded-2xl border border-slate-100 bg-[#F5F7FA] shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col h-full">
+               <div className="w-12 h-12 rounded-xl bg-white text-[#2368D6] flex items-center justify-center mb-8 group-hover:scale-110 transition-transform duration-300 shadow-sm border border-slate-100">
+                  {card.icon}
+               </div>
                <h4 className="font-serif text-xl font-bold text-[#081A33] mb-4">{card.t}</h4>
                <p className="text-slate-500 text-sm leading-relaxed">{card.d}</p>
             </div>
@@ -2339,9 +2421,9 @@ const SpeechContentDataView = ({ onNavigate }: { onNavigate: (path: ViewPath) =>
                { s: "Delivery", d: "The final output is delivered in Word, Excel, PDF, plain text, SRT, VTT, CSV, structured summary format, platform upload, or any agreed client template." }
              ].map((step, idx) => (
                <div key={idx} className="space-y-4 relative z-10">
-                  <div className="w-10 h-10 rounded-full bg-[#194083] text-white flex items-center justify-center font-black text-sm mb-4 border-4 border-[#081A33]">0{idx + 1}</div>
+                  <div className="w-10 h-10 rounded-full bg-[#2368D6] text-white flex items-center justify-center font-black text-sm mb-4 border-4 border-[#081A33]">0{idx + 1}</div>
                   <h4 className="font-bold text-lg leading-tight">{step.s}</h4>
-                  <p className="text-blue-100/50 text-[11px] leading-relaxed">{step.d}</p>
+                  <p className="text-blue-100/80 text-[11px] leading-relaxed">{step.d}</p>
                </div>
              ))}
           </div>
@@ -2349,20 +2431,23 @@ const SpeechContentDataView = ({ onNavigate }: { onNavigate: (path: ViewPath) =>
     </section>
 
     {/* Section 5 - Use Cases */}
-    <section className="py-24 bg-white font-sans">
+    <section className="py-24 bg-white font-sans border-b border-slate-100">
       <div className="max-w-7xl mx-auto px-6">
          <h2 className="font-serif text-3xl font-bold text-[#081A33] mb-16 text-center">Use cases.</h2>
          <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {[
-              { t: "Make recordings searchable", d: "Convert audio and video libraries into transcripts, summaries, tags, and metadata, so teams can find the information they need without listening to entire files." },
-              { t: "Prepare content for publication", d: "Turn webinars, podcasts, training videos, and interviews into transcripts, captions, summaries, article drafts, quote banks, and reusable content assets." },
-              { t: "Support compliance and records", d: "Create accurate written records from legal, financial, property, board, human resources, research, and client-service recordings, where accuracy and confidentiality matter." },
-              { t: "Improve meeting follow-through", d: "Convert meeting recordings into clear decisions, owners, deadlines, and action logs, so important items do not disappear into long transcripts or automated notes." },
-              { t: "Clean up AI-generated output", d: "Review and correct AI transcripts, summaries, captions, or extracted content before they are shared, filed, sent to clients, or used in business decisions." },
-              { t: "Structure document-heavy workflows", d: "Classify, index, extract, and validate information from forms, reports, contracts, inspection files, research documents, and operational records." },
-              { t: "Prepare content for wider audiences", d: "Support captions, subtitles, translation-ready text, accessibility workflows, and training content, so information can be used by more people in more contexts." }
+              { t: "Make recordings searchable", d: "Convert audio and video libraries into transcripts, summaries, tags, and metadata, so teams can find the information they need without listening to entire files.", icon: <Search size={20} /> },
+              { t: "Prepare content for publication", d: "Turn webinars, podcasts, training videos, and interviews into transcripts, captions, summaries, article drafts, quote banks, and reusable content assets.", icon: <Layers size={20} /> },
+              { t: "Support compliance and records", d: "Create accurate written records from legal, financial, property, board, human resources, research, and client-service recordings, where accuracy and confidentiality matter.", icon: <FileCheck size={20} /> },
+              { t: "Improve meeting follow-through", d: "Convert meeting recordings into clear decisions, owners, deadlines, and action logs, so important items do not disappear into long transcripts or automated notes.", icon: <Check size={20} /> },
+              { t: "Clean up AI-generated output", d: "Review and correct AI transcripts, summaries, captions, or extracted content before they are shared, filed, sent to clients, or used in business decisions.", icon: <Edit size={20} /> },
+              { t: "Structure document-heavy workflows", d: "Classify, index, extract, and validate information from forms, reports, contracts, inspection files, research documents, and operational records.", icon: <Database size={20} /> },
+              { t: "Prepare content for wider audiences", d: "Support captions, subtitles, translation-ready text, accessibility workflows, and training content, so information can be used by more people in more contexts.", icon: <Globe size={20} /> }
             ].map((item, idx) => (
-              <div key={idx} className="p-8 bg-[#FFF7EA] border border-[#FFF0E6] rounded-2xl">
+              <div key={idx} className="group p-8 bg-[#F5F7FA] border border-slate-100 rounded-2xl hover:border-blue-200 transition-all shadow-sm hover:shadow-md">
+                 <div className="text-[#2368D6] mb-4 opacity-40 group-hover:opacity-100 transition-opacity">
+                    {item.icon}
+                 </div>
                  <h4 className="font-bold text-[#081A33] text-sm mb-3">{item.t}</h4>
                  <p className="text-slate-500 text-xs leading-relaxed">{item.d}</p>
               </div>
@@ -2372,7 +2457,7 @@ const SpeechContentDataView = ({ onNavigate }: { onNavigate: (path: ViewPath) =>
     </section>
 
     {/* Section 6 & 7 - Who We Support & Output Formats */}
-    <section className="py-24 bg-[#FFF7EA] font-sans border-y border-[#FFF0E6]">
+    <section className="py-24 bg-[#F5F7FA] font-sans border-y border-slate-100">
       <div className="max-w-7xl mx-auto px-6">
          <div className="grid lg:grid-cols-2 gap-16">
             <div>
@@ -2388,8 +2473,8 @@ const SpeechContentDataView = ({ onNavigate }: { onNavigate: (path: ViewPath) =>
                     "Marketing and Content Teams",
                     "Founder-Led Businesses"
                   ].map((segment, idx) => (
-                    <div key={idx} className="flex items-center gap-4 py-3 border-b border-slate-200">
-                       <Check size={16} className="text-[#194083]" />
+                    <div key={idx} className="flex items-center gap-4 py-3 border-b border-slate-200/60">
+                       <Check size={16} className="text-[#2368D6]" />
                        <span className="text-slate-600 font-medium text-sm">{segment}</span>
                     </div>
                   ))}
@@ -2433,7 +2518,7 @@ const SpeechContentDataView = ({ onNavigate }: { onNavigate: (path: ViewPath) =>
                { t: "Confidential handling", d: "Access, permissions, non-disclosure agreements, and secure transfer methods are agreed before work begins." },
                { t: "Managed delivery", d: "A named project leader coordinates the workflow, the escalations, the quality assurance, and the reporting." }
              ].map((point, idx) => (
-               <div key={idx} className="p-10 rounded-2xl bg-[#FFF7EA] border border-[#FFF0E6]">
+               <div key={idx} className="p-10 rounded-2xl bg-[#F5F7FA] border border-slate-100 shadow-sm hover:border-blue-200 transition-colors">
                   <h4 className="font-bold text-[#081A33] mb-4 text-lg">{point.t}</h4>
                   <p className="text-slate-500 text-sm leading-relaxed">{point.d}</p>
                </div>
@@ -2443,7 +2528,7 @@ const SpeechContentDataView = ({ onNavigate }: { onNavigate: (path: ViewPath) =>
     </section>
 
     {/* Section 10 - FAQ */}
-    <section className="py-24 bg-[#FFF7EA]/50 font-sans border-y border-slate-200">
+    <section className="py-24 bg-[#F5F7FA] font-sans border-y border-slate-100">
       <div className="max-w-3xl mx-auto px-6">
         <h2 className="text-[11px] font-bold text-slate-400 uppercase tracking-widest text-center mb-16">Frequently Asked Questions</h2>
         <div className="space-y-4">
@@ -2466,7 +2551,7 @@ const SpeechContentDataView = ({ onNavigate }: { onNavigate: (path: ViewPath) =>
         <h2 className="font-serif text-3xl md:text-5xl font-bold mb-6">Send us one file and the output you need from it.</h2>
         <p className="text-blue-100/60 mb-10 text-lg">Whether it is a recording, a video, a transcript, a document set, an inspection file, or a content library, we will review the input and suggest a workflow that turns it into something structured, searchable, and useful.</p>
         <div className="flex flex-wrap justify-center gap-4">
-          <button onClick={() => onNavigate('/contact')} className="bg-[#194083] hover:opacity-90 transition-colors px-10 py-4 rounded-xl text-xs font-bold uppercase tracking-[0.2em] shadow-xl">
+          <button onClick={() => onNavigate('/contact')} className="bg-[#2368D6] hover:opacity-90 transition-colors px-10 py-4 rounded-xl text-xs font-bold uppercase tracking-[0.2em] shadow-xl">
             Send a sample file
           </button>
           <button onClick={() => onNavigate('/contact')} className="border border-white/20 hover:bg-white/10 transition-colors px-10 py-4 rounded-xl text-xs font-bold uppercase tracking-[0.2em]">
@@ -2642,7 +2727,7 @@ const AdminView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#FFF7EA]">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#194083]"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#2368D6]"></div>
       </div>
     );
   }
@@ -2710,7 +2795,7 @@ const AdminView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
             {activeTab === 'insights' && (
               <button 
                 onClick={() => { setEditingInsight(null); setIsFormOpen(true); }}
-                className="bg-[#194083] hover:opacity-90 text-white px-6 py-3 rounded-xl font-bold flex items-center gap-2 text-xs uppercase tracking-widest shadow-lg transition-all"
+                className="bg-[#2368D6] hover:opacity-90 text-white px-6 py-3 rounded-xl font-bold flex items-center gap-2 text-xs uppercase tracking-widest shadow-lg transition-all"
               >
                 <Plus size={16} /> New Insight
               </button>
@@ -2805,7 +2890,7 @@ const AdminView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
                          <div className="text-[10px] text-slate-300 mt-1">{enq.company || 'No Company'} • {enq.country || 'No Country'}</div>
                        </td>
                        <td className="px-8 py-5">
-                         <span className="px-2 py-1 bg-[#FFF0E6]/30 text-[#194083] text-[9px] font-bold rounded uppercase tracking-widest whitespace-nowrap">{enq.service}</span>
+                         <span className="px-2 py-1 bg-[#FFF0E6]/30 text-[#2368D6] text-[9px] font-bold rounded uppercase tracking-widest whitespace-nowrap">{enq.service}</span>
                        </td>
                        <td className="px-8 py-5">
                          <p className="text-slate-500 text-xs leading-relaxed max-w-md whitespace-pre-wrap">{enq.message}</p>
@@ -2851,7 +2936,7 @@ const AdminView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
                   <button 
                     onClick={saveAllSettings}
                     disabled={savingSettings}
-                    className="bg-[#194083] hover:opacity-90 text-white px-6 py-2 rounded-xl font-bold text-xs uppercase tracking-widest shadow-md disabled:opacity-50 flex items-center gap-2"
+                    className="bg-[#2368D6] hover:opacity-90 text-white px-6 py-2 rounded-xl font-bold text-xs uppercase tracking-widest shadow-md disabled:opacity-50 flex items-center gap-2"
                   >
                     {savingSettings ? 'Saving...' : <><Save size={14} /> Save Page</>}
                   </button>
@@ -3046,21 +3131,27 @@ const AdminView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
 const PropertyInspectionView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => (
   <>
     {/* Section 1 - Hero */}
-    <section className="relative bg-gradient-to-br from-[#081A33] to-[#112240] text-white pt-32 pb-24 overflow-hidden font-sans">
-      <div className="absolute right-[-5%] top-[10%] opacity-10 pointer-events-none hidden lg:block">
-         <FileText size={400} className="text-blue-400" />
+    <section className="relative primary-gradient text-white pt-12 pb-8 overflow-hidden font-sans">
+      <div className="absolute inset-0 z-0">
+        <img 
+          src="https://images.unsplash.com/photo-1582268611958-ebaf16150251?q=80&w=2070&auto=format&fit=crop" 
+          alt="Property Inspection background" 
+          className="w-full h-full object-cover opacity-20 filter grayscale" 
+          referrerPolicy="no-referrer"
+        />
+        <div className="absolute inset-0 bg-[#081A33]/60 mix-blend-multiply"></div>
       </div>
       <div className="max-w-7xl mx-auto px-6 relative z-10">
-        <div className="max-w-3xl">
-          <div className="text-blue-300/60 font-bold uppercase tracking-[0.2em] text-xs mb-6 underline decoration-[#194083] underline-offset-8">Property Inspection Reports.</div>
-          <h1 className="font-serif text-4xl md:text-5xl lg:text-7xl font-bold leading-tight mb-8">
-            Turn inspection inputs into client-ready reports through a managed production workflow.
+        <div className="max-w-2xl p-6 md:p-8 rounded-2xl backdrop-blur-sm bg-white/5 border border-white/10 shadow-2xl">
+          <div className="text-white/60 font-bold uppercase tracking-[0.2em] text-[10px] mb-4 underline decoration-[#2368D6] underline-offset-8">Property Inspection Reports.</div>
+          <h1 className="font-serif text-3xl md:text-5xl font-bold leading-tight mb-6">
+            Turn inspection inputs into client-ready reports.
           </h1>
-          <p className="text-lg md:text-xl text-blue-100/70 leading-relaxed mb-10 max-w-4xl">
-            Inspectors capture findings as audio, video, photos, forms, or platform notes, and OrbitSol turns those inputs into structured, formatted, quality-checked reports inside your template or system. The workflow is built for predictable turnaround, audit-ready documentation, white-label delivery, and scalable report capacity during peak periods. Standard turnaround is 24 hours, express is 6 hours, and super-express can be 3 hours or less.
+          <p className="text-base md:text-lg text-white/70 leading-relaxed mb-8 max-w-4xl font-sans">
+            OrbitSol turns inspection inputs into structured, formatted, quality-checked reports inside your system.
           </p>
           <div className="flex flex-wrap gap-4">
-            <button onClick={() => onNavigate('/contact')} className="bg-[#194083] hover:opacity-90 text-white px-10 py-4 rounded-xl font-bold uppercase tracking-widest text-xs shadow-lg transition-all">
+            <button onClick={() => onNavigate('/contact')} className="bg-[#2368D6] hover:opacity-90 text-white px-10 py-4 rounded-xl font-bold uppercase tracking-widest text-xs shadow-lg transition-all">
               Send a sample report request
             </button>
           </div>
@@ -3072,7 +3163,7 @@ const PropertyInspectionView = ({ onNavigate }: { onNavigate: (path: ViewPath) =
     <section className="py-24 bg-white font-sans">
       <div className="max-w-7xl mx-auto px-6">
         <h2 className="font-serif text-3xl font-bold text-[#081A33] mb-16">What we produce.</h2>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 text-center sm:text-left">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {[
             { t: "Property Condition Reports", d: "Entry, exit, routine, and interim inspections for Australia, New Zealand, and similar markets." },
             { t: "Inventory Reports", d: "Pre-tenancy inventories with photographic evidence for United Kingdom agencies and inventory clerks." },
@@ -3081,10 +3172,12 @@ const PropertyInspectionView = ({ onNavigate }: { onNavigate: (path: ViewPath) =
             { t: "Building Inspection Reports", d: "Pre-purchase, pre-sale, and structural inspection report typing from surveyor dictation." },
             { t: "Mid-term Inspections", d: "Routine landlord reports with photos, observations, and recommended actions." }
           ].map((card, idx) => (
-            <div key={idx} className="p-10 rounded-2xl border border-[#FFF0E6] bg-[#FFF7EA]/50 shadow-sm hover:translate-y-[-4px] transition-all flex flex-col h-full items-center sm:items-start">
-               <FileCheck size={24} className="text-[#194083] mb-6" />
-               <h4 className="font-serif text-xl font-bold text-[#081A33] mb-4">{card.t}</h4>
-               <p className="text-slate-500 text-sm leading-relaxed">{card.d}</p>
+            <div key={idx} className="group p-8 rounded-2xl bg-[#081A33] text-white border border-white/10 hover:border-blue-400/50 shadow-xl hover:shadow-2xl transition-all duration-300 flex flex-col h-full backdrop-blur-sm">
+               <div className="w-12 h-12 rounded-xl bg-white/5 text-blue-400 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 border border-white/10">
+                  <FileCheck size={24} />
+               </div>
+               <h4 className="font-serif text-lg font-bold mb-3">{card.t}</h4>
+               <p className="text-white/60 text-xs leading-relaxed">{card.d}</p>
             </div>
           ))}
         </div>
@@ -3092,7 +3185,7 @@ const PropertyInspectionView = ({ onNavigate }: { onNavigate: (path: ViewPath) =
     </section>
 
     {/* Section 3 - How We Work */}
-    <section className="py-24 bg-[#FFF7EA] font-sans border-y border-[#FFF0E6]">
+    <section className="py-24 bg-[#F5F7FA] font-sans border-y border-slate-100">
       <div className="max-w-7xl mx-auto px-6">
          <h2 className="font-serif text-3xl font-bold text-[#081A33] mb-16">How we work.</h2>
          <div className="grid md:grid-cols-3 gap-12">
@@ -3102,9 +3195,9 @@ const PropertyInspectionView = ({ onNavigate }: { onNavigate: (path: ViewPath) =
                { s: "03", t: "You review and deliver", d: "The final report lands in your platform or inbox, ready for your sign-off and client delivery." }
             ].map((p) => (
                <div key={p.s}>
-                  <div className="text-[#194083] font-black text-4xl mb-6 opacity-80">{p.s}</div>
-                  <h4 className="font-bold text-[#081A33] mb-4 text-lg">{p.t}</h4>
-                  <p className="text-slate-500 text-sm leading-relaxed">{p.d}</p>
+                  <div className="text-blue-400 font-black text-3xl mb-4 opacity-80">{p.s}</div>
+                  <h4 className="font-bold text-[#081A33] mb-3 text-base">{p.t}</h4>
+                  <p className="text-slate-500 text-xs leading-relaxed">{p.d}</p>
                </div>
             ))}
          </div>
@@ -3112,7 +3205,7 @@ const PropertyInspectionView = ({ onNavigate }: { onNavigate: (path: ViewPath) =
     </section>
 
     {/* Section 4 - Platforms and Templates (Integrated Integrations) */}
-    <section className="py-24 bg-[#FFF7EA] font-sans border-y border-[#FFF0E6] overflow-hidden">
+    <section className="py-24 bg-[#F5F7FA] font-sans border-y border-slate-100 overflow-hidden">
        <div className="max-w-7xl mx-auto px-6">
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-12 mb-16">
             <div className="max-w-xl">
@@ -3135,7 +3228,7 @@ const PropertyInspectionView = ({ onNavigate }: { onNavigate: (path: ViewPath) =
                    <img 
                      src={getAssetUrl(logo.logo)} 
                      alt={logo.name} 
-                     className="max-h-12 max-w-[80%] w-auto object-contain transition-all mix-blend-multiply"
+                     className="max-h-16 md:max-h-20 max-w-[85%] w-auto object-contain transition-all duration-300 mix-blend-multiply group-hover:scale-105"
                      referrerPolicy="no-referrer"
                    />
                 </div>
@@ -3157,7 +3250,7 @@ const PropertyInspectionView = ({ onNavigate }: { onNavigate: (path: ViewPath) =
        <div className="max-w-7xl mx-auto px-6">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
              <div>
-                <h2 className="font-serif text-3xl md:text-5xl font-bold text-[#0A192F] mb-8 leading-tight">Production is where many inspection businesses get stuck.</h2>
+                <h2 className="font-serif text-3xl md:text-5xl font-bold text-[#081A33] mb-8 leading-tight">Production is where many inspection businesses get stuck.</h2>
                 <p className="text-slate-500 leading-relaxed text-lg mb-8">
                   Inspectors can only inspect as fast as the report layer keeps up. Once reports run behind, clients start chasing, bookings become harder to accept, and local staff are pulled into work that can be managed elsewhere. Outsourcing the production layer gives agencies more flexible capacity without adding fixed local overhead.
                 </p>
@@ -3169,8 +3262,8 @@ const PropertyInspectionView = ({ onNavigate }: { onNavigate: (path: ViewPath) =
                   "Quality you can audit.",
                   "Lower delivered cost."
                 ].map((benefit, idx) => (
-                  <div key={idx} className="p-8 border border-[#1B4D83]/20 rounded-2xl bg-[#1B4D83]/5 shadow-sm flex items-center justify-center text-center">
-                     <p className="text-[#0A192F] font-bold text-sm">{benefit}</p>
+                  <div key={idx} className="p-8 border border-[#2368D6]/20 rounded-2xl bg-[#2368D6]/5 shadow-sm flex items-center justify-center text-center">
+                     <p className="text-[#081A33] font-bold text-sm">{benefit}</p>
                   </div>
                 ))}
              </div>
@@ -3179,7 +3272,7 @@ const PropertyInspectionView = ({ onNavigate }: { onNavigate: (path: ViewPath) =
     </section>
 
     {/* Section 6 - FAQ */}
-    <section className="py-24 bg-brand-cream font-sans">
+    <section className="py-24 bg-[#F5F7FA] font-sans border-y border-slate-100">
       <div className="max-w-3xl mx-auto px-6">
         <h2 className="text-[11px] font-bold text-slate-400 uppercase tracking-widest text-center mb-16">Frequently Asked Questions</h2>
         <div className="space-y-4">
@@ -3194,11 +3287,11 @@ const PropertyInspectionView = ({ onNavigate }: { onNavigate: (path: ViewPath) =
     </section>
 
     {/* Section 7 - Closing CTA */}
-    <section className="bg-[#0A192F] py-24 px-6 text-center text-white border-t border-white/10 font-sans">
+    <section className="bg-[#081A33] py-24 px-6 text-center text-white border-t border-white/10 font-sans">
       <div className="max-w-4xl mx-auto">
         <h2 className="font-serif text-3xl md:text-5xl font-bold mb-6">Send us one sample dictation and template, and see what comes back.</h2>
         <p className="text-blue-100/60 mb-10 text-lg">No commitment is required for a sample. We will produce one report in your format, so you can judge the quality, the turnaround, and the fit.</p>
-        <button onClick={() => onNavigate('/contact')} className="bg-[#1B4D83] hover:opacity-90 transition-colors px-10 py-4 rounded-xl text-xs font-bold uppercase tracking-[0.2em] shadow-xl">
+        <button onClick={() => onNavigate('/contact')} className="bg-[#2368D6] hover:opacity-90 transition-colors px-10 py-4 rounded-xl text-xs font-bold uppercase tracking-[0.2em] shadow-xl">
           Request a free sample
         </button>
       </div>
@@ -3209,10 +3302,19 @@ const PropertyInspectionView = ({ onNavigate }: { onNavigate: (path: ViewPath) =
 const LegalProfessionalServicesView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => (
   <>
     {/* Block A — Hero */}
-    <section className="relative primary-gradient text-white pt-32 pb-24 overflow-hidden">
+    <section className="relative primary-gradient text-white pt-12 pb-8 overflow-hidden">
+      <div className="absolute inset-0 z-0">
+        <img 
+          src="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?q=80&w=2070&auto=format&fit=crop" 
+          alt="Legal Services background" 
+          className="w-full h-full object-cover opacity-20 filter grayscale" 
+          referrerPolicy="no-referrer"
+        />
+        <div className="absolute inset-0 bg-[#081A33]/60 mix-blend-multiply"></div>
+      </div>
       <div className="absolute top-5 right-10 text-[18vw] font-serif font-black text-white/3 pointer-events-none select-none tracking-tighter">LPS</div>
       <div className="max-w-7xl mx-auto px-6 relative z-10">
-        <div className="text-xs uppercase tracking-[0.2em] font-bold text-white/60 mb-6 font-sans">
+        <div className="text-xs uppercase tracking-[0.2em] font-bold text-white/80 mb-6 font-sans">
           Who we work with / Legal and Professional Services
         </div>
         <div className="max-w-4xl">
@@ -3231,9 +3333,9 @@ const LegalProfessionalServicesView = ({ onNavigate }: { onNavigate: (path: View
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid lg:grid-cols-12 gap-12 items-start">
           {/* Left: Scope List */}
-          <div className="lg:col-span-5 bg-[#e0d7cd]/50 p-10 rounded shadow-sm border border-slate-200">
-            <h2 className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-8 border-b border-slate-200 pb-4">Scope of Services</h2>
-            <ul className="space-y-4">
+          <div className="lg:col-span-5 bg-[#081A33] text-white p-8 rounded-2xl shadow-xl border border-white/10 backdrop-blur-sm">
+            <h2 className="text-[10px] font-bold uppercase tracking-widest text-white/70 mb-6 border-b border-white/10 pb-4">Scope of Services</h2>
+            <ul className="space-y-3">
               {[
                 "Legal transcription (hearings, interviews)",
                 "Court bundle preparation & indexing",
@@ -3245,8 +3347,8 @@ const LegalProfessionalServicesView = ({ onNavigate }: { onNavigate: (path: View
                 "Research & case summary prep"
               ].map((item, idx) => (
                 <li key={idx} className="flex items-start gap-4">
-                  <span className="text-[#1B4D83] font-bold mt-1">&bull;</span>
-                  <span className="text-slate-600 font-medium text-sm leading-relaxed">{item}</span>
+                  <span className="text-[#2368D6] font-bold mt-1">&bull;</span>
+                  <span className="text-white font-medium text-sm leading-relaxed">{item}</span>
                 </li>
               ))}
             </ul>
@@ -3273,7 +3375,7 @@ const LegalProfessionalServicesView = ({ onNavigate }: { onNavigate: (path: View
     </section>
 
     {/* Block C — How We Work */}
-    <section className="py-24 bg-[#e0d7cd]/50 font-sans">
+    <section className="py-24 bg-[#F5F7FA] font-sans border-b border-slate-100">
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid md:grid-cols-3 gap-8">
           {[
@@ -3293,12 +3395,12 @@ const LegalProfessionalServicesView = ({ onNavigate }: { onNavigate: (path: View
               desc: 'Full requirement scaling with a named project leader managing output and agreed reporting cadence.'
             }
           ].map((card) => (
-            <div key={card.id} className="bg-white p-8 rounded border-l-4 border-brand-blue shadow-sm hover:shadow-md transition-shadow flex flex-col h-full">
-              <div className="flex items-center gap-4 mb-6">
-                 <span className="text-brand-blue font-serif text-3xl font-bold">{card.id}</span>
-                 <h4 className="font-serif text-xl font-bold text-brand-deep-navy">{card.title}</h4>
+            <div key={card.id} className="bg-[#081A33] text-white p-6 rounded-2xl border border-white/10 shadow-xl hover:shadow-2xl transition-all flex flex-col h-full uppercase tracking-tight backdrop-blur-sm">
+              <div className="flex items-center gap-4 mb-4">
+                 <span className="text-blue-400 font-serif text-2xl font-bold">{card.id}</span>
+                 <h4 className="font-serif text-lg font-bold">{card.title}</h4>
               </div>
-              <p className="text-slate-500 text-sm leading-relaxed">{card.desc}</p>
+              <p className="text-white/80 text-xs leading-relaxed normal-case">{card.desc}</p>
             </div>
           ))}
         </div>
@@ -3308,7 +3410,7 @@ const LegalProfessionalServicesView = ({ onNavigate }: { onNavigate: (path: View
     {/* Block D — Proof */}
     <section className="py-24 bg-white border-y border-slate-100 font-sans">
       <div className="max-w-4xl mx-auto px-6 text-center">
-        <div className="mb-8 text-[#1B4D83] opacity-10">
+        <div className="mb-8 text-[#2368D6] opacity-10">
           <FileText size={64} className="mx-auto" />
         </div>
         <p className="font-serif text-2xl md:text-3xl text-slate-500 italic leading-relaxed mb-10">
@@ -3319,10 +3421,10 @@ const LegalProfessionalServicesView = ({ onNavigate }: { onNavigate: (path: View
     </section>
 
     {/* Block E — Frequently Asked Questions */}
-    <section className="py-24 bg-brand-cream font-sans">
+    <section className="py-24 bg-[#F5F7FA] font-sans border-y border-slate-100">
       <div className="max-w-3xl mx-auto px-6">
         <h2 className="text-[11px] font-bold text-slate-400 uppercase tracking-widest text-center mb-16">Common Questions</h2>
-        <div className="bg-white rounded shadow-sm border border-slate-200 p-10 overflow-hidden">
+        <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-10 overflow-hidden">
           <FAQItem question="How do you handle confidentiality?" answer="Non-disclosure agreements are signed at firm and individual level, file access is restricted, and our security protocols have been used with legal and financial clients since 2017." />
           <FAQItem question="Which platforms do you work in?" answer="We work in the major practice management systems and document management platforms. Where the platform is new to us, we run a learning sprint before live work." />
           <FAQItem question="What turnaround can we expect?" answer="Standard turnaround for transcription is 2 business days, express is 24 hours, and same-day is available where the audio is clear." />

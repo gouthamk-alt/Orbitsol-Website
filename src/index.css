@@ -6,11 +6,12 @@
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-serif: "Playfair Display", serif;
 
-  --color-brand-primary-start: #194083;
-  --color-brand-primary-end: #2368D6;
+  --color-brand-primary-start: #081A33;
+  --color-brand-primary-mid: #2368D6;
+  --color-brand-primary-end: #3B82F6;
   
   --color-brand-deep-navy: #081A33;
-  --color-brand-navy: #0F172A;
+  --color-brand-navy: #081A33;
   --color-brand-slate: #334155;
   --color-brand-cool-gray: #64748B;
   --color-brand-light-gray: #94A3B8;
@@ -18,19 +19,19 @@
   --color-brand-pale-blue: #F5F7FA;
   --color-brand-cream: #FFF7EA;
   --color-brand-warm-cream: #FFF0E6;
-  --color-brand-blue: #194083;
+  --color-brand-blue: #2368D6;
 
   --color-status-success: #16A34A;
-  --color-status-info: #2563EB;
-  --color-status-accent: #F97316;
+  --color-status-info: #2368D6;
+  --color-status-accent: #3B82F6;
   --color-status-alert: #DC2626;
 
-  --color-txt-primary: #0F172A;
-  --color-txt-secondary: #475568;
-  --color-txt-muted: #94A3B8;
-  --color-link-accent: #194083;
+  --color-txt-primary: #081A33;
+  --color-txt-secondary: #334155;
+  --color-txt-muted: #64748B;
+  --color-link-accent: #2368D6;
 
-  --background-image-primary-gradient: linear-gradient(to bottom right, #081A33, #194083);
+  --background-image-primary-gradient: linear-gradient(135deg, #081A33 0%, #2368D6 100%);
 }
 
 @utility primary-gradient {
