@@ -10,7 +10,7 @@ import {
   query, 
   where, 
   orderBy, 
-  Timestamp,
+  serverTimestamp,
   onSnapshot
 } from 'firebase/firestore';
 import { ref, uploadString, getDownloadURL, uploadBytes } from 'firebase/storage';
@@ -111,8 +111,8 @@ export const adminService = {
     try {
       const docRef = await addDoc(collection(db, path), {
         ...insight,
-        createdAt: Timestamp.now(),
-        updatedAt: Timestamp.now()
+        createdAt: serverTimestamp(),
+        updatedAt: serverTimestamp()
       });
       return docRef.id;
     } catch (error) {
@@ -126,7 +126,7 @@ export const adminService = {
       const docRef = doc(db, 'insights', id);
       await updateDoc(docRef, {
         ...insight,
-        updatedAt: Timestamp.now()
+        updatedAt: serverTimestamp()
       });
     } catch (error) {
       handleFirestoreError(error, OperationType.UPDATE, path);
@@ -172,7 +172,6 @@ export const adminService = {
     const isNew = !insight.id;
     const path = isNew ? 'insights' : `insights/${insight.id}`;
     
-    const { serverTimestamp } = await import('firebase/firestore');
     const data = {
       ...insight,
       updatedAt: serverTimestamp(),
@@ -196,7 +195,6 @@ export const adminService = {
 
   async updateSettings(key: string, value: any) {
     const path = `siteSettings/${key}`;
-    const { serverTimestamp } = await import('firebase/firestore');
     try {
       const docRef = doc(db, 'siteSettings', key);
       await setDoc(docRef, {
@@ -234,7 +232,6 @@ export const adminService = {
   },
 
   async saveTeamMember(member: Partial<TeamMember>) {
-    const { serverTimestamp } = await import('firebase/firestore');
     const isNew = !member.id;
     const path = isNew ? 'team' : `team/${member.id}`;
     
@@ -268,7 +265,7 @@ export const adminService = {
   },
 
   async bootstrapTeam(members: Partial<TeamMember>[]) {
-    const { writeBatch, doc, collection, serverTimestamp } = await import('firebase/firestore');
+    const { writeBatch } = await import('firebase/firestore');
     const batch = writeBatch(db);
     
     for (const member of members) {

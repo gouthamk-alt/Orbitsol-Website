@@ -2740,7 +2740,8 @@ const ImageCropperModal = ({
 
 const TeamManagement = () => {
   const [team, setTeam] = useState<TeamMember[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const [editingMember, setEditingMember] = useState<Partial<TeamMember> | null>(null);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [cropImage, setCropImage] = useState<string | null>(null);
@@ -2751,23 +2752,28 @@ const TeamManagement = () => {
   }, []);
 
   const fetchTeam = async () => {
-    setLoading(true);
-    const data = await adminService.getTeamMembers();
-    setTeam(data || []);
-    setLoading(false);
+    try {
+      setLoading(true);
+      const data = await adminService.getTeamMembers();
+      setTeam(data || []);
+    } catch (error) {
+      console.error("Fetch team error:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleBootstrapTeam = async () => {
     if (window.confirm("Initialize team with default members?")) {
       try {
-        setLoading(true);
+        setSubmitting(true);
         await adminService.bootstrapTeam(DEFAULT_TEAM);
         await fetchTeam();
       } catch (error) {
         console.error("Bootstrap error:", error);
         alert("Failed to initialize team members. Please check console.");
       } finally {
-        setLoading(false);
+        setSubmitting(false);
       }
     }
   };
@@ -2775,7 +2781,7 @@ const TeamManagement = () => {
   const handleSaveMember = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      setLoading(true);
+      setSubmitting(true);
       const formData = new FormData(e.currentTarget);
       const name = formData.get('name') as string;
       const role = formData.get('role') as string;
@@ -2786,6 +2792,11 @@ const TeamManagement = () => {
       // If the photo is a data URL (from crop), upload it to storage
       if (currentPhoto.startsWith('data:')) {
         photoUrl = await adminService.uploadTeamPhoto(currentPhoto, `${name.replace(/\s+/g, '_')}.jpg`);
+      }
+
+      if (!photoUrl) {
+        alert("Please provide a photo.");
+        return;
       }
 
       const memberData: Partial<TeamMember> = {
@@ -2804,16 +2815,24 @@ const TeamManagement = () => {
       await fetchTeam();
     } catch (error) {
       console.error("Save error:", error);
-      alert("Failed to save team member.");
+      alert("Failed to save team member. Please check your connection or try a smaller image.");
     } finally {
-      setLoading(false);
+      setSubmitting(false);
     }
   };
 
   const handleDeleteMember = async (id: string) => {
     if (window.confirm("Are you sure you want to delete this staff member?")) {
-      await adminService.deleteTeamMember(id);
-      fetchTeam();
+      try {
+        setSubmitting(true);
+        await adminService.deleteTeamMember(id);
+        await fetchTeam();
+      } catch (error) {
+        console.error("Delete error:", error);
+        alert("Failed to delete member.");
+      } finally {
+        setSubmitting(false);
+      }
     }
   };
 
@@ -2833,10 +2852,18 @@ const TeamManagement = () => {
     setCropImage(null);
   };
 
-  if (loading) return <div className="p-20 text-center animate-pulse text-slate-400">Processing...</div>;
+  if (loading && team.length === 0) return <div className="p-20 text-center animate-pulse text-slate-400 font-medium">Loading team data...</div>;
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 relative">
+      {(submitting || (loading && team.length > 0)) && (
+        <div className="fixed inset-0 bg-slate-900/10 backdrop-blur-[1px] z-[100] flex items-center justify-center">
+          <div className="bg-white px-8 py-4 rounded-2xl shadow-2xl border border-slate-100 flex items-center gap-4">
+            <div className="w-5 h-5 border-2 border-[#081A33] border-t-transparent rounded-full animate-spin" />
+            <span className="text-sm font-bold text-[#081A33] uppercase tracking-widest">Processing...</span>
+          </div>
+        </div>
+      )}
       <div className="flex justify-between items-center mb-8">
         <div>
           <h2 className="text-xl font-bold text-[#081A33]">Team Members ({team.length})</h2>
