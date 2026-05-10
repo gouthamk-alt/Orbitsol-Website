@@ -172,10 +172,11 @@ export const adminService = {
     const isNew = !insight.id;
     const path = isNew ? 'insights' : `insights/${insight.id}`;
     
+    const { serverTimestamp } = await import('firebase/firestore');
     const data = {
       ...insight,
-      updatedAt: Timestamp.now(),
-      ...(isNew ? { createdAt: Timestamp.now() } : {})
+      updatedAt: serverTimestamp(),
+      ...(isNew ? { createdAt: serverTimestamp() } : {})
     };
     
     // Remove ID from data if updating
@@ -195,12 +196,13 @@ export const adminService = {
 
   async updateSettings(key: string, value: any) {
     const path = `siteSettings/${key}`;
+    const { serverTimestamp } = await import('firebase/firestore');
     try {
       const docRef = doc(db, 'siteSettings', key);
       await setDoc(docRef, {
         key,
         value,
-        updatedAt: Timestamp.now()
+        updatedAt: serverTimestamp()
       });
     } catch (error) {
       handleFirestoreError(error, OperationType.WRITE, path);
@@ -232,12 +234,13 @@ export const adminService = {
   },
 
   async saveTeamMember(member: Partial<TeamMember>) {
+    const { serverTimestamp } = await import('firebase/firestore');
     const isNew = !member.id;
     const path = isNew ? 'team' : `team/${member.id}`;
     
     const data = {
       ...member,
-      updatedAt: Timestamp.now(),
+      updatedAt: serverTimestamp(),
     };
     
     const docId = member.id;
@@ -265,14 +268,17 @@ export const adminService = {
   },
 
   async bootstrapTeam(members: Partial<TeamMember>[]) {
-    const { writeBatch, doc, collection } = await import('firebase/firestore');
+    const { writeBatch, doc, collection, serverTimestamp } = await import('firebase/firestore');
     const batch = writeBatch(db);
     
     for (const member of members) {
       const newDocRef = doc(collection(db, 'team'));
       batch.set(newDocRef, {
-        ...member,
-        updatedAt: Timestamp.now(),
+        name: member.name || '',
+        role: member.role || '',
+        photo: member.photo || '',
+        order: member.order || 0,
+        updatedAt: serverTimestamp(),
       });
     }
     
