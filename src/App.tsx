@@ -2849,12 +2849,7 @@ const TeamManagement = () => {
   };
 
   const handleCropComplete = (croppedImageUrl: string) => {
-    if ((window as any)._isLogoCrop) {
-      handleSettingChange('logoUrl', croppedImageUrl);
-      (window as any)._isLogoCrop = false;
-    } else {
-      setCurrentPhoto(croppedImageUrl);
-    }
+    setCurrentPhoto(croppedImageUrl);
     setCropImage(null);
   };
 
@@ -2976,7 +2971,15 @@ const TeamManagement = () => {
                       <div className="flex items-center gap-4">
                         {currentPhoto && (
                           <div className="w-12 h-12 rounded-full overflow-hidden flex-shrink-0 border border-slate-200">
-                            <img src={currentPhoto} className="w-full h-full object-cover" />
+                            <img 
+                              src={getAssetUrl(currentPhoto)} 
+                              className="w-full h-full object-cover" 
+                              referrerPolicy="no-referrer"
+                              onError={(e) => {
+                                const target = e.target as HTMLImageElement;
+                                target.src = 'https://ui-avatars.com/api/?name=User&background=random';
+                              }}
+                            />
                           </div>
                         )}
                         <label className="flex-grow">
@@ -3052,6 +3055,7 @@ const AdminView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
   const [selectedPage, setSelectedPage] = useState('home');
   const [pageSettings, setPageSettings] = useState<any>({});
   const [savingSettings, setSavingSettings] = useState(false);
+  const [cropImage, setCropImage] = useState<string | null>(null);
 
   useEffect(() => {
     if (activeTab === 'settings') {
@@ -3070,10 +3074,32 @@ const AdminView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
     setPageSettings((prev: any) => ({ ...prev, [field]: value }));
   };
 
+  const handleCropComplete = (croppedImageUrl: string) => {
+    if ((window as any)._isLogoCrop) {
+      handleSettingChange('logoUrl', croppedImageUrl);
+      (window as any)._isLogoCrop = false;
+    }
+    setCropImage(null);
+  };
+
   const saveAllSettings = async () => {
     setSavingSettings(true);
     try {
-      await adminService.updateSettings(selectedPage, pageSettings);
+      let finalSettings = { ...pageSettings };
+      
+      // If saving global settings and logo is a data URL, upload it first
+      if (selectedPage === 'global' && pageSettings.logoUrl?.startsWith('data:')) {
+        try {
+          const uploadedUrl = await adminService.uploadTeamPhoto(pageSettings.logoUrl, 'site_logo.jpg');
+          finalSettings.logoUrl = uploadedUrl;
+          setPageSettings(finalSettings);
+        } catch (uploadError) {
+          console.error("Logo upload failed:", uploadError);
+          // Continue anyway, it will just save the dataUrl (which might be too large for Firestore but we have the fallback in adminService)
+        }
+      }
+
+      await adminService.updateSettings(selectedPage, finalSettings);
       alert("Settings saved successfully!");
     } catch (e) {
       alert("Failed to save settings");
@@ -3450,7 +3476,17 @@ const AdminView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
                               <div className="flex items-center gap-4">
                                 {pageSettings[field.id] && (
                                   <div className="h-12 px-4 bg-slate-50 border border-slate-100 rounded-xl flex items-center justify-center overflow-hidden">
-                                    <img src={pageSettings[field.id]} className="max-h-8 w-auto object-contain" />
+                                    <img 
+                                      src={getAssetUrl(pageSettings[field.id])} 
+                                      className="max-h-8 w-auto object-contain" 
+                                      referrerPolicy="no-referrer"
+                                      onError={(e) => {
+                                        const target = e.target as HTMLImageElement;
+                                        if (target.src !== getAssetUrl('/logo.png')) {
+                                          target.src = getAssetUrl('/logo.png');
+                                        }
+                                      }}
+                                    />
                                   </div>
                                 )}
                                 <label className="flex-grow">
@@ -3524,6 +3560,14 @@ const AdminView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
           </div>
         )}
       </div>
+
+      {cropImage && (
+        <ImageCropperModal 
+          image={cropImage} 
+          onCropComplete={handleCropComplete} 
+          onClose={() => setCropImage(null)} 
+        />
+      )}
 
       {/* Editor Modal */}
       <AnimatePresence>
