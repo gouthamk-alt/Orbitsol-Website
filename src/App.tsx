@@ -29,13 +29,14 @@ import {
   Globe
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
-import { adminService, Insight } from './services/adminService';
+import { adminService, Insight, TeamMember } from './services/adminService';
 import { auth, signInWithGoogle, db } from './lib/firebase';
 import { onAuthStateChanged, User } from 'firebase/auth';
 import { collection, addDoc, serverTimestamp, query, orderBy, getDocs } from 'firebase/firestore';
 import ReactQuill from 'react-quill-new';
 import 'react-quill-new/dist/quill.snow.css';
 import DOMPurify from 'dompurify';
+import Cropper, { Area } from 'react-easy-crop';
 
 // --- Types ---
 type SiteSettings = {
@@ -53,6 +54,21 @@ type Enquiry = {
   submittedAt: any;
   source: string;
 };
+
+const SITE_NAME = 'OrbitSol';
+
+const DEFAULT_TEAM: Partial<TeamMember>[] = [
+  { name: "Ann Mary Jerin", role: "Founder and Managing Director", photo: "", order: 1 },
+  { name: "Bijoy Verghese", role: "Chief Operating Officer", photo: "", order: 2 },
+  { name: "Hermie H. Thomas", role: "Head - Client Success", photo: "", order: 3 },
+  { name: "Nikita Thakar", role: "Senior Manager - Client Success", photo: "", order: 4 },
+  { name: "Michelle Otway", role: "Client Success Manager (AU/NZ)", photo: "", order: 5 },
+  { name: "Goutham Krishna", role: "Manager - Operations", photo: "", order: 6 },
+  { name: "Aravind Subash", role: "Project Manager", photo: "", order: 7 },
+  { name: "Ashley Bonson", role: "Project Manager", photo: "", order: 8 },
+  { name: "Aswathy V. B.", role: "Project Manager", photo: "", order: 9 },
+  { name: "Vibhija S.", role: "Senior Manager - Finance", photo: "", order: 10 }
+];
 
 const SiteSettingsContext = React.createContext<{
   settings: SiteSettings;
@@ -207,19 +223,26 @@ const MarketingGrowthView = ({ onNavigate }: { onNavigate: (path: ViewPath) => v
     {/* Block D — Engagement Models */}
     <section className="py-24 bg-[#F5F7FA] font-sans border-y border-slate-100">
       <div className="max-w-7xl mx-auto px-6">
-        <h2 className="font-serif text-3xl font-bold text-[#081A33] mb-16">Engagement Models</h2>
+        <h2 className="font-serif text-3xl font-bold text-[#081A33] mb-16">Engagement models.</h2>
         <div className="grid md:grid-cols-3 gap-8">
-          {[
-            { t: "Option 1 - Project basis", d: "A defined deliverable with a fixed scope and price. This works best for one-off work like a website rebuild, a brand refresh, or a launch campaign, where you have a clear brief and a deadline." },
-            { t: "Option 2 - Retainer", d: "A monthly hours-bank for ongoing work. This works best for agencies and in-house teams that need consistent capacity but have variable work types from week to week." },
-            { t: "Option 3 - Embedded growth desk", d: "A dedicated team allocated to your business or to a key account. They join your stand-ups, sit on your Slack, and own a quarterly roadmap. This works best for agencies scaling a single large account, and for in-house teams that want a marketing function without building one in-house." }
-          ].map((model, idx) => (
-            <div key={idx} className="bg-[#081A33] p-12 rounded-2xl border border-white/10 shadow-sm relative group overflow-hidden hover:shadow-xl transition-all h-full">
-              <div className="text-7xl font-serif font-black absolute right-4 top-4 opacity-10 group-hover:opacity-20 transition-opacity tracking-tighter text-white">0{idx + 1}</div>
-              <h4 className="font-serif text-[22px] font-bold text-white mb-6">{model.t}</h4>
-              <p className="text-slate-300 text-[15px] leading-relaxed">{model.d}</p>
-            </div>
-          ))}
+           {[
+             { t: "Option 1 - Project basis", d: "A defined deliverable with a fixed scope and price. This works best for one-off work like a website rebuild, a brand refresh, or a launch campaign, where you have a clear brief and a deadline." },
+             { t: "Option 2 - Retainer", d: "A monthly hours-bank for ongoing work. This works best for agencies and in-house teams that need consistent capacity but have variable work types from week to week." },
+             { t: "Option 3 - Embedded growth desk", d: "A dedicated team allocated to your business or to a key account. They join your stand-ups, sit on your Slack, and own a quarterly roadmap. This works best for agencies scaling a single large account, and for in-house teams that want a marketing function without building one in-house." }
+           ].map((model, idx) => (
+             <motion.div 
+               key={idx}
+               initial={{ opacity: 0, y: 20 }}
+               whileInView={{ opacity: 1, y: 0 }}
+               viewport={{ once: true }}
+               transition={{ duration: 0.5, delay: idx * 0.1 }}
+               className="bg-[#081A33] p-10 rounded-2xl relative shadow-2xl flex flex-col h-full overflow-hidden border border-white/10 hover:border-blue-400/30 hover:bg-[#0c203c] transition-all duration-300"
+             >
+               <div className="absolute top-6 right-8 text-7xl font-serif font-black text-white/10 pointer-events-none select-none">0{idx + 1}</div>
+               <h4 className={`font-serif ${idx === 2 ? 'text-[27px]' : 'text-[28px]'} font-bold text-white mb-8 relative z-10 pr-16 leading-tight`}>{model.t}</h4>
+               <p className="text-white/80 text-base leading-relaxed relative z-10">{model.d}</p>
+             </motion.div>
+           ))}
         </div>
       </div>
     </section>
@@ -355,10 +378,9 @@ const RemoteOperationsView = ({ onNavigate }: { onNavigate: (path: ViewPath) => 
             { t: "02 - We can hire for any task, not just the standard ones", d: "We practically operate as a staffing solutions agency. We recruit, train, and manage virtual assistants and specialists on your behalf. So if a new role comes up that does not fit any of our standard desks, we will scope it, find the right person, and put them to work for you." },
             { t: "03 - We manage our own team", d: "Project leaders, quality control protocols, backups, training, and reporting all sit with OrbitSol, so you manage outcomes rather than a scattered freelancer or virtual assistant bench." }
           ].map((point, idx) => (
-            <div key={idx} className="bg-[#081A33] p-12 rounded-2xl border border-white/10 shadow-sm relative group overflow-hidden hover:shadow-xl transition-all h-full">
-              <div className="text-7xl font-serif font-black absolute right-4 top-4 opacity-10 group-hover:opacity-20 transition-opacity tracking-tighter text-white">0{idx + 1}</div>
-              <h4 className="font-serif text-[22px] font-bold text-white mb-6">{point.t.split(' - ')[1] || point.t}</h4>
-              <p className="text-slate-300 text-[15px] leading-relaxed">{point.d}</p>
+            <div key={idx} className="bg-[#081A33] text-white p-8 rounded-2xl border border-white/10 shadow-xl backdrop-blur-sm">
+              <h4 className="font-bold mb-4 font-serif text-xl text-white">{point.t}</h4>
+              <p className="text-white/95 text-sm md:text-base leading-relaxed">{point.d}</p>
             </div>
           ))}
         </div>
@@ -525,9 +547,9 @@ const SMEsFoundersView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void
     </section>
 
     {/* Block C — How We Work */}
-    <section className="py-24 bg-[#F5F7FA] font-sans border-b border-slate-100">
+    <section id="how-we-work" className="py-24 bg-[#F5F7FA] font-sans border-y border-slate-100">
       <div className="max-w-7xl mx-auto px-6">
-        <h2 className="text-[12px] font-bold text-slate-500 uppercase tracking-[0.2em] text-center mb-16">How We Work</h2>
+        <h2 className="font-serif text-3xl font-bold text-[#081A33] mb-16">How we work.</h2>
         <div className="grid md:grid-cols-3 gap-8">
           {[
             {
@@ -546,11 +568,18 @@ const SMEsFoundersView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void
               desc: "Once the pilot is approved, we scale the desk to your full requirement. An experienced project leader manages the relationship, and we report on output, turnaround, and improvement notes on an agreed cadence."
             }
           ].map((item, idx) => (
-            <div key={idx} className="bg-[#081A33] p-12 rounded-2xl border border-white/10 shadow-sm relative group overflow-hidden hover:shadow-xl transition-all h-full">
-              <div className="text-7xl font-serif font-black absolute right-4 top-4 opacity-10 group-hover:opacity-20 transition-opacity tracking-tighter text-white">{item.step}</div>
-              <h4 className="font-serif text-[22px] font-bold text-white mb-6">{item.title}</h4>
-              <p className="text-slate-300 text-[15px] leading-relaxed">{item.desc}</p>
-            </div>
+            <motion.div 
+              key={idx}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: idx * 0.1 }}
+              className="bg-[#081A33] p-10 rounded-2xl relative shadow-2xl flex flex-col h-full overflow-hidden border border-white/10 hover:border-blue-400/30 hover:bg-[#0c203c] transition-all duration-300"
+            >
+              <div className="absolute top-6 right-8 text-7xl font-serif font-black text-white/10 pointer-events-none select-none">{item.step}</div>
+              <h4 className="font-serif text-3xl font-bold text-white mb-8 relative z-10 pr-16 leading-tight">{item.title}</h4>
+              <p className="text-white/80 text-base leading-relaxed relative z-10">{item.desc}</p>
+            </motion.div>
           ))}
         </div>
       </div>
@@ -735,16 +764,25 @@ const DigitalMarketingView = ({ onNavigate }: { onNavigate: (path: ViewPath) => 
           <h2 className="font-serif text-4xl font-bold mb-4 text-white">Three ways to start with us.</h2>
         </div>
         <div className="grid md:grid-cols-3 gap-8">
-          {[
+          { [
             { t: "Option 1 - Project basis", d: "A defined deliverable with a fixed scope and price. This works best for one-off work like a website rebuild, a brand refresh, or a launch campaign." },
             { t: "Option 2 - Retainer", d: "A monthly hours-bank for ongoing work. This works best for marketing teams that need consistent capacity but have variable work types from week to week." },
             { t: "Option 3 - Embedded growth desk", d: "A dedicated team allocated to your business. They join your stand-ups, sit on your Slack, and own a quarterly roadmap. This works best for businesses that want a marketing function without building one in-house." }
           ].map((item, idx) => (
-            <div key={idx} className="bg-[#081A33] p-12 rounded-2xl border border-white/10 shadow-sm relative group overflow-hidden hover:shadow-xl transition-all h-full">
-              <div className="text-7xl font-serif font-black absolute right-4 top-4 opacity-10 group-hover:opacity-20 transition-opacity tracking-tighter text-white">0{idx + 1}</div>
-              <h4 className="font-serif text-[22px] font-bold text-white mb-6">{item.t}</h4>
-              <p className="text-slate-300 text-[15px] leading-relaxed">{item.d}</p>
-            </div>
+             <motion.div 
+               key={idx}
+               initial={{ opacity: 0, y: 20 }}
+               whileInView={{ opacity: 1, y: 0 }}
+               viewport={{ once: true }}
+               transition={{ duration: 0.5, delay: idx * 0.1 }}
+               className="p-10 rounded-2xl bg-[#081A33] border border-white/10 shadow-xl flex flex-col h-full hover:shadow-2xl hover:bg-[#0c203c] hover:border-blue-400/30 transition-all"
+             >
+               <div className="flex justify-between items-start mb-6">
+                 <h4 className="font-serif text-2xl font-bold text-white pr-12 leading-tight">{item.t}</h4>
+                 <div className="text-4xl font-serif font-black text-white/10">0{idx + 1}</div>
+               </div>
+               <p className="text-blue-100/95 text-sm leading-relaxed">{item.d}</p>
+             </motion.div>
           ))}
         </div>
       </div>
@@ -977,11 +1015,18 @@ const StrataManagementView = ({ onNavigate }: { onNavigate: (path: ViewPath) => 
               desc: "Once the pilot is approved, we scale the desk to your full requirement. A dedicated project leader manages the relationship, and we report on output, turnaround, and improvement notes on an agreed cadence."
             }
           ].map((item, idx) => (
-            <div key={idx} className="bg-[#081A33] p-12 rounded-2xl border border-white/10 shadow-sm relative group overflow-hidden hover:shadow-xl transition-all h-full">
-              <div className="text-7xl font-serif font-black absolute right-4 top-4 opacity-10 group-hover:opacity-20 transition-opacity tracking-tighter text-white">{item.step}</div>
-              <h4 className="font-serif text-[22px] font-bold text-white mb-6">{item.title}</h4>
-              <p className="text-slate-300 text-[15px] leading-relaxed">{item.desc}</p>
-            </div>
+            <motion.div 
+              key={idx}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: idx * 0.1 }}
+              className="bg-[#081A33] p-10 rounded-2xl border border-white/10 shadow-xl relative group overflow-hidden hover:shadow-2xl hover:bg-[#0c203c] hover:border-blue-400/30 transition-all backdrop-blur-sm"
+            >
+              <div className="text-7xl font-serif font-black absolute right-8 top-6 opacity-10 group-hover:opacity-20 transition-opacity text-white pointer-events-none select-none">{item.step}</div>
+              <h4 className="font-serif text-3xl font-bold mb-8 text-white relative z-10 pr-16 leading-tight">{item.title}</h4>
+              <p className="text-white/95 text-base leading-relaxed relative z-10">{item.desc}</p>
+            </motion.div>
           ))}
         </div>
       </div>
@@ -1237,11 +1282,18 @@ const PropertyRealEstateView = ({ onNavigate }: { onNavigate: (path: ViewPath) =
               desc: "Once the pilot is approved, we scale the desk to your full requirement, with one of our stellar project leaders managing the relationship and reporting on agreed metrics."
             }
           ].map((item, idx) => (
-            <div key={idx} className="bg-[#081A33] p-12 rounded-2xl border border-white/10 shadow-sm relative group overflow-hidden hover:shadow-xl transition-all h-full">
-              <div className="text-7xl font-serif font-black absolute right-4 top-4 opacity-10 group-hover:opacity-20 transition-opacity tracking-tighter text-white">{item.step}</div>
-              <h4 className="font-serif text-[22px] font-bold text-white mb-6">{item.title}</h4>
-              <p className="text-slate-300 text-[15px] leading-relaxed">{item.desc}</p>
-            </div>
+            <motion.div 
+              key={idx}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: idx * 0.1 }}
+              className="bg-[#081A33] p-10 rounded-2xl border border-white/10 shadow-sm relative group overflow-hidden hover:shadow-2xl hover:bg-[#0c203c] hover:border-blue-400/30 transition-all"
+            >
+              <div className="text-7xl font-serif font-black absolute right-8 top-6 opacity-10 group-hover:opacity-20 transition-opacity tracking-tighter text-white pointer-events-none select-none">{item.step}</div>
+              <h4 className="font-serif text-3xl font-bold text-white mb-8 relative z-10 pr-16 leading-tight">{item.title}</h4>
+              <p className="text-white/90 text-base leading-relaxed relative z-10">{item.desc}</p>
+            </motion.div>
           ))}
         </div>
       </div>
@@ -1773,6 +1825,20 @@ const Header = ({ currentPath, onNavigate }: { currentPath: ViewPath, onNavigate
 const AboutView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => {
   const { getContent } = React.useContext(SiteSettingsContext);
   const contactEmail = getContent('global.contactEmail', 'info@orbitsol.com');
+  const [team, setTeam] = useState<TeamMember[]>([]);
+
+  useEffect(() => {
+    const fetchTeam = async () => {
+      const data = await adminService.getTeamMembers();
+      if (data && data.length > 0) {
+        setTeam(data);
+      } else {
+        setTeam(DEFAULT_TEAM as TeamMember[]);
+      }
+    };
+    fetchTeam();
+  }, []);
+
   return (
     <>
       {/* Section 1 - Hero */}
@@ -1833,24 +1899,17 @@ const AboutView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
       <div className="max-w-7xl mx-auto px-6">
         <h2 className="font-serif text-3xl font-bold text-[#081A33] mb-16 text-center">Meet Our Team</h2>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
-          {[
-            { n: "Ann Mary Jerin", r: "Founder and Managing Director" },
-            { n: "Bijoy Verghese", r: "Chief Operating Officer" },
-            { n: "Hermie H. Thomas", r: "Head - Client Success" },
-            { n: "Nikita Thakar", r: "Senior Manager - Client Success" },
-            { n: "Michelle Otway", r: "Client Success Manager (AU/NZ)" },
-            { n: "Goutham Krishna", r: "Manager - Operations" },
-            { n: "Aravind Subash", r: "Project Manager" },
-            { n: "Ashley Bonson", r: "Project Manager" },
-            { n: "Aswathy V. B.", r: "Project Manager" },
-            { n: "Vibhija S.", r: "Senior Manager - Finance" }
-          ].map((member, idx) => (
-            <div key={idx} className="text-center group">
+          {team.map((member, idx) => (
+            <div key={member.id || idx} className="text-center group">
                <div className="w-full aspect-square bg-[#FFF7EA] rounded-full mb-6 border border-[#FFF0E6] flex items-center justify-center grayscale group-hover:grayscale-0 transition-all overflow-hidden shadow-sm">
-                  <span className="text-[#2368D6] opacity-10"><FileText size={64} /></span>
+                  {member.photo ? (
+                    <img src={member.photo} alt={member.name} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                  ) : (
+                    <span className="text-[#2368D6] opacity-10"><FileText size={64} /></span>
+                  )}
                </div>
-               <h4 className="font-bold text-[#081A33] text-base mb-2">{member.n}</h4>
-               <p className="text-slate-500 text-sm leading-tight tracking-wide font-medium">{member.r}</p>
+               <h4 className="font-bold text-[#081A33] text-base mb-2">{member.name}</h4>
+               <p className="text-slate-500 text-sm leading-tight tracking-wide font-medium">{member.role}</p>
             </div>
           ))}
         </div>
@@ -2565,6 +2624,347 @@ const SpeechContentDataView = ({ onNavigate }: { onNavigate: (path: ViewPath) =>
   </>
 );
 
+const ImageCropperModal = ({ 
+  image, 
+  onCropComplete, 
+  onClose 
+}: { 
+  image: string, 
+  onCropComplete: (croppedImage: string) => void, 
+  onClose: () => void 
+}) => {
+  const [crop, setCrop] = useState({ x: 0, y: 0 });
+  const [zoom, setZoom] = useState(1);
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area | null>(null);
+
+  const onCropChange = (crop: { x: number, y: number }) => setCrop(crop);
+  const onZoomChange = (zoom: number) => setZoom(zoom);
+  const onCropAreaChange = (_: Area, croppedAreaPixels: Area) => setCroppedAreaPixels(croppedAreaPixels);
+
+  const createImage = (url: string): Promise<HTMLImageElement> =>
+    new Promise((resolve, reject) => {
+      const image = new Image();
+      image.addEventListener('load', () => resolve(image));
+      image.addEventListener('error', (error) => reject(error));
+      image.setAttribute('crossOrigin', 'anonymous');
+      image.src = url;
+    });
+
+  const getCroppedImg = async (imageSrc: string, pixelCrop: Area): Promise<string> => {
+    const image = await createImage(imageSrc);
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+
+    if (!ctx) return '';
+
+    canvas.width = pixelCrop.width;
+    canvas.height = pixelCrop.height;
+
+    ctx.drawImage(
+      image,
+      pixelCrop.x,
+      pixelCrop.y,
+      pixelCrop.width,
+      pixelCrop.height,
+      0,
+      0,
+      pixelCrop.width,
+      pixelCrop.height
+    );
+
+    return canvas.toDataURL('image/jpeg');
+  };
+
+  const handleDone = async () => {
+    if (croppedAreaPixels) {
+      const cropped = await getCroppedImg(image, croppedAreaPixels);
+      onCropComplete(cropped);
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 p-4">
+      <div className="bg-white w-full max-w-2xl rounded-2xl overflow-hidden flex flex-col h-[80vh]">
+        <div className="p-4 border-b border-slate-100 flex justify-between items-center bg-white z-10">
+          <h3 className="font-bold text-[#081A33]">Crop Staff Photo</h3>
+          <button onClick={onClose} className="p-2 hover:bg-slate-100 rounded-full transition-colors">
+            <X size={20} />
+          </button>
+        </div>
+        <div className="relative flex-grow bg-slate-900">
+          <Cropper
+            image={image}
+            crop={crop}
+            zoom={zoom}
+            aspect={1}
+            cropShape="round"
+            showGrid={false}
+            onCropChange={onCropChange}
+            onCropComplete={onCropAreaChange}
+            onZoomChange={onZoomChange}
+          />
+        </div>
+        <div className="p-6 bg-white border-t border-slate-100">
+          <div className="flex items-center gap-4 mb-6">
+            <span className="text-xs font-bold uppercase tracking-widest text-slate-400">Zoom</span>
+            <input
+              type="range"
+              value={zoom}
+              min={1}
+              max={3}
+              step={0.1}
+              aria-labelledby="Zoom"
+              onChange={(e: any) => setZoom(Number(e.target.value))}
+              className="flex-grow accent-[#2368D6]"
+            />
+          </div>
+          <div className="flex justify-end gap-4">
+            <button
+              onClick={onClose}
+              className="px-6 py-2 rounded-lg text-slate-500 font-bold uppercase tracking-widest text-xs hover:bg-slate-50 transition-all"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={handleDone}
+              className="px-8 py-3 bg-[#2368D6] text-white rounded-xl font-bold uppercase tracking-widest text-xs shadow-lg hover:opacity-90 transition-all"
+            >
+              Save Cropped Photo
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const TeamManagement = () => {
+  const [team, setTeam] = useState<TeamMember[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [editingMember, setEditingMember] = useState<Partial<TeamMember> | null>(null);
+  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [cropImage, setCropImage] = useState<string | null>(null);
+  const [currentPhoto, setCurrentPhoto] = useState<string>('');
+
+  useEffect(() => {
+    fetchTeam();
+  }, []);
+
+  const fetchTeam = async () => {
+    setLoading(true);
+    const data = await adminService.getTeamMembers();
+    setTeam(data || []);
+    setLoading(false);
+  };
+
+  const handleBootstrapTeam = async () => {
+    if (window.confirm("Initialize team with default members?")) {
+      setLoading(true);
+      for (const member of DEFAULT_TEAM) {
+        await adminService.saveTeamMember(member);
+      }
+      await fetchTeam();
+    }
+  };
+
+  const handleSaveMember = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const memberData: Partial<TeamMember> = {
+      name: formData.get('name') as string,
+      role: formData.get('role') as string,
+      photo: currentPhoto,
+      order: Number(formData.get('order')) || (team.length + 1)
+    };
+
+    if (editingMember?.id) memberData.id = editingMember.id;
+
+    await adminService.saveTeamMember(memberData);
+    setIsFormOpen(false);
+    setEditingMember(null);
+    setCurrentPhoto('');
+    fetchTeam();
+  };
+
+  const handleDeleteMember = async (id: string) => {
+    if (window.confirm("Are you sure you want to delete this staff member?")) {
+      await adminService.deleteTeamMember(id);
+      fetchTeam();
+    }
+  };
+
+  const onFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const file = e.target.files[0];
+      const reader = new FileReader();
+      reader.onload = () => {
+        setCropImage(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleCropComplete = (croppedImageUrl: string) => {
+    setCurrentPhoto(croppedImageUrl);
+    setCropImage(null);
+  };
+
+  if (loading) return <div className="p-20 text-center animate-pulse text-slate-400">Processing...</div>;
+
+  return (
+    <div className="space-y-8">
+      <div className="flex justify-between items-center mb-8">
+        <div>
+          <h2 className="text-xl font-bold text-[#081A33]">Team Members ({team.length})</h2>
+          <p className="text-slate-500 text-sm">Manage staff featured in the About Us section.</p>
+        </div>
+        <div className="flex gap-4">
+          {team.length === 0 && (
+            <button 
+              onClick={handleBootstrapTeam}
+              className="bg-slate-100 text-slate-600 px-6 py-3 rounded-xl font-bold flex items-center gap-2 text-xs uppercase tracking-widest hover:bg-slate-200 transition-all"
+            >
+              Initialize Defaults
+            </button>
+          )}
+          <button 
+            onClick={() => { setEditingMember(null); setCurrentPhoto(''); setIsFormOpen(true); }}
+            className="bg-[#2368D6] text-white px-6 py-3 rounded-xl font-bold flex items-center gap-2 text-xs uppercase tracking-widest shadow-lg"
+          >
+            <Plus size={16} /> Add Member
+          </button>
+        </div>
+      </div>
+
+      {team.length === 0 ? (
+        <div className="bg-slate-50 border-2 border-dashed border-slate-200 p-20 rounded-3xl text-center">
+          <p className="text-slate-400 mb-6">No team members added yet.</p>
+          <button onClick={handleBootstrapTeam} className="text-[#2368D6] font-bold underline">Seed with default staff</button>
+        </div>
+      ) : (
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {team.map((member) => (
+            <div key={member.id} className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex flex-col items-center text-center group hover:shadow-md transition-all">
+              <div className="w-24 h-24 rounded-full overflow-hidden mb-4 bg-slate-100 border border-slate-100 ring-4 ring-slate-50 group-hover:ring-blue-50 transition-all">
+                {member.photo ? (
+                  <img src={member.photo} alt={member.name} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center text-slate-300">
+                    <span className="text-xs font-bold opacity-30">{member.name.split(' ').map(n => n[0]).join('')}</span>
+                  </div>
+                )}
+              </div>
+              <h4 className="font-bold text-[#081A33]">{member.name}</h4>
+              <p className="text-slate-500 text-xs mb-6 uppercase tracking-wider">{member.role}</p>
+              <div className="flex items-center gap-2 mt-auto">
+                <button 
+                  onClick={() => { setEditingMember(member); setCurrentPhoto(member.photo); setIsFormOpen(true); }}
+                  className="p-2 text-blue-500 hover:bg-blue-50 rounded-lg transition-colors"
+                  title="Edit"
+                >
+                  <Edit size={16} />
+                </button>
+                <button 
+                  onClick={() => handleDeleteMember(member.id!)}
+                  className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                  title="Delete"
+                >
+                  <Trash2 size={16} />
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      <AnimatePresence>
+        {isFormOpen && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm"
+          >
+            <motion.div 
+              initial={{ scale: 0.95, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.95, opacity: 0, y: 20 }}
+              className="bg-white w-full max-w-xl rounded-3xl overflow-hidden shadow-2xl"
+            >
+              <div className="p-8 border-b border-slate-50 bg-[#081A33] text-white flex justify-between items-center">
+                <h3 className="font-serif text-2xl font-bold">{editingMember?.id ? 'Edit Member' : 'Add New Member'}</h3>
+                <button onClick={() => setIsFormOpen(false)} className="text-white/60 hover:text-white"><X size={24} /></button>
+              </div>
+              
+              <form onSubmit={handleSaveMember} className="p-8 space-y-6">
+                <div className="space-y-2">
+                  <label className="text-xs font-bold uppercase tracking-widest text-slate-400">Full Name</label>
+                  <input name="name" defaultValue={editingMember?.name} required className="w-full p-4 bg-slate-50 border border-slate-100 rounded-xl focus:border-[#2368D6] outline-none" placeholder="e.g. John Smith" />
+                </div>
+                
+                <div className="space-y-2">
+                  <label className="text-xs font-bold uppercase tracking-widest text-slate-400">Role</label>
+                  <input name="role" defaultValue={editingMember?.role} required className="w-full p-4 bg-slate-50 border border-slate-100 rounded-xl focus:border-[#2368D6] outline-none" placeholder="e.g. Operations Manager" />
+                </div>
+
+                <div className="grid grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <label className="text-xs font-bold uppercase tracking-widest text-slate-400">Display Order</label>
+                    <input type="number" name="order" defaultValue={editingMember?.order || (team.length + 1)} required className="w-full p-4 bg-slate-50 border border-slate-100 rounded-xl focus:border-[#2368D6] outline-none" />
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <label className="text-xs font-bold uppercase tracking-widest text-slate-400">Profile Photo</label>
+                    <div className="flex flex-col gap-3">
+                      <div className="flex items-center gap-4">
+                        {currentPhoto && (
+                          <div className="w-12 h-12 rounded-full overflow-hidden flex-shrink-0 border border-slate-200">
+                            <img src={currentPhoto} className="w-full h-full object-cover" />
+                          </div>
+                        )}
+                        <label className="flex-grow">
+                          <div className="cursor-pointer bg-slate-50 border border-dashed border-slate-300 p-3 rounded-xl text-center text-[10px] uppercase font-bold text-slate-500 hover:border-[#2368D6] transition-all">
+                            {currentPhoto ? 'Change Photo' : 'Upload & Crop'}
+                          </div>
+                          <input type="file" accept="image/*" className="hidden" onChange={onFileChange} />
+                        </label>
+                      </div>
+                      <div className="relative">
+                        <input 
+                          type="text" 
+                          placeholder="Or paste URL / public path..." 
+                          value={currentPhoto}
+                          onChange={(e) => setCurrentPhoto(e.target.value)}
+                          className="w-full p-3 bg-slate-50 border border-slate-100 rounded-xl text-xs outline-none focus:border-[#2368D6]"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="pt-6 flex justify-end gap-4">
+                  <button type="button" onClick={() => setIsFormOpen(false)} className="px-8 py-3 text-slate-500 font-bold uppercase tracking-widest text-xs hover:bg-slate-50 rounded-xl transition-all">Cancel</button>
+                  <button type="submit" className="px-10 py-3 bg-[#2368D6] text-white rounded-xl font-bold uppercase tracking-widest text-xs shadow-xl flex items-center gap-3 hover:opacity-90 transition-all">
+                    <Save size={16} /> Save Member
+                  </button>
+                </div>
+              </form>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {cropImage && (
+        <ImageCropperModal 
+          image={cropImage} 
+          onCropComplete={handleCropComplete} 
+          onClose={() => setCropImage(null)} 
+        />
+      )}
+    </div>
+  );
+};
+
 const AdminView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
@@ -2573,7 +2973,7 @@ const AdminView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
   const [enquiries, setEnquiries] = useState<Enquiry[]>([]);
   const [editingInsight, setEditingInsight] = useState<Insight | null>(null);
   const [isFormOpen, setIsFormOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState<'insights' | 'settings' | 'enquiries'>('insights');
+  const [activeTab, setActiveTab] = useState<'insights' | 'settings' | 'enquiries' | 'team'>('insights');
   const [selectedPage, setSelectedPage] = useState('home');
   const [pageSettings, setPageSettings] = useState<any>({});
   const [savingSettings, setSavingSettings] = useState(false);
@@ -2788,6 +3188,12 @@ const AdminView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
                 Settings
               </button>
               <button 
+                onClick={() => setActiveTab('team')}
+                className={`px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-widest transition-all ${activeTab === 'team' ? 'bg-[#081A33] text-white shadow-md' : 'text-slate-400 hover:text-[#081A33]'}`}
+              >
+                Team
+              </button>
+              <button 
                 onClick={() => setActiveTab('enquiries')}
                 className={`px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-widest transition-all ${activeTab === 'enquiries' ? 'bg-[#081A33] text-white shadow-md' : 'text-slate-400 hover:text-[#081A33]'}`}
               >
@@ -2868,6 +3274,8 @@ const AdminView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
                </table>
              </div>
           </div>
+        ) : activeTab === 'team' ? (
+          <TeamManagement />
         ) : activeTab === 'enquiries' ? (
           <div className="bg-white rounded-2xl shadow-sm border border-brand-warm-cream overflow-hidden">
              <div className="border-b border-brand-warm-cream bg-brand-cream/50 px-8 py-6">
@@ -3174,13 +3582,20 @@ const PropertyInspectionView = ({ onNavigate }: { onNavigate: (path: ViewPath) =
             { t: "Building Inspection Reports", d: "Pre-purchase, pre-sale, and structural inspection report typing from surveyor dictation." },
             { t: "Mid-term Inspections", d: "Routine landlord reports with photos, observations, and recommended actions." }
           ].map((card, idx) => (
-            <div key={idx} className="group p-10 rounded-2xl bg-[#081A33] text-white border border-white/10 hover:border-blue-400/50 shadow-xl hover:shadow-2xl transition-all duration-300 flex flex-col h-full backdrop-blur-sm">
+            <motion.div 
+              key={idx}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: idx * 0.1 }}
+              className="group p-10 rounded-2xl bg-[#081A33] text-white border border-white/10 hover:border-blue-400/30 hover:bg-[#0c203c] shadow-xl hover:shadow-2xl transition-all duration-300 flex flex-col h-full backdrop-blur-sm"
+            >
                <div className="w-14 h-14 rounded-xl bg-white/5 text-blue-400 flex items-center justify-center mb-8 group-hover:scale-110 transition-transform duration-300 border border-white/10">
                   <FileCheck size={28} />
                </div>
                <h4 className="font-serif text-2xl font-bold mb-5 tracking-tight">{card.t}</h4>
                <p className="text-white/90 text-sm md:text-base leading-relaxed">{card.d}</p>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>
@@ -3195,11 +3610,11 @@ const PropertyInspectionView = ({ onNavigate }: { onNavigate: (path: ViewPath) =
                { s: "01", t: "You inspect", d: "An inspector visits the property and captures findings room by room, using audio, photo, video, or platform-native notes." },
                { s: "02", t: "We produce", d: "Our trained personnel transcribe the dictation, extract the relevant detail from photos and videos, embed the right images, format the reports, and send them through quality control." },
                { s: "03", t: "You review and deliver", d: "The final report lands in your platform or inbox, ready for your sign-off and client delivery." }
-            ].map((p, idx) => (
-               <div key={p.s} className="bg-[#081A33] p-12 rounded-2xl border border-white/10 shadow-sm relative group overflow-hidden hover:shadow-xl transition-all h-full">
-                  <div className="text-7xl font-serif font-black absolute right-4 top-4 opacity-10 group-hover:opacity-20 transition-opacity tracking-tighter text-white">{p.s}</div>
-                  <h4 className="font-serif text-[22px] font-bold text-white mb-6">{p.t}</h4>
-                  <p className="text-slate-300 text-[15px] leading-relaxed">{p.d}</p>
+            ].map((p) => (
+               <div key={p.s} className="bg-white p-8 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-all">
+                  <div className="text-[#2368D6] font-black text-4xl mb-6 opacity-30">{p.s}</div>
+                  <h4 className="font-serif text-xl font-bold text-[#081A33] mb-4">{p.t}</h4>
+                  <p className="text-slate-600 text-[15px] md:text-base leading-relaxed">{p.d}</p>
                </div>
             ))}
          </div>
@@ -3379,29 +3794,37 @@ const LegalProfessionalServicesView = ({ onNavigate }: { onNavigate: (path: View
     {/* Block C — How We Work */}
     <section className="py-24 bg-[#F5F7FA] font-sans border-b border-slate-100">
       <div className="max-w-7xl mx-auto px-6">
+        <h2 className="font-serif text-3xl font-bold text-[#081A33] mb-16">How we work.</h2>
         <div className="grid md:grid-cols-3 gap-8">
           {[
             {
               id: '01',
               title: 'Discovery',
-              desc: 'We meet to understand the workflow, the volume, the platforms involved, and the service standards you need to maintain.'
+              desc: 'We meet to understand the workflow, the volume, the platforms involved, and the service standards you need to maintain. We document what we hear and confirm scope before any work begins.'
             },
             {
               id: '02',
               title: 'Pilot',
-              desc: 'Run a short pilot engagement to see quality and turnaround in real conditions with a representative slice of your work.'
+              desc: 'We run a short pilot engagement to see quality and turnaround in real conditions with a representative slice of your work. The pilot is structured around a small but representative slice of your work.'
             },
             {
               id: '03',
               title: 'Scale',
-              desc: 'Full requirement scaling with a named project leader managing output and agreed reporting cadence.'
+              desc: 'Full requirement scaling with a named project leader managing output and agreed reporting cadence. We report on output, turnaround, and improvement notes on an agreed cadence.'
             }
-          ].map((card) => (
-            <div key={card.id} className="bg-[#081A33] p-12 rounded-2xl border border-white/10 shadow-sm relative group overflow-hidden hover:shadow-xl transition-all h-full">
-              <div className="text-7xl font-serif font-black absolute right-4 top-4 opacity-10 group-hover:opacity-20 transition-opacity tracking-tighter text-white">{card.id}</div>
-              <h4 className="font-serif text-[22px] font-bold text-white mb-6">{card.title}</h4>
-              <p className="text-slate-300 text-[15px] leading-relaxed">{card.desc}</p>
-            </div>
+          ].map((card, idx) => (
+            <motion.div 
+              key={card.id}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: idx * 0.1 }}
+              className="bg-[#081A33] p-10 rounded-2xl relative shadow-2xl flex flex-col h-full overflow-hidden border border-white/10 hover:border-blue-400/30 hover:bg-[#0c203c] transition-all duration-300"
+            >
+              <div className="absolute top-6 right-8 text-7xl font-serif font-black text-white/10 pointer-events-none select-none">{card.id}</div>
+              <h4 className="font-serif text-3xl font-bold text-white mb-8 relative z-10 pr-16 leading-tight">{card.title}</h4>
+              <p className="text-white/80 text-base leading-relaxed relative z-10">{card.desc}</p>
+            </motion.div>
           ))}
         </div>
       </div>

@@ -58,6 +58,24 @@ service cloud.firestore {
       allow read, update, delete: if isAdmin();
     }
 
+    // Team Members
+    match /team/{memberId} {
+      function isValidTeamMember(data) {
+        return data.keys().hasAll(['name', 'role', 'photo', 'order']) &&
+               data.name is string && data.name.size() <= 256 &&
+               data.role is string && data.role.size() <= 256 &&
+               data.photo is string && data.photo.size() <= 1000000 && // Up to 1MB for dataURL
+               data.order is number;
+      }
+
+      allow read: if true;
+      allow create: if isAdmin() && isValidTeamMember(request.resource.data) &&
+                      (!('updatedAt' in request.resource.data) || request.resource.data.updatedAt == request.time);
+      allow update: if isAdmin() && isValidTeamMember(request.resource.data) &&
+                      (!('updatedAt' in request.resource.data) || request.resource.data.updatedAt == request.time);
+      allow delete: if isAdmin();
+    }
+
     // Admins - Only admins can manage admins
     match /admins/{adminId} {
       allow read: if isSignedIn();

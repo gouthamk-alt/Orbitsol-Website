@@ -66,6 +66,15 @@ export interface Insight {
   updatedAt?: any;
 }
 
+export interface TeamMember {
+  id?: string;
+  name: string;
+  role: string;
+  photo: string;
+  order: number;
+  updatedAt?: any;
+}
+
 export const adminService = {
   // Insights
   async getInsights(includeDrafts = false) {
@@ -206,6 +215,51 @@ export const adminService = {
     } catch (error) {
       // If we can't read, they probably aren't admin (due to rules)
       return false;
+    }
+  },
+
+  // Team Members
+  async getTeamMembers() {
+    const path = 'team';
+    try {
+      const q = query(collection(db, path), orderBy('order', 'asc'));
+      const snapshot = await getDocs(q);
+      return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as TeamMember));
+    } catch (error) {
+      handleFirestoreError(error, OperationType.LIST, path);
+    }
+  },
+
+  async saveTeamMember(member: Partial<TeamMember>) {
+    const isNew = !member.id;
+    const path = isNew ? 'team' : `team/${member.id}`;
+    
+    const data = {
+      ...member,
+      updatedAt: Timestamp.now(),
+    };
+    
+    const docId = member.id;
+    if (!isNew) delete (data as any).id;
+
+    try {
+      if (isNew) {
+        return await addDoc(collection(db, 'team'), data);
+      } else {
+        await updateDoc(doc(db, 'team', docId!), data);
+      }
+    } catch (error) {
+      handleFirestoreError(error, OperationType.WRITE, path);
+    }
+  },
+
+  async deleteTeamMember(id: string) {
+    const path = `team/${id}`;
+    try {
+      const docRef = doc(db, 'team', id);
+      await deleteDoc(docRef);
+    } catch (error) {
+      handleFirestoreError(error, OperationType.DELETE, path);
     }
   }
 };

@@ -54,6 +54,19 @@
         "source": { "type": "string" }
       },
       "required": ["name", "email", "message", "submittedAt"]
+    },
+    "teamMember": {
+      "title": "Team Member",
+      "description": "A staff member featured in the team section.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "description": "Full name of the member." },
+        "role": { "type": "string", "description": "Job title or role description." },
+        "photo": { "type": "string", "description": "URL to the profile photo." },
+        "order": { "type": "number", "description": "Display order." },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "role", "photo", "order"]
     }
   },
   "firestore": {
@@ -72,6 +85,10 @@
     "enquiries": {
       "schema": "enquiry",
       "description": "Contact form submissions."
+    },
+    "team": {
+      "schema": "teamMember",
+      "description": "Staff members list."
     }
   }
 }
