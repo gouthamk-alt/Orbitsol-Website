@@ -312,27 +312,53 @@ export const adminService = {
   },
 
   async uploadTeamPhoto(dataUrl: string, fileName: string) {
-    console.log("Uploading photo:", fileName);
-    try {
-      const storageRef = ref(storage, `team/${Date.now()}_${fileName}`);
-      // If it's a data URL, we use uploadString
-      if (dataUrl.startsWith('data:')) {
-        // 20 second timeout for storage uploads
-        const uploadPromise = uploadString(storageRef, dataUrl, 'data_url');
-        const result = await Promise.race([
-          uploadPromise,
-          new Promise((_, reject) => setTimeout(() => reject(new Error("Storage upload timed out")), 20000))
-        ]) as any;
-        
-        const url = await getDownloadURL(result.ref);
-        console.log("Photo uploaded successfully:", url);
-        return url;
-      } else {
-        return dataUrl; 
+    console.log("Processing photo:", fileName);
+    
+    // Helper to convert Google Drive links
+    const convertGoogleDriveUrl = (url: string) => {
+      const driveMatch = url.match(/\/(?:file\/d\/|open\?id=)([\w-]+)/);
+      if (driveMatch && driveMatch[1]) {
+        return `https://drive.google.com/uc?export=view&id=${driveMatch[1]}`;
       }
+      return url;
+    };
+
+    try {
+      // If it's a Google Drive link, convert it
+      if (dataUrl.includes('drive.google.com')) {
+        return convertGoogleDriveUrl(dataUrl);
+      }
+
+      // If it's not a data URL, it's already a URL
+      if (!dataUrl.startsWith('data:')) {
+        return dataUrl;
+      }
+
+      // If it's a small data URL (< 200KB), store it directly in Firestore
+      // Base64 overhead is ~33%, so 200KB binary = ~266KB string. 
+      // Firestore limit is 1MB total for doc. This is safe.
+      if (dataUrl.length < 250000) {
+        console.log("Storing small photo directly in Firestore");
+        return dataUrl;
+      }
+
+      console.log("Uploading large photo to Storage...");
+      const storageRef = ref(storage, `team/${Date.now()}_${fileName}`);
+      
+      // 20 second timeout for storage uploads
+      const uploadPromise = uploadString(storageRef, dataUrl, 'data_url');
+      const result = await Promise.race([
+        uploadPromise,
+        new Promise((_, reject) => setTimeout(() => reject(new Error("Storage upload timed out")), 20000))
+      ]) as any;
+      
+      const url = await getDownloadURL(result.ref);
+      console.log("Photo uploaded successfully to Storage:", url);
+      return url;
     } catch (error) {
-      console.error("Storage Error:", error);
-      throw error;
+      console.error("Photo Error:", error);
+      // Fallback: just return the dataUrl if storage fails
+      return dataUrl;
     }
   },
 

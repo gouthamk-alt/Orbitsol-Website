@@ -2702,6 +2702,7 @@ const ImageCropperModal = ({
             onCropChange={onCropChange}
             onCropComplete={onCropAreaChange}
             onZoomChange={onZoomChange}
+            crossOrigin="anonymous"
           />
         </div>
         <div className="p-6 bg-white border-t border-slate-100">
@@ -2985,9 +2986,27 @@ const TeamManagement = () => {
                           type="text" 
                           placeholder="Or paste URL / public path..." 
                           value={currentPhoto}
-                          onChange={(e) => setCurrentPhoto(e.target.value)}
+                          onChange={(e) => {
+                            const val = e.target.value;
+                            // Auto-convert Google Drive links
+                            const driveMatch = val.match(/\/(?:file\/d\/|open\?id=)([\w-]+)/);
+                            if (driveMatch && driveMatch[1]) {
+                              setCurrentPhoto(`https://drive.google.com/uc?export=view&id=${driveMatch[1]}`);
+                            } else {
+                              setCurrentPhoto(val);
+                            }
+                          }}
                           className="w-full p-3 bg-slate-50 border border-slate-100 rounded-xl text-xs outline-none focus:border-[#2368D6]"
                         />
+                        {currentPhoto && !currentPhoto.startsWith('data:') && (
+                          <button 
+                            type="button"
+                            onClick={() => setCropImage(currentPhoto)}
+                            className="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] bg-slate-200 px-2 py-1 rounded font-bold hover:bg-slate-300"
+                          >
+                            Edit / Crop
+                          </button>
+                        )}
                       </div>
                     </div>
                   </div>
