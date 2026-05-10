@@ -2849,7 +2849,12 @@ const TeamManagement = () => {
   };
 
   const handleCropComplete = (croppedImageUrl: string) => {
-    setCurrentPhoto(croppedImageUrl);
+    if ((window as any)._isLogoCrop) {
+      handleSettingChange('logoUrl', croppedImageUrl);
+      (window as any)._isLogoCrop = false;
+    } else {
+      setCurrentPhoto(croppedImageUrl);
+    }
     setCropImage(null);
   };
 
@@ -3088,8 +3093,8 @@ const AdminView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
       case 'global':
         return [
           { id: 'siteName', label: 'Site Name', type: 'text' },
-          { id: 'logoUrl', label: 'Logo Image URL', type: 'text' },
-          { id: 'logoInfo', label: 'Setting up your Logo (Required for GitHub)', type: 'info', content: '1. Rename your logo file to "logo.png".\n2. Upload it to the "public" folder in your GitHub repository.\n3. Set the "Logo Image URL" above to "/logo.png".' },
+          { id: 'logoUrl', label: 'Logo Image URL', type: 'image' },
+          { id: 'logoInfo', label: 'Setting up your Logo (Required for GitHub)', type: 'info', content: '1. Use the "Upload & Crop" button to set your logo.\n2. Or paste a public image URL directly into the field.' },
           { id: 'tagline', label: 'Tagline / Slogan', type: 'text' },
           { id: 'footerDesc', label: 'Footer Description', type: 'textarea' },
           { id: 'contactEmail', label: 'Contact Email', type: 'text' },
@@ -3431,7 +3436,7 @@ const AdminView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
                           <p className="text-xs text-blue-700 whitespace-pre-line leading-relaxed">{field.content}</p>
                         </div>
                       ) : (
-                        <>
+                        <div className="space-y-2">
                           <label className="text-xs font-bold text-slate-400 uppercase tracking-widest">{field.label}</label>
                           {field.type === 'textarea' ? (
                             <textarea 
@@ -3440,6 +3445,64 @@ const AdminView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
                               value={pageSettings[field.id] || ''}
                               onChange={(e) => handleSettingChange(field.id, e.target.value)}
                             />
+                          ) : field.id === 'logoUrl' ? (
+                            <div className="space-y-3">
+                              <div className="flex items-center gap-4">
+                                {pageSettings[field.id] && (
+                                  <div className="h-12 px-4 bg-slate-50 border border-slate-100 rounded-xl flex items-center justify-center overflow-hidden">
+                                    <img src={pageSettings[field.id]} className="max-h-8 w-auto object-contain" />
+                                  </div>
+                                )}
+                                <label className="flex-grow">
+                                  <div className="cursor-pointer bg-slate-50 border border-dashed border-slate-300 p-3 rounded-xl text-center text-[10px] uppercase font-bold text-slate-500 hover:border-[#2368D6] transition-all">
+                                    {pageSettings[field.id] ? 'Change Logo' : 'Upload Logo'}
+                                  </div>
+                                  <input 
+                                    type="file" 
+                                    accept="image/*" 
+                                    className="hidden" 
+                                    onChange={async (e) => {
+                                      const file = e.target.files?.[0];
+                                      if (file) {
+                                        const reader = new FileReader();
+                                        reader.onload = () => setCropImage(reader.result as string);
+                                        reader.readAsDataURL(file);
+                                        (window as any)._isLogoCrop = true;
+                                      }
+                                    }} 
+                                  />
+                                </label>
+                              </div>
+                              <div className="relative">
+                                <input 
+                                  type="text"
+                                  placeholder="Or paste URL..."
+                                  className="w-full p-4 bg-brand-cream border border-brand-warm-cream rounded-xl focus:border-status-info outline-none transition-all text-xs"
+                                  value={pageSettings[field.id] || ''}
+                                  onChange={(e) => {
+                                    const val = e.target.value;
+                                    const driveMatch = val.match(/\/(?:file\/d\/|open\?id=)([\w-]+)/);
+                                    if (driveMatch && driveMatch[1]) {
+                                      handleSettingChange(field.id, `https://drive.google.com/uc?export=view&id=${driveMatch[1]}`);
+                                    } else {
+                                      handleSettingChange(field.id, val);
+                                    }
+                                  }}
+                                />
+                                {pageSettings[field.id] && !pageSettings[field.id].startsWith('data:') && (
+                                  <button 
+                                    type="button"
+                                    onClick={() => {
+                                      setCropImage(pageSettings[field.id]);
+                                      (window as any)._isLogoCrop = true;
+                                    }}
+                                    className="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] bg-slate-200 px-2 py-1 rounded font-bold hover:bg-slate-300"
+                                  >
+                                    Crop
+                                  </button>
+                                )}
+                              </div>
+                            </div>
                           ) : (
                             <input 
                               type="text"
@@ -3448,7 +3511,7 @@ const AdminView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
                               onChange={(e) => handleSettingChange(field.id, e.target.value)}
                             />
                           )}
-                        </>
+                        </div>
                       )}
                     </div>
                   ))}
