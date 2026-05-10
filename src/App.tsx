@@ -2759,31 +2759,55 @@ const TeamManagement = () => {
 
   const handleBootstrapTeam = async () => {
     if (window.confirm("Initialize team with default members?")) {
-      setLoading(true);
-      for (const member of DEFAULT_TEAM) {
-        await adminService.saveTeamMember(member);
+      try {
+        setLoading(true);
+        await adminService.bootstrapTeam(DEFAULT_TEAM);
+        await fetchTeam();
+      } catch (error) {
+        console.error("Bootstrap error:", error);
+        alert("Failed to initialize team members. Please check console.");
+      } finally {
+        setLoading(false);
       }
-      await fetchTeam();
     }
   };
 
   const handleSaveMember = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    const memberData: Partial<TeamMember> = {
-      name: formData.get('name') as string,
-      role: formData.get('role') as string,
-      photo: currentPhoto,
-      order: Number(formData.get('order')) || (team.length + 1)
-    };
+    try {
+      setLoading(true);
+      const formData = new FormData(e.currentTarget);
+      const name = formData.get('name') as string;
+      const role = formData.get('role') as string;
+      const order = Number(formData.get('order')) || (team.length + 1);
 
-    if (editingMember?.id) memberData.id = editingMember.id;
+      let photoUrl = currentPhoto;
+      
+      // If the photo is a data URL (from crop), upload it to storage
+      if (currentPhoto.startsWith('data:')) {
+        photoUrl = await adminService.uploadTeamPhoto(currentPhoto, `${name.replace(/\s+/g, '_')}.jpg`);
+      }
 
-    await adminService.saveTeamMember(memberData);
-    setIsFormOpen(false);
-    setEditingMember(null);
-    setCurrentPhoto('');
-    fetchTeam();
+      const memberData: Partial<TeamMember> = {
+        name,
+        role,
+        photo: photoUrl,
+        order
+      };
+
+      if (editingMember?.id) memberData.id = editingMember.id;
+
+      await adminService.saveTeamMember(memberData);
+      setIsFormOpen(false);
+      setEditingMember(null);
+      setCurrentPhoto('');
+      await fetchTeam();
+    } catch (error) {
+      console.error("Save error:", error);
+      alert("Failed to save team member.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleDeleteMember = async (id: string) => {

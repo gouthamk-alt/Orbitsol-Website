@@ -13,7 +13,8 @@ import {
   Timestamp,
   onSnapshot
 } from 'firebase/firestore';
-import { db, auth } from '../lib/firebase';
+import { ref, uploadString, getDownloadURL, uploadBytes } from 'firebase/storage';
+import { db, auth, storage } from '../lib/firebase';
 
 enum OperationType {
   CREATE = 'create',
@@ -260,6 +261,53 @@ export const adminService = {
       await deleteDoc(docRef);
     } catch (error) {
       handleFirestoreError(error, OperationType.DELETE, path);
+    }
+  },
+
+  async bootstrapTeam(members: Partial<TeamMember>[]) {
+    const { writeBatch, doc, collection } = await import('firebase/firestore');
+    const batch = writeBatch(db);
+    
+    for (const member of members) {
+      const newDocRef = doc(collection(db, 'team'));
+      batch.set(newDocRef, {
+        ...member,
+        updatedAt: Timestamp.now(),
+      });
+    }
+    
+    try {
+      await batch.commit();
+    } catch (error) {
+      handleFirestoreError(error, OperationType.WRITE, 'team (batch)');
+    }
+  },
+
+  async uploadTeamPhoto(dataUrl: string, fileName: string) {
+    try {
+      const storageRef = ref(storage, `team/${Date.now()}_${fileName}`);
+      // If it's a data URL, we use uploadString
+      if (dataUrl.startsWith('data:')) {
+        const result = await uploadString(storageRef, dataUrl, 'data_url');
+        return await getDownloadURL(result.ref);
+      } else {
+        // Assume it's a blob/file if not dataUrl? But here we mostly get dataUrl from crop
+        return dataUrl; 
+      }
+    } catch (error) {
+      console.error("Storage Error:", error);
+      throw error;
+    }
+  },
+
+  async uploadFile(file: File) {
+    try {
+      const storageRef = ref(storage, `uploads/${Date.now()}_${file.name}`);
+      const result = await uploadBytes(storageRef, file);
+      return await getDownloadURL(result.ref);
+    } catch (error) {
+      console.error("Storage Error:", error);
+      throw error;
     }
   }
 };
