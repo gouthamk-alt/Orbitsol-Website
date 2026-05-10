@@ -11,7 +11,8 @@ import {
   where, 
   orderBy, 
   serverTimestamp,
-  onSnapshot
+  onSnapshot,
+  writeBatch
 } from 'firebase/firestore';
 import { ref, uploadString, getDownloadURL, uploadBytes } from 'firebase/storage';
 import { db, auth, storage } from '../lib/firebase';
@@ -222,11 +223,21 @@ export const adminService = {
   // Team Members
   async getTeamMembers() {
     const path = 'team';
+    console.log("Fetching team members...");
     try {
-      const q = query(collection(db, path), orderBy('order', 'asc'));
-      const snapshot = await getDocs(q);
-      return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as TeamMember));
+      // Temporarily remove orderBy to check for index-related hangs
+      const q = query(collection(db, path));
+      // 10 second timeout for reads
+      const snapshot = await Promise.race([
+        getDocs(q),
+        new Promise((_, reject) => setTimeout(() => reject(new Error("Firestore read timed out")), 10000))
+      ]) as any;
+      console.log(`Fetched ${snapshot.docs.length} team members`);
+      const members = snapshot.docs.map((doc: any) => ({ id: doc.id, ...doc.data() } as TeamMember));
+      // Sort client-side
+      return members.sort((a, b) => (a.order || 0) - (b.order || 0));
     } catch (error) {
+      console.error("Get team error:", error);
       handleFirestoreError(error, OperationType.LIST, path);
     }
   },
@@ -234,6 +245,7 @@ export const adminService = {
   async saveTeamMember(member: Partial<TeamMember>) {
     const isNew = !member.id;
     const path = isNew ? 'team' : `team/${member.id}`;
+    console.log(`Saving team member (isNew: ${isNew})...`);
     
     const data = {
       ...member,
@@ -243,13 +255,20 @@ export const adminService = {
     const docId = member.id;
     if (!isNew) delete (data as any).id;
 
+    const savePromise = isNew 
+      ? addDoc(collection(db, 'team'), data)
+      : updateDoc(doc(db, 'team', docId!), data);
+
     try {
-      if (isNew) {
-        return await addDoc(collection(db, 'team'), data);
-      } else {
-        await updateDoc(doc(db, 'team', docId!), data);
-      }
+      // 15 second timeout for Firestore writes
+      const result = await Promise.race([
+        savePromise,
+        new Promise((_, reject) => setTimeout(() => reject(new Error("Firestore write timed out")), 15000))
+      ]);
+      console.log("Member saved/updated successfully");
+      return (result as any)?.id;
     } catch (error) {
+      console.error("Save team error:", error);
       handleFirestoreError(error, OperationType.WRITE, path);
     }
   },
@@ -265,7 +284,7 @@ export const adminService = {
   },
 
   async bootstrapTeam(members: Partial<TeamMember>[]) {
-    const { writeBatch } = await import('firebase/firestore');
+    console.log("Bootstrapping team...");
     const batch = writeBatch(db);
     
     for (const member of members) {
@@ -280,21 +299,35 @@ export const adminService = {
     }
     
     try {
-      await batch.commit();
+      // 20 second timeout for batch commit
+      await Promise.race([
+        batch.commit(),
+        new Promise((_, reject) => setTimeout(() => reject(new Error("Batch commit timed out")), 20000))
+      ]);
+      console.log("Batch commit successful");
     } catch (error) {
+      console.error("Bootstrap batch error:", error);
       handleFirestoreError(error, OperationType.WRITE, 'team (batch)');
     }
   },
 
   async uploadTeamPhoto(dataUrl: string, fileName: string) {
+    console.log("Uploading photo:", fileName);
     try {
       const storageRef = ref(storage, `team/${Date.now()}_${fileName}`);
       // If it's a data URL, we use uploadString
       if (dataUrl.startsWith('data:')) {
-        const result = await uploadString(storageRef, dataUrl, 'data_url');
-        return await getDownloadURL(result.ref);
+        // 20 second timeout for storage uploads
+        const uploadPromise = uploadString(storageRef, dataUrl, 'data_url');
+        const result = await Promise.race([
+          uploadPromise,
+          new Promise((_, reject) => setTimeout(() => reject(new Error("Storage upload timed out")), 20000))
+        ]) as any;
+        
+        const url = await getDownloadURL(result.ref);
+        console.log("Photo uploaded successfully:", url);
+        return url;
       } else {
-        // Assume it's a blob/file if not dataUrl? But here we mostly get dataUrl from crop
         return dataUrl; 
       }
     } catch (error) {
