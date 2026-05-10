@@ -1901,7 +1901,7 @@ const AboutView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
           {team.map((member, idx) => (
             <div key={member.id || idx} className="text-center group">
-               <div className="w-full aspect-square bg-[#FFF7EA] rounded-full mb-6 border border-[#FFF0E6] flex items-center justify-center grayscale group-hover:grayscale-0 transition-all overflow-hidden shadow-sm">
+               <div className="w-full aspect-square bg-[#FFF7EA] rounded-full mb-6 border border-[#FFF0E6] flex items-center justify-center transition-all overflow-hidden shadow-sm group-hover:scale-[1.02]">
                   {member.photo ? (
                     <img src={member.photo} alt={member.name} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
                   ) : (
