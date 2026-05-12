@@ -1687,7 +1687,7 @@ const Header = ({ currentPath, onNavigate }: { currentPath: ViewPath, onNavigate
             <img 
               src={logoUrl} 
               alt={getContent('global.siteName', 'OrbitSol')} 
-              className="h-20 w-[170px] object-contain" 
+              className="h-[100px] w-[180px] object-contain" 
               onError={(e) => {
                 const target = e.target as HTMLImageElement;
                 if (target.src !== getAssetUrl('/logo.png')) {
