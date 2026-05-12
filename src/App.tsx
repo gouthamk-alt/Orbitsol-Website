@@ -122,16 +122,6 @@ const MarketingGrowthView = ({ onNavigate }: { onNavigate: (path: ViewPath) => v
   <>
     {/* Block A — Hero */}
     <section className="relative primary-gradient text-white pt-12 pb-8 overflow-hidden">
-      <div className="absolute inset-0 z-0">
-        <img 
-          src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2015&auto=format&fit=crop" 
-          alt="Marketing background" 
-          className="w-full h-full object-cover opacity-20 filter grayscale" 
-          referrerPolicy="no-referrer"
-        />
-        <div className="absolute inset-0 bg-[#081A33]/60 mix-blend-multiply"></div>
-      </div>
-      <div className="absolute top-10 right-10 text-[18vw] font-serif font-black text-white/[0.03] pointer-events-none select-none tracking-tighter">MKT</div>
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         <div className="max-w-2xl p-6 md:p-8 rounded-2xl backdrop-blur-sm bg-white/5 border border-white/10 shadow-2xl">
           <div className="text-white/70 text-[10px] uppercase tracking-[0.2em] font-bold mb-5 font-sans">
@@ -284,15 +274,6 @@ const RemoteOperationsView = ({ onNavigate }: { onNavigate: (path: ViewPath) => 
     <>
       {/* Section 1 - Hero */}
     <section className="relative primary-gradient text-white pt-12 pb-8 overflow-hidden font-sans">
-      <div className="absolute inset-0 z-0">
-        <img 
-          src="https://images.unsplash.com/photo-1497215728101-856f4ea42174?q=80&w=2070&auto=format&fit=crop" 
-          alt="Remote operations background" 
-          className="w-full h-full object-cover opacity-20 filter grayscale" 
-          referrerPolicy="no-referrer"
-        />
-        <div className="absolute inset-0 bg-[#081A33]/60 mix-blend-multiply"></div>
-      </div>
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         <div className="max-w-2xl p-6 md:p-8 rounded-2xl backdrop-blur-sm bg-white/5 border border-white/10 shadow-2xl">
           <div className="text-white/70 font-bold uppercase tracking-[0.2em] text-[10px] mb-4 font-sans">Global delivery.</div>
@@ -479,16 +460,6 @@ const SMEsFoundersView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void
   <>
     {/* Block A — Hero */}
     <section className="relative primary-gradient text-white pt-12 pb-8 overflow-hidden font-sans">
-      <div className="absolute inset-0 z-0">
-        <img 
-          src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=2070&auto=format&fit=crop" 
-          alt="SME support background" 
-          className="w-full h-full object-cover opacity-20 filter grayscale" 
-          referrerPolicy="no-referrer"
-        />
-        <div className="absolute inset-0 bg-[#081A33]/60 mix-blend-multiply"></div>
-      </div>
-      <div className="absolute top-10 right-10 text-[18vw] font-serif font-black text-white/[0.03] pointer-events-none select-none tracking-tighter">SME</div>
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         <div className="max-w-2xl p-6 md:p-8 rounded-2xl backdrop-blur-sm bg-white/5 border border-white/10 shadow-2xl">
           <div className="text-white/75 text-[10px] uppercase tracking-[0.2em] font-bold mb-5">
@@ -826,15 +797,6 @@ const ProcessAutomationView = ({ onNavigate }: { onNavigate: (path: ViewPath) =>
   <>
     {/* Section 1 - Hero */}
     <section className="relative primary-gradient text-white pt-12 pb-8 overflow-hidden font-sans">
-      <div className="absolute inset-0 z-0">
-        <img 
-          src="https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=2070&auto=format&fit=crop" 
-          alt="Automation background" 
-          className="w-full h-full object-cover opacity-20 filter grayscale" 
-          referrerPolicy="no-referrer"
-        />
-        <div className="absolute inset-0 bg-[#081A33]/60 mix-blend-multiply"></div>
-      </div>
       <div className="max-w-7xl mx-auto px-6 relative z-10 flex flex-col md:flex-row items-center gap-16">
         <div className="md:w-3/5">
           <div className="text-white/70 font-bold uppercase tracking-[0.2em] text-[10px] mb-5 underline decoration-[#2368D6] underline-offset-8">Process and Automation.</div>
@@ -935,16 +897,6 @@ const StrataManagementView = ({ onNavigate }: { onNavigate: (path: ViewPath) => 
   <>
     {/* Block A — Hero */}
     <section className="relative primary-gradient text-white pt-12 pb-8 overflow-hidden font-sans">
-      <div className="absolute inset-0 z-0">
-        <img 
-          src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop" 
-          alt="Strata Management background" 
-          className="w-full h-full object-cover opacity-20 filter grayscale" 
-          referrerPolicy="no-referrer"
-        />
-        <div className="absolute inset-0 bg-[#081A33]/60 mix-blend-multiply"></div>
-      </div>
-      <div className="absolute top-5 right-10 text-[18vw] font-serif font-black text-white/3 pointer-events-none select-none tracking-tighter">STR</div>
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         <div className="max-w-2xl p-6 md:p-8 rounded-2xl backdrop-blur-sm bg-white/5 border border-white/10 shadow-2xl">
           <div className="text-white/70 uppercase tracking-[0.2em] font-bold text-[10px] mb-5 font-sans">
@@ -1100,15 +1052,6 @@ const PropertyRealEstateView = ({ onNavigate }: { onNavigate: (path: ViewPath) =
   <>
     {/* Block A — Hero */}
     <section className="relative primary-gradient text-white pt-12 pb-8 overflow-hidden font-sans">
-      <div className="absolute inset-0 z-0">
-        <img 
-          src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=2073&auto=format&fit=crop" 
-          alt="Property Real Estate background" 
-          className="w-full h-full object-cover opacity-20 filter grayscale" 
-          referrerPolicy="no-referrer"
-        />
-        <div className="absolute inset-0 bg-[#081A33]/60 mix-blend-multiply"></div>
-      </div>
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         <div className="max-w-2xl p-6 md:p-8 rounded-2xl backdrop-blur-sm bg-white/5 border border-white/10 shadow-2xl">
           <div className="text-white/70 uppercase tracking-[0.2em] font-bold text-[10px] mb-5 font-sans">
@@ -2227,22 +2170,6 @@ const HomeView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => {
   return (
     <>
       <section className="relative primary-gradient text-white pt-12 pb-8 overflow-hidden font-sans">
-      <div className="absolute inset-0 z-0">
-        <img 
-          src="https://images.unsplash.com/photo-1451187514994-6f51bd2ee36e?q=80&w=2070&auto=format&fit=crop" 
-          alt="Global connectivity background" 
-          className="w-full h-full object-cover opacity-10 filter grayscale" 
-          referrerPolicy="no-referrer"
-        />
-        <div className="absolute inset-0 bg-[#081A33]/40 mix-blend-multiply"></div>
-      </div>
-      <div className="absolute top-0 right-0 w-1/2 h-full opacity-10 pointer-events-none z-10">
-        <svg viewBox="0 0 100 100" className="w-full h-full fill-current" preserveAspectRatio="none">
-            <circle cx="80" cy="50" r="40" stroke="white" strokeWidth="0.5" fill="none" />
-            <circle cx="80" cy="50" r="30" stroke="white" strokeWidth="0.5" fill="none" strokeDasharray="2 2" />
-            <circle cx="80" cy="50" r="20" stroke="white" strokeWidth="0.5" fill="none" />
-          </svg>
-        </div>
         <div className="max-w-7xl mx-auto px-6 relative z-10">
           <div className="max-w-2xl p-6 md:p-8 rounded-3xl backdrop-blur-sm bg-white/5 border border-white/10 shadow-2xl">
             <p className="text-white/60 font-medium tracking-widest uppercase text-[10px] mb-4 font-sans">
@@ -2377,15 +2304,6 @@ const SpeechContentDataView = ({ onNavigate }: { onNavigate: (path: ViewPath) =>
   <>
     {/* Section 1 - Hero */}
     <section className="relative primary-gradient text-white pt-12 pb-8 overflow-hidden font-sans">
-      <div className="absolute inset-0 z-0">
-        <img 
-          src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop" 
-          alt="Data and Speech Intelligence background" 
-          className="w-full h-full object-cover opacity-20 filter grayscale" 
-          referrerPolicy="no-referrer"
-        />
-        <div className="absolute inset-0 bg-[#081A33]/60 mix-blend-multiply"></div>
-      </div>
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         <div className="max-w-2xl p-6 md:p-10 rounded-2xl backdrop-blur-sm bg-white/5 border border-white/10 shadow-2xl">
           <div className="text-white/80 font-bold uppercase tracking-[0.2em] text-[10px] mb-4">Speech, Content, and Data Intelligence.</div>
@@ -3728,15 +3646,6 @@ const PropertyInspectionView = ({ onNavigate }: { onNavigate: (path: ViewPath) =
   <>
     {/* Section 1 - Hero */}
     <section className="relative primary-gradient text-white pt-12 pb-8 overflow-hidden font-sans">
-      <div className="absolute inset-0 z-0">
-        <img 
-          src="https://images.unsplash.com/photo-1582268611958-ebaf16150251?q=80&w=2070&auto=format&fit=crop" 
-          alt="Property Inspection background" 
-          className="w-full h-full object-cover opacity-20 filter grayscale" 
-          referrerPolicy="no-referrer"
-        />
-        <div className="absolute inset-0 bg-[#081A33]/60 mix-blend-multiply"></div>
-      </div>
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         <div className="max-w-2xl p-6 md:p-10 rounded-2xl backdrop-blur-sm bg-white/5 border border-white/10 shadow-2xl">
           <div className="text-white/60 font-bold uppercase tracking-[0.2em] text-xs mb-4 underline decoration-[#2368D6] underline-offset-8">Property Inspection Reports.</div>
@@ -3906,16 +3815,6 @@ const LegalProfessionalServicesView = ({ onNavigate }: { onNavigate: (path: View
   <>
     {/* Block A — Hero */}
     <section className="relative primary-gradient text-white pt-12 pb-8 overflow-hidden">
-      <div className="absolute inset-0 z-0">
-        <img 
-          src="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?q=80&w=2070&auto=format&fit=crop" 
-          alt="Legal Services background" 
-          className="w-full h-full object-cover opacity-20 filter grayscale" 
-          referrerPolicy="no-referrer"
-        />
-        <div className="absolute inset-0 bg-[#081A33]/60 mix-blend-multiply"></div>
-      </div>
-      <div className="absolute top-5 right-10 text-[18vw] font-serif font-black text-white/3 pointer-events-none select-none tracking-tighter">LPS</div>
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         <div className="text-xs uppercase tracking-[0.2em] font-bold text-white/80 mb-6 font-sans">
           Who we work with / Legal and Professional Services
