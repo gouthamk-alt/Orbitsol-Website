@@ -1639,7 +1639,13 @@ const Header = ({ currentPath, onNavigate }: { currentPath: ViewPath, onNavigate
     >
       <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
         {/* Logo */}
-         <div className="flex items-center cursor-pointer" onClick={() => onNavigate('/')}>
+         <motion.div 
+           className="flex items-center cursor-pointer" 
+           onClick={() => onNavigate('/')}
+           whileHover={{ scale: 1.05 }}
+           whileTap={{ scale: 0.95 }}
+           transition={{ type: "spring", stiffness: 400, damping: 17 }}
+         >
             <img 
               src={logoUrl} 
               alt={getContent('global.siteName', 'OrbitSol')} 
@@ -1651,7 +1657,7 @@ const Header = ({ currentPath, onNavigate }: { currentPath: ViewPath, onNavigate
                 }
               }}
             />
-         </div>
+         </motion.div>
 
         {/* Desktop Nav */}
         <nav className="hidden lg:flex items-center gap-8">
@@ -1903,6 +1909,7 @@ const ContactView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) =
 
   const contactEmail = getContent('global.contactEmail', 'info@orbitsol.com');
   const contactPhone = getContent('global.phone', '+1-833-384-1500');
+  const officeAddress = getContent('contact.contactAddress', 'Kochi, Kerala, India');
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -2000,6 +2007,10 @@ const ContactView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) =
                   <p className="text-xs font-bold text-slate-500 uppercase tracking-[0.2em] mb-3">Phone Number (Toll-free)</p>
                   <p className="text-2xl font-serif font-bold text-[#081A33] tracking-tight">{contactPhone}</p>
                   <p className="text-base text-slate-500 mt-2 font-medium">Reachable from any country</p>
+               </div>
+               <div>
+                  <p className="text-xs font-bold text-slate-500 uppercase tracking-[0.2em] mb-3">Office Address</p>
+                  <p className="text-2xl font-serif font-bold text-[#081A33] tracking-tight whitespace-pre-line">{officeAddress}</p>
                </div>
             </div>
           </div>
@@ -3129,6 +3140,7 @@ const AdminView = ({ onNavigate, onSettingsUpdate }: { onNavigate: (path: ViewPa
         return [
           { id: 'contactHeroTitle', label: 'Hero Title', type: 'text', default: 'Send us the workflow, sample file, or task list you want handled.' },
           { id: 'contactHeroDesc', label: 'Hero Description', type: 'textarea', default: 'Tell us what you need completed, where the input comes from, what the output should look like, and how often the work repeats.' },
+          { id: 'contactAddress', label: 'Office Address', type: 'textarea', default: 'Kochi, Kerala, India' },
         ];
       default:
         return [];
