@@ -118,7 +118,9 @@ const getAssetUrl = (url: string) => {
 
 // --- Components ---
 
-const MarketingGrowthView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => (
+const MarketingGrowthView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => {
+  const { getContent } = React.useContext(SiteSettingsContext);
+  return (
   <>
     {/* Block A — Hero */}
     <section className="relative primary-gradient text-white pt-12 pb-8 overflow-hidden">
@@ -128,10 +130,10 @@ const MarketingGrowthView = ({ onNavigate }: { onNavigate: (path: ViewPath) => v
             Who we work with / Marketing and Growth Teams
           </div>
           <h1 className="font-serif text-3xl md:text-5xl font-bold leading-tight mb-6">
-            A capable offshore production team for marketing and branding agencies.
+            {getContent('services.marketingAgencyHeroTitle', 'A capable offshore production team for marketing and branding agencies.')}
           </h1>
           <p className="text-sm md:text-base text-white/70 leading-relaxed max-w-4xl font-sans">
-            OrbitSol works as a managed offshore production and execution desk for agencies and in-house growth teams.
+            {getContent('services.marketingAgencyHeroDesc', 'OrbitSol works as a managed offshore production and execution desk for agencies and in-house growth teams.')}
           </p>
         </div>
       </div>
@@ -265,7 +267,8 @@ const MarketingGrowthView = ({ onNavigate }: { onNavigate: (path: ViewPath) => v
       </div>
     </section>
   </>
-);
+  );
+};
 
 const RemoteOperationsView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => {
   const { getContent } = React.useContext(SiteSettingsContext);
@@ -278,10 +281,10 @@ const RemoteOperationsView = ({ onNavigate }: { onNavigate: (path: ViewPath) => 
         <div className="max-w-2xl p-6 md:p-8 rounded-2xl backdrop-blur-sm bg-white/5 border border-white/10 shadow-2xl">
           <div className="text-white/70 font-bold uppercase tracking-[0.2em] text-[10px] mb-4 font-sans">Global delivery.</div>
           <h1 className="font-serif text-3xl md:text-5xl font-bold leading-tight mb-6 text-white text-pretty">
-            Managed remote operations and virtual assistants for repeatable business work.
+            {getContent('services.remoteHeroTitle', 'Managed remote operations and virtual assistants for repeatable business work.')}
           </h1>
           <p className="text-sm md:text-base text-white/90 leading-relaxed mb-8">
-            OrbitSol helps you move repeatable work into a managed offshore team without asking you to recruit, train, and supervise every person yourself.
+            {getContent('services.remoteHeroDesc', 'OrbitSol helps you move repeatable work into a managed offshore team without asking you to recruit, train, and supervise every person yourself.')}
           </p>
           <div className="flex flex-wrap gap-4">
             <button onClick={() => { document.getElementById('levels')?.scrollIntoView({ behavior: 'smooth' }); }} className="bg-[#2368D6] hover:opacity-90 text-white px-8 py-3.5 rounded font-bold uppercase tracking-widest text-xs shadow-xl transition-all">
@@ -453,10 +456,12 @@ const RemoteOperationsView = ({ onNavigate }: { onNavigate: (path: ViewPath) => 
       </div>
     </section>
   </>
-);
+  );
 };
 
-const SMEsFoundersView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => (
+const SMEsFoundersView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => {
+  const { getContent } = React.useContext(SiteSettingsContext);
+  return (
   <>
     {/* Block A — Hero */}
     <section className="relative primary-gradient text-white pt-12 pb-8 overflow-hidden font-sans">
@@ -466,10 +471,10 @@ const SMEsFoundersView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void
             Who we work with / SMEs and Founders
           </div>
           <h1 className="font-serif text-3xl md:text-5xl font-bold leading-tight mb-6">
-            Hire a virtual chief of staff.
+            {getContent('services.smeHeroTitle', 'Hire a virtual chief of staff.')}
           </h1>
           <p className="text-sm md:text-base text-white/70 leading-relaxed max-w-4xl font-sans">
-            We support business owners and managers who need an assistant who can also document a process, build a dashboard, or manage a vendor.
+            {getContent('services.smeHeroDesc', 'We support business owners and managers who need an assistant who can also document a process, build a dashboard, or manage a vendor.')}
           </p>
         </div>
       </div>
@@ -606,7 +611,8 @@ const SMEsFoundersView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void
       </div>
     </section>
   </>
-);
+  );
+};
 
 const DigitalMarketingView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => {
   const { getContent } = React.useContext(SiteSettingsContext);
@@ -619,10 +625,10 @@ const DigitalMarketingView = ({ onNavigate }: { onNavigate: (path: ViewPath) => 
         <div className="max-w-2xl p-6 md:p-8 rounded-2xl backdrop-blur-sm bg-white/5 border border-white/10 shadow-2xl">
           <div className="text-white/60 font-bold uppercase tracking-[0.2em] text-[10px] mb-4 underline decoration-[#2368D6] underline-offset-8">Digital Marketing and Creative.</div>
           <h1 className="font-serif text-3xl md:text-5xl font-bold leading-tight mb-6">
-            A growth desk you can actually rely on.
+            {getContent('services.marketingHeroTitle', 'A growth desk you can actually rely on.')}
           </h1>
           <p className="text-sm md:text-base text-white/90 leading-relaxed max-w-4xl font-sans mb-10">
-            OrbitSol helps businesses plan, build, and run the marketing work that is difficult to keep moving in-house.
+            {getContent('services.marketingHeroDesc', 'OrbitSol helps businesses plan, build, and run the marketing work that is difficult to keep moving in-house.')}
           </p>
           <div className="flex flex-wrap gap-4">
             <button onClick={() => onNavigate('/contact')} className="bg-[#2368D6] hover:opacity-90 text-white px-8 py-3.5 rounded-xl font-bold uppercase tracking-widest text-xs shadow-lg transition-all">
@@ -787,7 +793,7 @@ const DigitalMarketingView = ({ onNavigate }: { onNavigate: (path: ViewPath) => 
       </div>
     </section>
   </>
-);
+  );
 };
 
 const ProcessAutomationView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => {
@@ -802,10 +808,10 @@ const ProcessAutomationView = ({ onNavigate }: { onNavigate: (path: ViewPath) =>
           <div className="text-white/70 font-bold uppercase tracking-[0.2em] text-[10px] mb-5 underline decoration-[#2368D6] underline-offset-8">Process and Automation.</div>
           <div className="max-w-2xl p-6 md:p-8 rounded-2xl backdrop-blur-sm bg-white/5 border border-white/10 shadow-2xl">
             <h1 className="font-serif text-3xl md:text-5xl font-bold leading-tight mb-8 text-white text-pretty">
-              Make recurring work easier to run, measure, and scale.
+              {getContent('services.automationHeroTitle', 'Make recurring work easier to run, measure, and scale.')}
             </h1>
             <p className="text-sm md:text-base text-white/90 leading-relaxed mb-10">
-              We help turn knowledge into clear standard operating procedures, dashboards, and practical automations.
+              {getContent('services.automationHeroDesc', 'We help turn knowledge into clear standard operating procedures, dashboards, and practical automations.')}
             </p>
             <button onClick={() => onNavigate('/contact')} className="bg-[#2368D6] hover:opacity-90 text-white px-8 py-4 rounded-xl font-bold uppercase tracking-widest text-xs shadow-xl transition-all">
               Send a workflow enquiry
@@ -890,10 +896,12 @@ const ProcessAutomationView = ({ onNavigate }: { onNavigate: (path: ViewPath) =>
       </div>
     </section>
   </>
-);
+  );
 };
 
-const StrataManagementView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => (
+const StrataManagementView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => {
+  const { getContent } = React.useContext(SiteSettingsContext);
+  return (
   <>
     {/* Block A — Hero */}
     <section className="relative primary-gradient text-white pt-12 pb-8 overflow-hidden font-sans">
@@ -903,10 +911,10 @@ const StrataManagementView = ({ onNavigate }: { onNavigate: (path: ViewPath) => 
             Who we work with / Strata Management
           </div>
           <h1 className="font-serif text-3xl md:text-5xl font-bold leading-tight mb-6">
-            A managed offshore strata desk that understands the pressure.
+            {getContent('services.strataHeroTitle', 'A managed offshore strata desk that understands the pressure.')}
           </h1>
           <p className="text-sm md:text-base text-white/70 leading-relaxed max-w-4xl font-sans">
-            OrbitSol supports strata firms with correspondence, meeting preparation, and file management.
+            {getContent('services.strataHeroDesc', 'OrbitSol supports strata firms with correspondence, meeting preparation, and file management.')}
           </p>
         </div>
       </div>
@@ -1046,9 +1054,12 @@ const StrataManagementView = ({ onNavigate }: { onNavigate: (path: ViewPath) => 
       </div>
     </section>
   </>
-);
+  );
+};
 
-const PropertyRealEstateView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => (
+const PropertyRealEstateView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => {
+  const { getContent } = React.useContext(SiteSettingsContext);
+  return (
   <>
     {/* Block A — Hero */}
     <section className="relative primary-gradient text-white pt-12 pb-8 overflow-hidden font-sans">
@@ -1058,10 +1069,10 @@ const PropertyRealEstateView = ({ onNavigate }: { onNavigate: (path: ViewPath) =
             Who we work with / Property and Real Estate
           </div>
           <h1 className="font-serif text-3xl md:text-5xl font-bold leading-tight mb-8 tracking-tighter text-white">
-            An offshore production and admin layer for property businesses.
+            {getContent('services.propertyHeroTitle', 'An offshore production and admin layer for property businesses.')}
           </h1>
           <p className="text-base md:text-lg text-white/90 leading-relaxed font-sans">
-            OrbitSol supports lettings agencies, property inventory and inspection firms, and real estate agencies through a single managed offshore desk.
+            {getContent('services.propertyHeroDesc', 'OrbitSol supports lettings agencies, property inventory and inspection firms, and real estate agencies through a single managed offshore desk.')}
           </p>
         </div>
       </div>
@@ -1275,7 +1286,8 @@ const PropertyRealEstateView = ({ onNavigate }: { onNavigate: (path: ViewPath) =
       </div>
     </section>
   </>
-);
+  );
+};
 
 const BlogSidebar = ({ 
   searchQuery, 
@@ -1373,6 +1385,7 @@ const BlogSidebar = ({
 );
 
 const InsightsView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => {
+  const { getContent } = React.useContext(SiteSettingsContext);
   const [insights, setInsights] = useState<Insight[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedInsight, setSelectedInsight] = useState<Insight | null>(null);
@@ -1503,10 +1516,10 @@ const InsightsView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) 
       <section className="relative bg-[#081A33] text-white pt-12 pb-8 overflow-hidden font-sans border-b border-white/5">
         <div className="max-w-7xl mx-auto px-6 relative z-10">
           <h1 className="font-serif text-3xl md:text-5xl lg:text-6xl font-bold leading-tight mb-8">
-            The Journal.
+            {getContent('services.insightsHeroTitle', 'The Journal.')}
           </h1>
           <p className="text-base md:text-lg text-blue-100/60 leading-relaxed max-w-3xl">
-            Thinking, updates, and observations on managed operations and practical automation.
+            {getContent('services.insightsHeroDesc', 'Thinking, updates, and observations on managed operations and practical automation.')}
           </p>
         </div>
       </section>
@@ -1792,10 +1805,10 @@ const AboutView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
       <section className="relative bg-white pt-12 pb-8 overflow-hidden font-sans border-b border-slate-100">
         <div className="max-w-7xl mx-auto px-6 relative z-10 text-center">
           <h1 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold leading-tight mb-8 text-[#081A33]">
-            {getContent('about.heroTitle', 'A decade as the behind-the-scenes engine for businesses around the world.')}
+            {getContent('about.aboutHeroTitle', 'A decade as the behind-the-scenes engine for businesses around the world.')}
           </h1>
           <p className="text-base md:text-lg text-slate-600 leading-relaxed max-w-4xl mx-auto">
-            {getContent('about.heroDesc', 'OrbitSol began in 2015 with property report production and grew by solving adjacent workflow problems for the same kinds of clients. We use technology to support delivery, but accountability stays with people.')}
+            {getContent('about.aboutHeroDesc', 'OrbitSol began in 2015 with property report production and grew by solving adjacent workflow problems for the same kinds of clients. We use technology to support delivery, but accountability stays with people.')}
           </p>
         </div>
       </section>
@@ -1804,18 +1817,13 @@ const AboutView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
     <section className="py-24 bg-[#F5F7FA] font-sans">
       <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-start">
         <div>
-          <h2 className="font-serif text-3xl font-bold text-[#081A33] mb-8">Our Story</h2>
-          <div className="space-y-6 text-slate-600 leading-relaxed">
-            <p>
-              Our Story was founded in <a href="https://www.keralatourism.org/topic/kochi" target="_blank" rel="noopener noreferrer" className="text-[#2368D6] hover:underline">Kochi</a>, on India's southwest coast in the state of Kerala, by a team with deep experience in transcription and business-process-outsourcing.
-            </p>
-            <p>
-              The first OrbitSol clients were UK property inspection firms that needed accurate typing, and within two years the business had built relationships that would last more than a decade.
-            </p>
-            <p>
-              We have grown without venture capital by focusing entirely on helping our clients build their businesses, and we continue to approach every new engagement with the same commitment.
-            </p>
-          </div>
+          <h2 className="font-serif text-3xl font-bold text-[#081A33] mb-8">{getContent('about.aboutStoryTitle', 'Our Story')}</h2>
+          <div 
+            className="text-slate-600 leading-relaxed prose prose-slate max-w-none prose-p:text-slate-600 prose-a:text-[#2368D6] prose-a:font-bold hover:prose-a:underline"
+            dangerouslySetInnerHTML={{ 
+              __html: DOMPurify.sanitize(getContent('about.aboutStoryContent', `Our Story was founded in <a href="https://www.google.com/maps/place/Kochi,+Kerala,+India" target="_blank" rel="noopener noreferrer">Kochi</a>, on India's southwest coast in the state of Kerala, by a team with deep experience in transcription and business-process-outsourcing.<br/><br/>The first OrbitSol clients were UK property inspection firms that needed accurate typing, and within two years the business had built relationships that would last more than a decade.<br/><br/>By 2021, OrbitSol had expanded its focus to strata management, law firms, and SMEs that needed reliable, managed offshore support for their administrative and reporting workflows.`)) 
+            }}
+          />
         </div>
         <div className="bg-white p-12 rounded-2xl shadow-xl border border-slate-100">
            <h3 className="text-[12px] font-bold uppercase tracking-[0.2em] text-slate-500 mb-10 border-b border-slate-100 pb-6">Milestones</h3>
@@ -1978,10 +1986,10 @@ const ContactView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) =
         <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-16 items-start">
           <div>
             <h1 className="font-serif text-3xl md:text-4xl font-bold leading-tight mb-8 text-[#081A33]">
-              Send us the workflow, sample file, or task list you want handled.
+              {getContent('contact.contactHeroTitle', 'Send us the workflow, sample file, or task list you want handled.')}
             </h1>
             <p className="text-base text-slate-500 leading-relaxed mb-12">
-              Tell us what you need completed, where the input comes from, what the output should look like, and how often the work repeats.
+              {getContent('contact.contactHeroDesc', 'Tell us what you need completed, where the input comes from, what the output should look like, and how often the work repeats.')}
             </p>
             <div className="space-y-10 pt-12 border-t border-slate-200">
                <div>
@@ -2173,13 +2181,13 @@ const HomeView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => {
         <div className="max-w-7xl mx-auto px-6 relative z-10">
           <div className="max-w-2xl p-6 md:p-8 rounded-3xl backdrop-blur-sm bg-white/5 border border-white/10 shadow-2xl">
             <p className="text-white/60 font-medium tracking-widest uppercase text-[10px] mb-4 font-sans">
-              {getContent('home.heroTag', 'Managed offshore operations / Powered by Practical AI')}
+              {getContent('home.homeHeroSubtitle', 'Managed offshore operations / Powered by Practical AI')}
             </p>
             <h1 className="font-serif text-4xl md:text-5xl font-bold leading-tight mb-6">
-              {getContent('home.heroTitle', 'Turn recurring work into managed workflows your team can rely on.')}
+              {getContent('home.homeHeroTitle', 'Turn recurring work into managed workflows your team can rely on.')}
             </h1>
             <p className="text-base md:text-lg text-white/70 leading-relaxed mb-8 font-sans">
-              {getContent('home.heroDesc', 'OrbitSol helps property, strata, lettings, legal, and professional services firms move reporting, transcription, and admin work into a managed offshore operating layer.')}
+              {getContent('home.homeHeroDesc', 'OrbitSol helps property, strata, lettings, legal, and professional services firms move reporting, transcription, and admin work into a managed offshore operating layer.')}
             </p>
           <div className="flex flex-col sm:flex-row gap-4 mb-10">
             <button onClick={() => onNavigate('/contact')} className="bg-[#2368D6] hover:opacity-90 text-white px-8 py-3.5 rounded-xl font-bold uppercase tracking-widest text-xs shadow-lg transition-all">
@@ -2190,10 +2198,10 @@ const HomeView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => {
             </button>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 pt-10 border-t border-white/10 text-sm font-sans tracking-tight">
-            <div><strong className="block text-3xl font-serif mb-1">2015</strong> Established</div>
-            <div><strong className="block text-3xl font-serif mb-1">200k+</strong> Reports Processed</div>
-            <div><strong className="block text-3xl font-serif mb-1">1M+</strong> Dedicated Hours</div>
-            <div><strong className="block text-3xl font-serif mb-1">$5/hr</strong> Starting Rate</div>
+            <div><strong className="block text-3xl font-serif mb-1">{getContent('home.homeStat1Value', '2015')}</strong> {getContent('home.homeStat1Label', 'Established')}</div>
+            <div><strong className="block text-3xl font-serif mb-1">{getContent('home.homeStat2Value', '200k+')}</strong> {getContent('home.homeStat2Label', 'Reports Processed')}</div>
+            <div><strong className="block text-3xl font-serif mb-1">{getContent('home.homeStat3Value', '1M+')}</strong> {getContent('home.homeStat3Label', 'Dedicated Hours')}</div>
+            <div><strong className="block text-3xl font-serif mb-1">{getContent('home.homeStat4Value', '$5/hr')}</strong> {getContent('home.homeStat4Label', 'Starting Rate')}</div>
           </div>
         </div>
       </div>
@@ -2210,12 +2218,10 @@ const HomeView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => {
         <div className="mb-20">
           <p className="text-[#2368D6] font-bold tracking-widest uppercase text-[10px] mb-4">Who we serve.</p>
           <h2 className="font-serif text-3xl md:text-5xl lg:text-6xl font-bold text-[#081A33] mb-8 leading-[1.1] tracking-tight max-w-4xl">
-            Built for teams whose work depends on accurate, repeatable operations.
+            {getContent('home.homeWhoWeServeTitle', 'Built for teams whose work depends on accurate, repeatable operations.')}
           </h2>
           <p className="text-base md:text-lg text-slate-500 leading-relaxed max-w-4xl">
-            OrbitSol supports teams that need work completed consistently inside their existing tools, 
-            templates, and service standards. The work is scoped, documented, assigned to trained 
-            operators, and managed through handpicked project leads.
+            {getContent('home.homeWhoWeServeDesc', 'OrbitSol supports teams that need work completed consistently inside their existing tools, templates, and service standards. The work is scoped, documented, assigned to trained operators, and managed through handpicked project leads.')}
           </p>
         </div>
         <div className="grid md:grid-cols-3 gap-8">
@@ -2233,7 +2239,9 @@ const HomeView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => {
             >
               <div className="flex-grow">
                 <h3 className="font-serif text-2xl font-bold text-[#081A33] mb-6 group-hover:text-[#2368D6] transition-colors">{service.title}</h3>
-                <p className="text-slate-500 text-[15px] leading-relaxed mb-10 font-sans">Dedicated offshore support tailored to your industry's specific workflow requirements.</p>
+                <p className="text-slate-500 text-[15px] leading-relaxed mb-10 font-sans">
+                  {getContent('home.homeSectorCardDesc', 'Dedicated offshore support tailored to your industry\'s specific workflow requirements.')}
+                </p>
               </div>
               <div className="flex items-center gap-2 text-[#2368D6] text-sm font-bold font-sans">
                 <span>Explore services</span>
@@ -2244,8 +2252,12 @@ const HomeView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => {
           
           {/* Custom Desk Card */}
           <div className="bg-[#F5F7FA] p-10 rounded-2xl flex flex-col items-center justify-center text-center shadow-[0_4px_20px_rgba(0,0,0,0.01)] border border-slate-100/50">
-             <h3 className="font-serif text-2xl font-bold text-[#081A33] mb-4">Don't see your sector?</h3>
-             <p className="text-slate-500 text-sm mb-10 font-sans">We build custom desks for unique workflows.</p>
+             <h3 className="font-serif text-2xl font-bold text-[#081A33] mb-4">
+               {getContent('home.homeCustomDeskTitle', "Don't see your sector?")}
+             </h3>
+             <p className="text-slate-500 text-sm mb-10 font-sans">
+               {getContent('home.homeCustomDeskDesc', 'We build custom desks for unique workflows.')}
+             </p>
              <button 
                onClick={(e) => { e.stopPropagation(); onNavigate('/contact'); }}
                className="w-full bg-[#2368D6] hover:bg-[#2368D6]/90 text-white font-bold py-4 rounded-xl transition-colors shadow-md uppercase tracking-widest text-xs font-sans"
@@ -2262,11 +2274,10 @@ const HomeView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => {
         <div className="mb-20">
           <div className="text-white font-bold tracking-widest uppercase text-[10px] mb-6 underline decoration-white/30 underline-offset-8">What we do.</div>
           <h2 className="font-serif text-3xl md:text-5xl lg:text-6xl font-bold mb-8 leading-[1.1] tracking-tight max-w-4xl">
-            Multiple managed workflow lines, one operating partner.
+            {getContent('home.homeWhatWeDoTitle', 'Multiple managed workflow lines, one operating partner.')}
           </h2>
           <p className="text-base md:text-lg text-blue-100/60 leading-relaxed max-w-3xl">
-            Each OrbitSol service line follows the same delivery logic: scope the workflow, 
-            document the process, and assign trained operators.
+            {getContent('home.homeWhatWeDoDesc', 'Each OrbitSol service line follows the same delivery logic: scope the workflow, document the process, and assign trained operators.')}
           </p>
         </div>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -2300,7 +2311,9 @@ const HomeView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => {
   );
 };
 
-const SpeechContentDataView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => (
+const SpeechContentDataView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => {
+  const { getContent } = React.useContext(SiteSettingsContext);
+  return (
   <>
     {/* Section 1 - Hero */}
     <section className="relative primary-gradient text-white pt-12 pb-8 overflow-hidden font-sans">
@@ -2308,10 +2321,10 @@ const SpeechContentDataView = ({ onNavigate }: { onNavigate: (path: ViewPath) =>
         <div className="max-w-2xl p-6 md:p-10 rounded-2xl backdrop-blur-sm bg-white/5 border border-white/10 shadow-2xl">
           <div className="text-white/80 font-bold uppercase tracking-[0.2em] text-[10px] mb-4">Speech, Content, and Data Intelligence.</div>
           <h1 className="font-serif text-[53px] font-bold leading-tight mb-6">
-            Turn speech, video, documents, and raw content into structured, usable business intelligence.
+            {getContent('services.speechHeroTitle', 'Turn speech, video, documents, and raw content into structured, usable business intelligence.')}
           </h1>
           <p className="text-base md:text-lg text-white/70 leading-relaxed mb-10 max-w-4xl">
-            OrbitSol helps businesses convert audio, video, documents, notes, recordings, and unstructured content into accurate, searchable, and workflow-ready outputs.
+            {getContent('services.speechHeroDesc', 'OrbitSol helps businesses convert audio, video, documents, notes, recordings, and unstructured content into accurate, searchable, and workflow-ready outputs.')}
           </p>
           <div className="flex flex-wrap gap-4">
             <button onClick={() => onNavigate('/contact')} className="bg-[#2368D6] hover:opacity-90 text-white px-8 py-3.5 rounded-xl font-bold uppercase tracking-widest text-xs shadow-lg transition-all">
@@ -2544,7 +2557,8 @@ const SpeechContentDataView = ({ onNavigate }: { onNavigate: (path: ViewPath) =>
       </div>
     </section>
   </>
-);
+  );
+};
 
 const ImageCropperModal = ({ 
   image, 
@@ -3049,20 +3063,72 @@ const AdminView = ({ onNavigate, onSettingsUpdate }: { onNavigate: (path: ViewPa
     switch (page) {
       case 'home':
         return [
-          { id: 'heroTag', label: 'Hero Tag', type: 'text' },
-          { id: 'heroTitle', label: 'Hero Title', type: 'text' },
-          { id: 'heroDesc', label: 'Hero Description', type: 'textarea' },
+          { id: 'homeHeroTitle', label: 'Hero Title', type: 'text', default: 'Turn recurring work into managed workflows your team can rely on.' },
+          { id: 'homeHeroSubtitle', label: 'Hero Subtitle', type: 'text', default: 'Managed offshore operations / Powered by Practical AI' },
+          { id: 'homeHeroDesc', label: 'Hero Description', type: 'textarea', default: 'OrbitSol helps property, strata, lettings, legal, and professional services firms move reporting, transcription, and admin work into a managed offshore operating layer.' },
+          { id: 'homeWhoWeServeTitle', label: 'Who We Serve Title', type: 'text', default: 'Built for teams whose work depends on accurate, repeatable operations.' },
+          { id: 'homeWhoWeServeDesc', label: 'Who We Serve Description', type: 'textarea', default: 'OrbitSol supports teams that need work completed consistently inside their existing tools, templates, and service standards. The work is scoped, documented, assigned to trained operators, and managed through handpicked project leads.' },
+          { id: 'homeWhatWeDoTitle', label: 'What We Do Title', type: 'text', default: 'Multiple managed workflow lines, one operating partner.' },
+          { id: 'homeWhatWeDoDesc', label: 'What We Do Description', type: 'textarea', default: 'Each OrbitSol service line follows the same delivery logic: scope the workflow, document the process, and assign trained operators.' },
+          { id: 'homeStat1Value', label: 'Stat 1 Value', type: 'text', default: '2015' },
+          { id: 'homeStat1Label', label: 'Stat 1 Label', type: 'text', default: 'Established' },
+          { id: 'homeStat2Value', label: 'Stat 2 Value', type: 'text', default: '200k+' },
+          { id: 'homeStat2Label', label: 'Stat 2 Label', type: 'text', default: 'Reports Processed' },
+          { id: 'homeStat3Value', label: 'Stat 3 Value', type: 'text', default: '1M+' },
+          { id: 'homeStat3Label', label: 'Stat 3 Label', type: 'text', default: 'Dedicated Hours' },
+          { id: 'homeStat4Value', label: 'Stat 4 Value', type: 'text', default: '$5/hr' },
+          { id: 'homeStat4Label', label: 'Stat 4 Label', type: 'text', default: 'Starting Rate' },
+          { id: 'homeSectorCardDesc', label: 'Sector Card Description', type: 'text', default: "Dedicated offshore support tailored to your industry's specific workflow requirements." },
+          { id: 'homeCustomDeskTitle', label: 'Custom Desk Title', type: 'text', default: "Don't see your sector?" },
+          { id: 'homeCustomDeskDesc', label: 'Custom Desk Description', type: 'text', default: 'We build custom desks for unique workflows.' },
+        ];
+      case 'about':
+        return [
+          { id: 'aboutHeroTitle', label: 'Hero Title', type: 'text', default: 'A decade as the behind-the-scenes engine for businesses around the world.' },
+          { id: 'aboutHeroDesc', label: 'Hero Description', type: 'textarea', default: 'OrbitSol began in 2015 with property report production and grew by solving adjacent workflow problems for the same kinds of clients. We use technology to support delivery, but accountability stays with people.' },
+          { id: 'aboutStoryTitle', label: 'Story Title', type: 'text', default: 'Our Story' },
+          { id: 'aboutStoryContent', label: 'Story Content', type: 'textarea', default: `Our Story was founded in <a href="https://www.google.com/maps/place/Kochi,+Kerala,+India" target="_blank" rel="noopener noreferrer">Kochi</a>, on India's southwest coast in the state of Kerala, by a team with deep experience in transcription and business-process-outsourcing.<br/><br/>The first OrbitSol clients were UK property inspection firms that needed accurate typing, and within two years the business had built relationships that would last more than a decade.<br/><br/>By 2021, OrbitSol had expanded its focus to strata management, law firms, and SMEs that needed reliable, managed offshore support for their administrative and reporting workflows.` },
+        ];
+      case 'services':
+        return [
+          { id: 'marketingHeroTitle', label: 'Marketing Hero Title', type: 'text', default: 'A growth desk you can actually rely on.' },
+          { id: 'marketingHeroDesc', label: 'Marketing Hero Description', type: 'textarea', default: 'OrbitSol helps businesses plan, build, and run the marketing work that is difficult to keep moving in-house.' },
+          { id: 'inspectionHeroTitle', label: 'Inspection Hero Title', type: 'text', default: 'Turn inspection inputs into client-ready reports.' },
+          { id: 'inspectionHeroDesc', label: 'Inspection Hero Description', type: 'textarea', default: 'OrbitSol turns inspection inputs into structured, formatted, quality-checked reports inside your system.' },
+          { id: 'automationHeroTitle', label: 'Automation Hero Title', type: 'text', default: 'Make recurring work easier to run, measure, and scale.' },
+          { id: 'automationHeroDesc', label: 'Automation Hero Description', type: 'textarea', default: 'We help turn knowledge into clear standard operating procedures, dashboards, and practical automations.' },
+          { id: 'speechHeroTitle', label: 'Speech & Content Hero Title', type: 'text', default: 'Turn speech, video, documents, and raw content into structured, usable business intelligence.' },
+          { id: 'speechHeroDesc', label: 'Speech & Content Hero Description', type: 'textarea', default: 'OrbitSol helps businesses convert audio, video, documents, notes, recordings, and unstructured content into accurate, searchable, and workflow-ready outputs.' },
+          { id: 'remoteHeroTitle', label: 'Remote Ops Hero Title', type: 'text', default: 'Managed remote operations and virtual assistants for repeatable business work.' },
+          { id: 'remoteHeroDesc', label: 'Remote Ops Hero Description', type: 'textarea', default: 'OrbitSol helps you move repeatable work into a managed offshore team without asking you to recruit, train, and supervise every person yourself.' },
+          { id: 'propertyHeroTitle', label: 'Property & Real Estate Hero Title', type: 'text', default: 'An offshore production and admin layer for property businesses.' },
+          { id: 'propertyHeroDesc', label: 'Property & Real Estate Hero Description', type: 'textarea', default: 'OrbitSol supports lettings agencies, property inventory and inspection firms, and real estate agencies through a single managed offshore desk.' },
+          { id: 'strataHeroTitle', label: 'Strata Management Hero Title', type: 'text', default: 'A managed offshore strata desk that understands the pressure.' },
+          { id: 'strataHeroDesc', label: 'Strata Management Hero Description', type: 'textarea', default: 'OrbitSol supports strata firms with correspondence, meeting preparation, and file management.' },
+          { id: 'legalHeroTitle', label: 'Legal Services Hero Title', type: 'text', default: 'A reliable second pair of hands for professional services firms.' },
+          { id: 'legalHeroDesc', label: 'Legal Services Hero Description', type: 'textarea', default: 'OrbitSol supports firms with transcription, file preparation, matter administration, data entry, and document support when they need capacity without adding salary, space, and daily supervision.' },
+          { id: 'smeHeroTitle', label: 'SME Support Hero Title', type: 'text', default: 'Hire a virtual chief of staff.' },
+          { id: 'smeHeroDesc', label: 'SME Support Hero Description', type: 'textarea', default: 'We support business owners and managers who need an assistant who can also document a process, build a dashboard, or manage a vendor.' },
+          { id: 'marketingAgencyHeroTitle', label: 'Marketing Agency Hero Title', type: 'text', default: 'A capable offshore production team for marketing and branding agencies.' },
+          { id: 'marketingAgencyHeroDesc', label: 'Marketing Agency Hero Description', type: 'textarea', default: 'OrbitSol works as a managed offshore production and execution desk for agencies and in-house growth teams.' },
+          { id: 'insightsHeroTitle', label: 'Insights Hero Title', type: 'text', default: 'The Journal.' },
+          { id: 'insightsHeroDesc', label: 'Insights Hero Description', type: 'textarea', default: 'Thinking, updates, and observations on managed operations and practical automation.' },
         ];
       case 'global':
         return [
-          { id: 'siteName', label: 'Site Name', type: 'text' },
-          { id: 'logoUrl', label: 'Logo Image URL', type: 'image' },
+          { id: 'siteName', label: 'Site Name', type: 'text', default: 'OrbitSol' },
+          { id: 'logoUrl', label: 'Logo Image URL', type: 'image', default: '/logo.png' },
           { id: 'logoInfo', label: 'Setting up your Logo (Required for GitHub)', type: 'info', content: '1. Use the "Upload & Crop" button to set your logo.\n2. Or paste a public image URL directly into the field.' },
-          { id: 'tagline', label: 'Tagline / Slogan', type: 'text' },
-          { id: 'footerDesc', label: 'Footer Description', type: 'textarea' },
-          { id: 'contactEmail', label: 'Contact Email', type: 'text' },
-          { id: 'phone', label: 'Phone Number', type: 'text' },
-          { id: 'address', label: 'Office Address', type: 'textarea' },
+          { id: 'tagline', label: 'Tagline / Slogan', type: 'text', default: 'Managed offshore operations / Powered by Practical AI' },
+          { id: 'footerDesc', label: 'Footer Description', type: 'textarea', default: 'Reliable, managed offshore production for teams that rely on accurate, repeatable business operations. Established 2015.' },
+          { id: 'contactEmail', label: 'Contact Email', type: 'text', default: 'info@orbitsol.com' },
+          { id: 'phone', label: 'Phone Number', type: 'text', default: '+1-833-384-1500' },
+          { id: 'address', label: 'Office Address', type: 'textarea', default: 'Kochi, Kerala, India' },
+        ];
+      case 'contact':
+        return [
+          { id: 'contactHeroTitle', label: 'Hero Title', type: 'text', default: 'Send us the workflow, sample file, or task list you want handled.' },
+          { id: 'contactHeroDesc', label: 'Hero Description', type: 'textarea', default: 'Tell us what you need completed, where the input comes from, what the output should look like, and how often the work repeats.' },
         ];
       default:
         return [];
@@ -3405,16 +3471,16 @@ const AdminView = ({ onNavigate, onSettingsUpdate }: { onNavigate: (path: ViewPa
                             <textarea 
                               rows={4}
                               className="w-full p-4 bg-brand-cream border border-brand-warm-cream rounded-xl focus:border-status-info outline-none transition-all"
-                              value={pageSettings[field.id] || ''}
+                              value={pageSettings[field.id] !== undefined ? pageSettings[field.id] : (field.default || '')}
                               onChange={(e) => handleSettingChange(field.id, e.target.value)}
                             />
                           ) : field.id === 'logoUrl' ? (
                             <div className="space-y-3">
                               <div className="flex items-center gap-4">
-                                {pageSettings[field.id] && (
+                                {(pageSettings[field.id] || field.default) && (
                                   <div className="h-16 px-4 bg-slate-50 border border-slate-100 rounded-xl flex items-center justify-center overflow-hidden">
                                     <img 
-                                      src={getAssetUrl(pageSettings[field.id])} 
+                                      src={getAssetUrl(pageSettings[field.id] !== undefined ? pageSettings[field.id] : field.default)} 
                                       className="max-h-12 w-auto object-contain" 
                                       referrerPolicy="no-referrer"
                                       onError={(e) => {
@@ -3428,7 +3494,7 @@ const AdminView = ({ onNavigate, onSettingsUpdate }: { onNavigate: (path: ViewPa
                                 )}
                                 <label className="flex-grow">
                                   <div className="cursor-pointer bg-slate-50 border border-dashed border-slate-300 p-3 rounded-xl text-center text-[10px] uppercase font-bold text-slate-500 hover:border-[#2368D6] transition-all">
-                                    {pageSettings[field.id] ? 'Change Logo' : 'Upload Logo'}
+                                    {(pageSettings[field.id] !== undefined ? pageSettings[field.id] : field.default) ? 'Change Logo' : 'Upload Logo'}
                                   </div>
                                   <input 
                                     type="file" 
@@ -3450,7 +3516,7 @@ const AdminView = ({ onNavigate, onSettingsUpdate }: { onNavigate: (path: ViewPa
                                   type="text"
                                   placeholder="Or paste URL..."
                                   className="w-full p-4 bg-brand-cream border border-brand-warm-cream rounded-xl focus:border-status-info outline-none transition-all text-xs"
-                                  value={pageSettings[field.id] || ''}
+                                  value={pageSettings[field.id] !== undefined ? pageSettings[field.id] : (field.default || '')}
                                   onChange={(e) => {
                                     const val = e.target.value;
                                     const driveMatch = val.match(/\/(?:file\/d\/|open\?id=)([\w-]+)/);
@@ -3467,7 +3533,7 @@ const AdminView = ({ onNavigate, onSettingsUpdate }: { onNavigate: (path: ViewPa
                             <input 
                               type="text"
                               className="w-full p-4 bg-brand-cream border border-brand-warm-cream rounded-xl focus:border-status-info outline-none transition-all"
-                              value={pageSettings[field.id] || ''}
+                              value={pageSettings[field.id] !== undefined ? pageSettings[field.id] : (field.default || '')}
                               onChange={(e) => handleSettingChange(field.id, e.target.value)}
                             />
                           )}
@@ -3642,7 +3708,9 @@ const AdminView = ({ onNavigate, onSettingsUpdate }: { onNavigate: (path: ViewPa
   );
 };
 
-const PropertyInspectionView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => (
+const PropertyInspectionView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => {
+  const { getContent } = React.useContext(SiteSettingsContext);
+  return (
   <>
     {/* Section 1 - Hero */}
     <section className="relative primary-gradient text-white pt-12 pb-8 overflow-hidden font-sans">
@@ -3650,18 +3718,19 @@ const PropertyInspectionView = ({ onNavigate }: { onNavigate: (path: ViewPath) =
         <div className="max-w-2xl p-6 md:p-10 rounded-2xl backdrop-blur-sm bg-white/5 border border-white/10 shadow-2xl">
           <div className="text-white/60 font-bold uppercase tracking-[0.2em] text-xs mb-4 underline decoration-[#2368D6] underline-offset-8">Property Inspection Reports.</div>
           <h1 className="font-serif text-3xl md:text-5xl font-bold leading-tight mb-6">
-            Turn inspection inputs into client-ready reports.
+            {getContent('services.inspectionHeroTitle', 'Turn inspection inputs into client-ready reports.')}
           </h1>
           <p className="text-lg md:text-xl text-white/70 leading-relaxed mb-8 max-w-4xl font-sans">
-            OrbitSol turns inspection inputs into structured, formatted, quality-checked reports inside your system.
+            {getContent('services.inspectionHeroDesc', 'OrbitSol turns inspection inputs into structured, formatted, quality-checked reports inside your system.')}
           </p>
           <div className="flex flex-wrap gap-4">
             <button onClick={() => onNavigate('/contact')} className="bg-[#2368D6] hover:opacity-90 text-white px-10 py-4 rounded-xl font-bold uppercase tracking-widest text-sm shadow-lg transition-all">
-              Send a sample report request
+              Send a report enquiry
             </button>
           </div>
         </div>
       </div>
+      <div className="absolute top-10 right-10 text-[20vw] font-serif font-black text-white/5 pointer-events-none select-none tracking-tighter">PROP</div>
     </section>
 
     {/* Section 2 - What We Produce */}
@@ -3809,9 +3878,12 @@ const PropertyInspectionView = ({ onNavigate }: { onNavigate: (path: ViewPath) =
       </div>
     </section>
   </>
-);
+  );
+};
 
-const LegalProfessionalServicesView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => (
+const LegalProfessionalServicesView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => {
+  const { getContent } = React.useContext(SiteSettingsContext);
+  return (
   <>
     {/* Block A — Hero */}
     <section className="relative primary-gradient text-white pt-12 pb-8 overflow-hidden">
@@ -3821,10 +3893,10 @@ const LegalProfessionalServicesView = ({ onNavigate }: { onNavigate: (path: View
         </div>
         <div className="max-w-4xl">
           <h1 className="font-serif text-4xl md:text-5xl lg:text-7xl font-bold leading-tight mb-8">
-            A reliable second pair of hands for professional services firms.
+            {getContent('services.legalHeroTitle', 'A reliable second pair of hands for professional services firms.')}
           </h1>
           <p className="text-xl md:text-2xl text-blue-100/80 leading-relaxed max-w-3xl">
-            OrbitSol supports firms with transcription, file preparation, matter administration, data entry, and document support when they need capacity without adding salary, space, and daily supervision.
+            {getContent('services.legalHeroDesc', 'OrbitSol supports firms with transcription, file preparation, matter administration, data entry, and document support when they need capacity without adding salary, space, and daily supervision.')}
           </p>
         </div>
       </div>
@@ -3953,7 +4025,8 @@ const LegalProfessionalServicesView = ({ onNavigate }: { onNavigate: (path: View
       </div>
     </section>
   </>
-);
+  );
+};
 
 // --- Main App ---
 
