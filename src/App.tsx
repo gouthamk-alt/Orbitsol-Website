@@ -3520,9 +3520,8 @@ const AdminView = ({ onNavigate, onSettingsUpdate }: { onNavigate: (path: ViewPa
                                       const file = e.target.files?.[0];
                                       if (file) {
                                         const reader = new FileReader();
-                                        reader.onload = () => setCropImage(reader.result as string);
+                                        reader.onload = () => handleSettingChange(field.id, reader.result as string);
                                         reader.readAsDataURL(file);
-                                        (window as any)._isLogoCrop = true;
                                       }
                                     }} 
                                   />
@@ -3544,18 +3543,6 @@ const AdminView = ({ onNavigate, onSettingsUpdate }: { onNavigate: (path: ViewPa
                                     }
                                   }}
                                 />
-                                {pageSettings[field.id] && !pageSettings[field.id].startsWith('data:') && (
-                                  <button 
-                                    type="button"
-                                    onClick={() => {
-                                      setCropImage(pageSettings[field.id]);
-                                      (window as any)._isLogoCrop = true;
-                                    }}
-                                    className="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] bg-slate-200 px-2 py-1 rounded font-bold hover:bg-slate-300"
-                                  >
-                                    Crop
-                                  </button>
-                                )}
                               </div>
                             </div>
                           ) : (
