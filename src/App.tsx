@@ -108,6 +108,10 @@ const getAssetUrl = (url: string) => {
   if (!url) return '';
   if (url.startsWith('http') || url.startsWith('data:')) return url;
   const baseUrl = (import.meta.env.BASE_URL || '/').replace(/\/$/, '');
+  
+  // If baseline URL is already present in the url, don't prepend it again
+  if (baseUrl && baseUrl !== '/' && url.startsWith(baseUrl)) return url;
+  
   const cleanUrl = url.startsWith('/') ? url : `/${url}`;
   return `${baseUrl}${cleanUrl}`;
 };
@@ -1679,19 +1683,19 @@ const Header = ({ currentPath, onNavigate }: { currentPath: ViewPath, onNavigate
     >
       <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
         {/* Logo */}
-        <div className="flex items-center cursor-pointer" onClick={() => onNavigate('/')}>
-           <img 
-             src={logoUrl} 
-             alt={getContent('global.siteName', 'OrbitSol')} 
-             className="h-20 w-auto object-contain" 
-             onError={(e) => {
-               const target = e.target as HTMLImageElement;
-               if (target.src !== getAssetUrl('/logo.png')) {
-                 target.src = getAssetUrl('/logo.png');
-               }
-             }}
-           />
-        </div>
+         <div className="flex items-center cursor-pointer" onClick={() => onNavigate('/')}>
+            <img 
+              src={logoUrl} 
+              alt={getContent('global.siteName', 'OrbitSol')} 
+              className="h-20 w-[170px] object-contain" 
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                if (target.src !== getAssetUrl('/logo.png')) {
+                  target.src = getAssetUrl('/logo.png');
+                }
+              }}
+            />
+         </div>
 
         {/* Desktop Nav */}
         <nav className="hidden lg:flex items-center gap-8">
@@ -2627,11 +2631,17 @@ const SpeechContentDataView = ({ onNavigate }: { onNavigate: (path: ViewPath) =>
 const ImageCropperModal = ({ 
   image, 
   onCropComplete, 
-  onClose 
+  onClose,
+  aspect = 1,
+  shape = 'round',
+  title = 'Crop Photo'
 }: { 
   image: string, 
   onCropComplete: (croppedImage: string) => void, 
-  onClose: () => void 
+  onClose: () => void,
+  aspect?: number,
+  shape?: 'rect' | 'round',
+  title?: string
 }) => {
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
@@ -2651,28 +2661,33 @@ const ImageCropperModal = ({
     });
 
   const getCroppedImg = async (imageSrc: string, pixelCrop: Area): Promise<string> => {
-    const image = await createImage(imageSrc);
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
+    try {
+      const image = await createImage(imageSrc);
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
 
-    if (!ctx) return '';
+      if (!ctx) return '';
 
-    canvas.width = pixelCrop.width;
-    canvas.height = pixelCrop.height;
+      canvas.width = pixelCrop.width;
+      canvas.height = pixelCrop.height;
 
-    ctx.drawImage(
-      image,
-      pixelCrop.x,
-      pixelCrop.y,
-      pixelCrop.width,
-      pixelCrop.height,
-      0,
-      0,
-      pixelCrop.width,
-      pixelCrop.height
-    );
+      ctx.drawImage(
+        image,
+        pixelCrop.x,
+        pixelCrop.y,
+        pixelCrop.width,
+        pixelCrop.height,
+        0,
+        0,
+        pixelCrop.width,
+        pixelCrop.height
+      );
 
-    return canvas.toDataURL('image/jpeg');
+      return canvas.toDataURL('image/jpeg', 0.9);
+    } catch (e) {
+      console.error("Crop error:", e);
+      return imageSrc; // Fallback to original
+    }
   };
 
   const handleDone = async () => {
@@ -2686,7 +2701,7 @@ const ImageCropperModal = ({
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 p-4">
       <div className="bg-white w-full max-w-2xl rounded-2xl overflow-hidden flex flex-col h-[80vh]">
         <div className="p-4 border-b border-slate-100 flex justify-between items-center bg-white z-10">
-          <h3 className="font-bold text-[#081A33]">Crop Staff Photo</h3>
+          <h3 className="font-bold text-[#081A33]">{title}</h3>
           <button onClick={onClose} className="p-2 hover:bg-slate-100 rounded-full transition-colors">
             <X size={20} />
           </button>
@@ -2696,8 +2711,8 @@ const ImageCropperModal = ({
             image={image}
             crop={crop}
             zoom={zoom}
-            aspect={1}
-            cropShape="round"
+            aspect={aspect}
+            cropShape={shape}
             showGrid={false}
             onCropChange={onCropChange}
             onCropComplete={onCropAreaChange}
@@ -3036,14 +3051,17 @@ const TeamManagement = () => {
         <ImageCropperModal 
           image={cropImage} 
           onCropComplete={handleCropComplete} 
-          onClose={() => setCropImage(null)} 
+          onClose={() => setCropImage(null)}
+          aspect={1}
+          shape="round"
+          title="Crop Staff Photo"
         />
       )}
     </div>
   );
 };
 
-const AdminView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => {
+const AdminView = ({ onNavigate, onSettingsUpdate }: { onNavigate: (path: ViewPath) => void, onSettingsUpdate: () => void }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -3100,6 +3118,7 @@ const AdminView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
       }
 
       await adminService.updateSettings(selectedPage, finalSettings);
+      onSettingsUpdate();
       alert("Settings saved successfully!");
     } catch (e) {
       alert("Failed to save settings");
@@ -3475,10 +3494,10 @@ const AdminView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
                             <div className="space-y-3">
                               <div className="flex items-center gap-4">
                                 {pageSettings[field.id] && (
-                                  <div className="h-12 px-4 bg-slate-50 border border-slate-100 rounded-xl flex items-center justify-center overflow-hidden">
+                                  <div className="h-16 px-4 bg-slate-50 border border-slate-100 rounded-xl flex items-center justify-center overflow-hidden">
                                     <img 
                                       src={getAssetUrl(pageSettings[field.id])} 
-                                      className="max-h-8 w-auto object-contain" 
+                                      className="max-h-12 w-auto object-contain" 
                                       referrerPolicy="no-referrer"
                                       onError={(e) => {
                                         const target = e.target as HTMLImageElement;
@@ -3565,7 +3584,10 @@ const AdminView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
         <ImageCropperModal 
           image={cropImage} 
           onCropComplete={handleCropComplete} 
-          onClose={() => setCropImage(null)} 
+          onClose={() => setCropImage(null)}
+          aspect={(window as any)._isLogoCrop ? undefined : 1}
+          shape={(window as any)._isLogoCrop ? 'rect' : 'round'}
+          title={(window as any)._isLogoCrop ? 'Crop Logo' : 'Crop Staff Photo'}
         />
       )}
 
@@ -4112,22 +4134,23 @@ export default function App() {
     }
   }, []);
 
-  useEffect(() => {
-    const fetchAllSettings = async () => {
-      try {
-        const keys = ['global', 'home', 'about', 'contact', 'services'];
-        const settingsMap: SiteSettings = {};
-        for (const key of keys) {
-          const data = await adminService.getSettings(key);
-          if (data) {
-            settingsMap[key] = data;
-          }
+  const fetchAllSettings = async () => {
+    try {
+      const keys = ['global', 'home', 'about', 'contact', 'services'];
+      const settingsMap: SiteSettings = {};
+      for (const key of keys) {
+        const data = await adminService.getSettings(key);
+        if (data) {
+          settingsMap[key] = data;
         }
-        setSettings(settingsMap);
-      } catch (error) {
-        console.error("Failed to fetch settings", error);
       }
-    };
+      setSettings(settingsMap);
+    } catch (error) {
+      console.error("Failed to fetch settings", error);
+    }
+  };
+
+  useEffect(() => {
     fetchAllSettings();
   }, []);
 
@@ -4252,7 +4275,7 @@ export default function App() {
       case '/insights':
         return <InsightsView onNavigate={onNavigate} />;
       case '/admin':
-        return <AdminView onNavigate={onNavigate} />;
+        return <AdminView onNavigate={onNavigate} onSettingsUpdate={fetchAllSettings} />;
       case '/contact':
         return <ContactView onNavigate={onNavigate} />;
       default:
