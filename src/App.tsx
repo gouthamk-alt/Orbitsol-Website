@@ -2238,7 +2238,7 @@ const HomeView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => {
     <>
       <section className="relative primary-gradient text-white pt-12 pb-8 overflow-hidden font-sans">
       <img 
-        src="https://images.unsplash.com/photo-1526772662000-3f88f10405ff?q=80&w=2674&auto=format&fit=crop" 
+        src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2672&auto=format&fit=crop" 
         className="absolute inset-0 w-full h-full object-cover opacity-10 pointer-events-none" 
         alt=""
         referrerPolicy="no-referrer"
