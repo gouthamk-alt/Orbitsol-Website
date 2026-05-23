@@ -2236,11 +2236,78 @@ const FAQItem = ({ question, answer }: { question: string; answer: string }) => 
   );
 };
 
+const AnimatedCounter = ({ value, trigger }: { value: string; trigger?: number }) => {
+  const [displayValue, setDisplayValue] = useState('0');
+
+  useEffect(() => {
+    const match = value.match(/^([^0-9,.]*)([0-9,.]+)(.*)$/);
+    if (!match) {
+      setDisplayValue(value);
+      return;
+    }
+
+    const prefix = match[1];
+    const numStr = match[2].replace(/,/g, '');
+    const suffix = match[3];
+
+    const targetNumber = parseFloat(numStr);
+    if (isNaN(targetNumber)) {
+      setDisplayValue(value);
+      return;
+    }
+
+    const isMillion = suffix.toLowerCase().includes('m');
+    const duration = 2000; // Snappy 2.0s count-up
+    const startTime = performance.now();
+
+    let animationFrameId: number;
+
+    const animate = (timestamp: number) => {
+      const elapsed = timestamp - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      
+      // Cubic ease out
+      const easeProgress = 1 - Math.pow(1 - progress, 3);
+
+      if (isMillion && progress < 1) {
+        const currentK = Math.floor(easeProgress * targetNumber * 1000);
+        const kSuffix = suffix.replace(/[Mm]/g, 'k');
+        setDisplayValue(`${prefix}${currentK.toLocaleString()}${kSuffix}`);
+      } else {
+        const current = Math.floor(easeProgress * targetNumber);
+        const formatCurrent = match[2].includes(',') 
+          ? current.toLocaleString() 
+          : current.toString();
+        setDisplayValue(`${prefix}${formatCurrent}${suffix}`);
+      }
+
+      if (progress < 1) {
+        animationFrameId = requestAnimationFrame(animate);
+      } else {
+        setDisplayValue(value);
+      }
+    };
+
+    animationFrameId = requestAnimationFrame(animate);
+
+    return () => {
+      cancelAnimationFrame(animationFrameId);
+    };
+  }, [value, trigger]);
+
+  return <span>{displayValue}</span>;
+};
+
 // --- Page Views ---
 
 const HomeView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => {
   const { getContent } = React.useContext(SiteSettingsContext);
   const contactEmail = getContent('global.contactEmail', 'info@orbitsol.com');
+  const [clickTrigger, setClickTrigger] = useState(0);
+
+  const handleStatClick = () => {
+    setClickTrigger(prev => prev + 1);
+  };
 
   return (
     <>
@@ -2270,11 +2337,35 @@ const HomeView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => {
               Email {contactEmail}
             </button>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 pt-10 border-t border-white/10 text-sm font-sans tracking-tight">
-            <div><strong className="block text-3xl font-serif mb-1">{getContent('home.homeStat1Value', '2015')}</strong> {getContent('home.homeStat1Label', 'Established')}</div>
-            <div><strong className="block text-3xl font-serif mb-1">{getContent('home.homeStat2Value', '200k+')}</strong> {getContent('home.homeStat2Label', 'Reports Processed')}</div>
-            <div><strong className="block text-3xl font-serif mb-1">{getContent('home.homeStat3Value', '1M+')}</strong> {getContent('home.homeStat3Label', 'Dedicated Hours')}</div>
-            <div><strong className="block text-3xl font-serif mb-1">{getContent('home.homeStat4Value', '$5/hr')}</strong> {getContent('home.homeStat4Label', 'Starting Rate')}</div>
+          <div 
+            onClick={handleStatClick}
+            className="grid grid-cols-2 md:grid-cols-4 gap-8 pt-10 border-t border-white/10 text-sm font-sans tracking-tight cursor-pointer select-none"
+            title="Click to replay stat animations"
+          >
+            <div className="transition-opacity duration-300 hover:opacity-80">
+              <strong className="block text-3xl font-serif mb-1 text-white">
+                {getContent('home.homeStat1Value', '2015')}
+              </strong> 
+              <span className="text-white/70">{getContent('home.homeStat1Label', 'Established')}</span>
+            </div>
+            <div className="transition-opacity duration-300 hover:opacity-80">
+              <strong className="block text-3xl font-serif mb-1 text-white">
+                <AnimatedCounter value={getContent('home.homeStat2Value', '200k+')} trigger={clickTrigger} />
+              </strong> 
+              <span className="text-white/70">{getContent('home.homeStat2Label', 'Reports Processed')}</span>
+            </div>
+            <div className="transition-opacity duration-300 hover:opacity-80">
+              <strong className="block text-3xl font-serif mb-1 text-white">
+                <AnimatedCounter value={getContent('home.homeStat3Value', '1M+')} trigger={clickTrigger} />
+              </strong> 
+              <span className="text-white/70">{getContent('home.homeStat3Label', 'Dedicated Hours')}</span>
+            </div>
+            <div className="transition-opacity duration-300 hover:opacity-80">
+              <strong className="block text-3xl font-serif mb-1 text-white">
+                <AnimatedCounter value={getContent('home.homeStat4Value', '$5/hr')} trigger={clickTrigger} />
+              </strong> 
+              <span className="text-white/70">{getContent('home.homeStat4Label', 'Starting Rate')}</span>
+            </div>
           </div>
         </div>
       </div>
