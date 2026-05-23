@@ -462,7 +462,7 @@ const RemoteOperationsView = ({ onNavigate }: { onNavigate: (path: ViewPath) => 
     </section>
 
     {/* Section 7 - Closing CTA */}
-    <section className="bg-[#081A33] py-24 px-6 text-center text-white border-t border-white/10 font-sans">
+    <section className="bg-gradient-to-br from-[#081A33] via-[#0a203d] to-[#102d54] py-24 px-6 text-center text-white border-t border-white/10 font-sans">
       <div className="max-w-4xl mx-auto">
         <h2 className="font-serif text-3xl md:text-5xl font-bold mb-6">Ready to move a recurring function into a managed offshore desk?</h2>
         <p className="text-blue-100/60 mb-12 text-lg">
@@ -768,7 +768,7 @@ const DigitalMarketingView = ({ onNavigate }: { onNavigate: (path: ViewPath) => 
     </section>
 
     {/* Section 3 - How We Engage */}
-    <section className="py-24 bg-[#081A33] text-white font-sans">
+    <section className="py-24 bg-gradient-to-br from-[#081A33] via-[#0a203d] to-[#102d54] text-white font-sans">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-16">
           <p className="text-blue-300 font-bold tracking-widest uppercase text-xs mb-4">Engagement models.</p>
@@ -920,7 +920,7 @@ const ProcessAutomationView = ({ onNavigate }: { onNavigate: (path: ViewPath) =>
     </section>
 
     {/* Section 5 - Closing Call to Action */}
-    <section className="bg-[#081A33] py-24 px-6 text-center text-white font-sans">
+    <section className="bg-gradient-to-br from-[#081A33] via-[#0a203d] to-[#102d54] py-24 px-6 text-center text-white font-sans">
       <div className="max-w-4xl mx-auto">
         <h2 className="font-serif text-2xl md:text-4xl font-bold mb-10 text-white italic">Tired of explaining the same workflow every week?</h2>
         <p className="text-base md:text-lg text-blue-100/80 mb-12 max-w-2xl mx-auto leading-relaxed">
@@ -1087,7 +1087,7 @@ const StrataManagementView = ({ onNavigate }: { onNavigate: (path: ViewPath) => 
     </section>
 
     {/* Block F — Closing CTA */}
-    <section className="bg-[#081A33] py-24 px-6 text-center text-white font-sans">
+    <section className="bg-gradient-to-br from-[#081A33] via-[#0a203d] to-[#102d54] py-24 px-6 text-center text-white font-sans">
       <div className="max-w-4xl mx-auto">
         <h2 className="font-serif text-2xl md:text-4xl font-bold mb-10">Losing hours to strata admin? Send us the function and we will scope the desk.</h2>
         <button onClick={() => onNavigate('/contact')} className="bg-[#2368D6] hover:opacity-90 transition-colors px-10 py-4 rounded-xl text-xs font-bold uppercase tracking-[0.2em] shadow-xl">
@@ -1323,7 +1323,7 @@ const PropertyRealEstateView = ({ onNavigate }: { onNavigate: (path: ViewPath) =
     </section>
 
     {/* Block G — Closing Call to Action */}
-    <section className="bg-[#081A33] py-24 px-6 text-center text-white font-sans">
+    <section className="bg-gradient-to-br from-[#081A33] via-[#0a203d] to-[#102d54] py-24 px-6 text-center text-white font-sans">
       <div className="max-w-4xl mx-auto">
         <h2 className="font-serif text-2xl md:text-4xl font-bold mb-6">Stop letting production and admin set your growth ceiling.</h2>
         <div className="flex flex-wrap justify-center gap-6 mt-12">
@@ -1944,7 +1944,7 @@ const AboutView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
             { t: "Confidentiality", d: "NDAs and named access are standard practice." }
           ].map((p, idx) => (
             <div key={idx} className="p-10 rounded-2xl bg-[#081A33] border border-white/10 hover:border-blue-400/30 transition-colors">
-               <div className="text-[#2368D6] font-black text-4xl mb-8 opacity-40">0{idx + 1}</div>
+               <div className="text-[#8eace8] font-black text-4xl mb-8">0{idx + 1}</div>
                <h4 className="font-bold mb-5 text-base md:text-lg leading-tight text-white tracking-tight">{p.t}</h4>
                <p className="text-blue-100/70 text-sm md:text-base leading-relaxed">{p.d}</p>
             </div>
@@ -2495,7 +2495,7 @@ const SpeechContentDataView = ({ onNavigate }: { onNavigate: (path: ViewPath) =>
     </section>
 
     {/* Section 4 - How the Workflow Runs */}
-    <section className="py-24 bg-[#081A33] text-white font-sans overflow-hidden">
+    <section className="py-24 bg-gradient-to-br from-[#081A33] via-[#0a203d] to-[#102d54] text-white font-sans overflow-hidden">
        <div className="max-w-7xl mx-auto px-6">
           <h2 className="font-serif text-3xl font-bold mb-16">How the workflow runs.</h2>
           <div className="grid md:grid-cols-5 gap-8 relative">
@@ -3903,7 +3903,49 @@ const PropertyInspectionView = ({ onNavigate }: { onNavigate: (path: ViewPath) =
             </div>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+          <div className="relative w-full overflow-hidden py-10 mt-6 select-none">
+             {/* Left and right ambient fade to blend logos seamlessly into the F5F7FA background */}
+             <div className="absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-[#F5F7FA]/90 to-transparent z-10 pointer-events-none" />
+             <div className="absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-[#F5F7FA]/90 to-transparent z-10 pointer-events-none" />
+
+             <motion.div 
+               className="flex gap-16 items-center w-max"
+               animate={{ x: ["0%", "-50%"] }}
+               transition={{
+                 ease: "linear",
+                 duration: 25,
+                 repeat: Infinity,
+                 repeatType: "loop"
+               }}
+             >
+                {[
+                  ...[
+                    { name: "InventoryBase", logo: "/logo-inventorybase.jpg" },
+                    { name: "Inspection Express", logo: "/logo-inspectionexpress.jpg" },
+                    { name: "PropertyMe", logo: "/logo-propertyme.jpg" },
+                    { name: "Kaptur", logo: "/logo-kaptur.jpg" },
+                    { name: "MRI Software", logo: "/logo-mrisoftware.webp" }
+                  ],
+                  ...[
+                    { name: "InventoryBase", logo: "/logo-inventorybase.jpg" },
+                    { name: "Inspection Express", logo: "/logo-inspectionexpress.jpg" },
+                    { name: "PropertyMe", logo: "/logo-propertyme.jpg" },
+                    { name: "Kaptur", logo: "/logo-kaptur.jpg" },
+                    { name: "MRI Software", logo: "/logo-mrisoftware.webp" }
+                  ]
+                ].map((logo, index) => (
+                  <div key={`${logo.name}-${index}`} className="flex items-center justify-center p-4 flex-shrink-0">
+                     <img 
+                       src={getAssetUrl(logo.logo)} 
+                       alt={logo.name} 
+                       className="max-h-12 md:max-h-14 w-auto object-contain transition-all duration-300 mix-blend-multiply hover:scale-105"
+                       referrerPolicy="no-referrer"
+                     />
+                  </div>
+                ))}
+             </motion.div>
+          </div>
+          <div className="hidden">
              {[
                { name: "InventoryBase", logo: "/logo-inventorybase.jpg" },
                { name: "Inspection Express", logo: "/logo-inspectionexpress.jpg" },
