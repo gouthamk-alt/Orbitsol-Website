@@ -67,6 +67,20 @@
         "updatedAt": { "type": "string", "format": "date-time" }
       },
       "required": ["name", "role", "photo", "order"]
+    },
+    "testimonial": {
+      "title": "Testimonial",
+      "description": "Client review or testimonial.",
+      "type": "object",
+      "properties": {
+        "quote": { "type": "string", "description": "The testimonial quote text." },
+        "author": { "type": "string", "description": "The person giving the testimonial." },
+        "role": { "type": "string", "description": "Job title/role of the author." },
+        "company": { "type": "string", "description": "Company name of the author." },
+        "order": { "type": "number", "description": "Display order." },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["quote", "author", "role", "company", "order"]
     }
   },
   "firestore": {
@@ -89,6 +103,10 @@
     "team": {
       "schema": "teamMember",
       "description": "Staff members list."
+    },
+    "testimonials": {
+      "schema": "testimonial",
+      "description": "Client reviews list."
     }
   }
 }

@@ -77,6 +77,16 @@ export interface TeamMember {
   updatedAt?: any;
 }
 
+export interface Testimonial {
+  id?: string;
+  quote: string;
+  author: string;
+  role: string;
+  company: string;
+  order: number;
+  updatedAt?: any;
+}
+
 export const adminService = {
   // Insights
   async getInsights(includeDrafts = false) {
@@ -280,6 +290,93 @@ export const adminService = {
       await deleteDoc(docRef);
     } catch (error) {
       handleFirestoreError(error, OperationType.DELETE, path);
+    }
+  },
+
+  // Testimonials
+  async getTestimonials() {
+    const path = 'testimonials';
+    console.log("Fetching testimonials...");
+    try {
+      const q = query(collection(db, path));
+      const snapshot = await Promise.race([
+        getDocs(q),
+        new Promise((_, reject) => setTimeout(() => reject(new Error("Firestore read timed out")), 10000))
+      ]) as any;
+      console.log(`Fetched ${snapshot.docs.length} testimonials`);
+      const list = snapshot.docs.map((doc: any) => ({ id: doc.id, ...doc.data() } as Testimonial));
+      return list.sort((a, b) => (a.order || 0) - (b.order || 0));
+    } catch (error) {
+      console.error("Get testimonials error:", error);
+      handleFirestoreError(error, OperationType.LIST, path);
+    }
+  },
+
+  async saveTestimonial(testimonial: Partial<Testimonial>) {
+    const isNew = !testimonial.id;
+    const path = isNew ? 'testimonials' : `testimonials/${testimonial.id}`;
+    console.log(`Saving testimonial (isNew: ${isNew})...`);
+    
+    const data = {
+      ...testimonial,
+      updatedAt: serverTimestamp(),
+    };
+    
+    const docId = testimonial.id;
+    if (!isNew) delete (data as any).id;
+
+    const savePromise = isNew 
+      ? addDoc(collection(db, 'testimonials'), data)
+      : updateDoc(doc(db, 'testimonials', docId!), data);
+
+    try {
+      const result = await Promise.race([
+        savePromise,
+        new Promise((_, reject) => setTimeout(() => reject(new Error("Firestore write timed out")), 15000))
+      ]);
+      console.log("Testimonial saved/updated successfully");
+      return (result as any)?.id;
+    } catch (error) {
+      console.error("Save testimonial error:", error);
+      handleFirestoreError(error, OperationType.WRITE, path);
+    }
+  },
+
+  async deleteTestimonial(id: string) {
+    const path = `testimonials/${id}`;
+    try {
+      const docRef = doc(db, 'testimonials', id);
+      await deleteDoc(docRef);
+    } catch (error) {
+      handleFirestoreError(error, OperationType.DELETE, path);
+    }
+  },
+
+  async bootstrapTestimonials(items: Partial<Testimonial>[]) {
+    console.log("Bootstrapping testimonials...");
+    const batch = writeBatch(db);
+    
+    for (const item of items) {
+      const newDocRef = doc(collection(db, 'testimonials'));
+      batch.set(newDocRef, {
+        quote: item.quote || '',
+        author: item.author || '',
+        role: item.role || '',
+        company: item.company || '',
+        order: item.order || 0,
+        updatedAt: serverTimestamp(),
+      });
+    }
+    
+    try {
+      await Promise.race([
+        batch.commit(),
+        new Promise((_, reject) => setTimeout(() => reject(new Error("Batch commit timed out")), 20000))
+      ]);
+      console.log("Batch bootstrap testimonials successful");
+    } catch (error) {
+      console.error("Bootstrap testimonials error:", error);
+      handleFirestoreError(error, OperationType.WRITE, 'testimonials (batch)');
     }
   },
 

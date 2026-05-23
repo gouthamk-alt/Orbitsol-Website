@@ -29,7 +29,9 @@ import {
   Globe
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
-import { adminService, Insight, TeamMember } from './services/adminService';
+import { adminService, Insight, TeamMember, Testimonial } from './services/adminService';
+import { TestimonialCarousel } from './components/TestimonialCarousel';
+import { TestimonialsManagement } from './components/TestimonialsManagement';
 import { auth, signInWithGoogle, db } from './lib/firebase';
 import { onAuthStateChanged, User } from 'firebase/auth';
 import { collection, addDoc, serverTimestamp, query, orderBy, getDocs } from 'firebase/firestore';
@@ -1946,6 +1948,8 @@ const AboutView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
         </div>
       </div>
     </section>
+
+    <TestimonialCarousel />
   </>
   );
 };
@@ -2342,15 +2346,15 @@ const HomeView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => {
         referrerPolicy="no-referrer"
       />
       <div className="max-w-7xl mx-auto px-6 relative z-10">
-        <div className="mb-20">
-          <div className="text-white font-bold tracking-widest uppercase text-[10px] mb-6 underline decoration-white/30 underline-offset-8">What we do.</div>
+        <header className="mb-20">
+          <span className="block text-white font-bold tracking-widest uppercase text-[10px] mb-6 underline decoration-white/30 underline-offset-8">What we do.</span>
           <h2 className="font-serif text-3xl md:text-5xl lg:text-6xl font-bold mb-8 leading-[1.1] tracking-tight max-w-4xl">
             {getContent('home.homeWhatWeDoTitle', 'Multiple managed workflow lines, one operating partner.')}
           </h2>
           <p className="text-base md:text-lg text-blue-100/60 leading-relaxed max-w-3xl">
             {getContent('home.homeWhatWeDoDesc', 'Each OrbitSol service line follows the same delivery logic: scope the workflow, document the process, and assign trained operators.')}
           </p>
-        </div>
+        </header>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {[
             { id: '01', title: 'Property Inspection Reports', path: '/what-we-do/property-inspection-reports/', desc: 'Inspection reports, inventories, and routines produced from dictation or photos.' },
@@ -2364,7 +2368,12 @@ const HomeView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => {
               onClick={() => onNavigate(item.path as ViewPath)}
               className="cursor-pointer group p-10 rounded-2xl bg-white/5 border border-white/10 hover:border-white/30 hover:bg-white/10 transition-all duration-300 flex flex-col h-full shadow-2xl backdrop-blur-sm"
             >
-              <div className="flex-grow">
+              <div 
+                className="flex-grow"
+                style={{
+                  color: '#b5d6ee'
+                }}
+              >
                 <div className="text-white/30 font-serif text-5xl font-black mb-8 group-hover:text-white transition-colors">{item.id}</div>
                 <h3 className="font-serif text-2xl font-bold mb-6 group-hover:text-white transition-colors uppercase tracking-tight">{item.title}</h3>
                 <p className="text-white/70 text-[15px] leading-relaxed mb-6 font-sans">{item.desc}</p>
@@ -2378,6 +2387,8 @@ const HomeView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => {
         </div>
       </div>
     </section>
+
+    <TestimonialCarousel />
   </>
   );
 };
@@ -3078,7 +3089,7 @@ const AdminView = ({ onNavigate, onSettingsUpdate }: { onNavigate: (path: ViewPa
   const [enquiries, setEnquiries] = useState<Enquiry[]>([]);
   const [editingInsight, setEditingInsight] = useState<Insight | null>(null);
   const [isFormOpen, setIsFormOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState<'insights' | 'settings' | 'enquiries' | 'team'>('insights');
+  const [activeTab, setActiveTab] = useState<'insights' | 'settings' | 'enquiries' | 'team' | 'testimonials'>('insights');
   const [selectedPage, setSelectedPage] = useState('home');
   const [pageSettings, setPageSettings] = useState<any>({});
   const [savingSettings, setSavingSettings] = useState(false);
@@ -3376,6 +3387,12 @@ const AdminView = ({ onNavigate, onSettingsUpdate }: { onNavigate: (path: ViewPa
                 Team
               </button>
               <button 
+                onClick={() => setActiveTab('testimonials')}
+                className={`px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-widest transition-all ${activeTab === 'testimonials' ? 'bg-[#081A33] text-white shadow-md' : 'text-slate-400 hover:text-[#081A33]'}`}
+              >
+                Testimonials
+              </button>
+              <button 
                 onClick={() => setActiveTab('enquiries')}
                 className={`px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-widest transition-all ${activeTab === 'enquiries' ? 'bg-[#081A33] text-white shadow-md' : 'text-slate-400 hover:text-[#081A33]'}`}
               >
@@ -3458,6 +3475,8 @@ const AdminView = ({ onNavigate, onSettingsUpdate }: { onNavigate: (path: ViewPa
           </div>
         ) : activeTab === 'team' ? (
           <TeamManagement />
+        ) : activeTab === 'testimonials' ? (
+          <TestimonialsManagement />
         ) : activeTab === 'enquiries' ? (
           <div className="bg-white rounded-2xl shadow-sm border border-brand-warm-cream overflow-hidden">
              <div className="border-b border-brand-warm-cream bg-brand-cream/50 px-8 py-6">

@@ -76,6 +76,25 @@ service cloud.firestore {
       allow delete: if isAdmin();
     }
 
+    // Testimonials
+    match /testimonials/{testimonialId} {
+      function isValidTestimonial(data) {
+        return data.keys().hasAll(['quote', 'author', 'role', 'company', 'order']) &&
+               data.quote is string && data.quote.size() <= 2000 &&
+               data.author is string && data.author.size() <= 256 &&
+               data.role is string && data.role.size() <= 256 &&
+               data.company is string && data.company.size() <= 256 &&
+               data.order is number;
+      }
+
+      allow read: if true;
+      allow create: if isAdmin() && isValidTestimonial(request.resource.data) &&
+                      (!('updatedAt' in request.resource.data) || request.resource.data.updatedAt == request.time);
+      allow update: if isAdmin() && isValidTestimonial(request.resource.data) &&
+                      (!('updatedAt' in request.resource.data) || request.resource.data.updatedAt == request.time);
+      allow delete: if isAdmin();
+    }
+
     // Admins - Only admins can manage admins
     match /admins/{adminId} {
       allow read: if isSignedIn();
