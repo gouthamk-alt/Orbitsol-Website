@@ -150,48 +150,52 @@ const MarketingGrowthView = ({ onNavigate }: { onNavigate: (path: ViewPath) => v
     {/* Block B — Who This Page Is For */}
     <section className="py-24 bg-white border-b border-slate-100 font-sans">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="grid lg:grid-cols-3 gap-8">
-          {[
-            {
-              title: "Marketing and Branding Agencies",
-              content: "If you run an agency, the production layer is usually where the margin gets squeezed and where service quality starts to wobble. OrbitSol works white-label behind your brand to take that production load off your senior team, so the studio can stay focused on strategy, creative direction, and the client relationship rather than on chasing freelancers and edits.",
-              points: [
-                "Web build production in WordPress, Webflow, and custom stacks.",
-                "Long-form content writing, search engine optimisation production, and topical authority builds.",
-                "Paid media campaign setup, creative production, and weekly optimisation.",
-                "Video editing, motion graphics, and short-form social cuts.",
-                "Brand identity production, deck design, sales collateral, and event assets.",
-                "User-experience research, usability testing, and design system documentation.",
-                "Training material, e-learning module production, and learner-journey assets."
-              ]
-            },
-            {
-              title: "In-house Marketing Teams",
-              content: "If you sit inside the business, OrbitSol works as an embedded growth desk that joins your stand-ups, sits on your Slack, and owns a quarterly roadmap. You set the strategy and the priorities, and we handle the production rhythm, the publishing cadence, and the reporting back."
-            },
-            {
-              title: "Growth and Founder-Led Teams",
-              content: "Smaller teams that need a marketing function without building one in-house can engage OrbitSol as a fractional desk, scaled up or down based on the quarter's priorities. The same project leader, specialists, and reporting cadence apply, with a leaner footprint."
-            }
-          ].map((block, idx) => (
-            <div key={idx} className="p-10 rounded-2xl border border-white/10 h-full bg-[#081A33] text-white flex flex-col shadow-xl backdrop-blur-sm">
-              <h3 className="font-serif text-2xl font-bold mb-6">{block.title}</h3>
-              <p className="text-white/95 text-base leading-relaxed mb-8">{block.content}</p>
-              {block.points && (
-                <div className="mt-auto pt-8 border-t border-white/10">
-                  <h4 className="text-[12px] font-bold text-white/70 uppercase tracking-widest mb-5">Where we typically plug in:</h4>
-                  <ul className="space-y-4">
-                    {block.points.map((p, pIdx) => (
-                      <li key={pIdx} className="flex items-start gap-4">
-                        <Check className="mt-1 text-blue-400 flex-shrink-0" size={16} />
-                        <span className="text-white/95 text-sm md:text-base leading-relaxed">{p}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
+        <div className="grid lg:grid-cols-12 gap-8 items-stretch">
+          {/* Tile 1: Marketing and Branding Agencies */}
+          <div className="lg:col-span-7 flex">
+            <div className="p-10 rounded-2xl border border-white/10 w-full bg-gradient-to-br from-[#081A33] via-[#0a203d] to-[#102d54] text-white flex flex-col shadow-xl backdrop-blur-sm">
+              <h3 className="font-serif text-2xl font-bold mb-6">Marketing and Branding Agencies</h3>
+              <p className="text-white/95 text-base leading-relaxed mb-8">
+                If you run an agency, the production layer is usually where the margin gets squeezed and where service quality starts to wobble. OrbitSol works white-label behind your brand to take that production load off your senior team, so the studio can stay focused on strategy, creative direction, and the client relationship rather than on chasing freelancers and edits.
+              </p>
+              <div className="mt-auto pt-8 border-t border-white/10">
+                <h4 className="text-[12px] font-bold text-white/70 uppercase tracking-widest mb-5">Where we typically plug in:</h4>
+                <ul className="space-y-4">
+                  {[
+                    "Web build production in WordPress, Webflow, and custom stacks.",
+                    "Long-form content writing, search engine optimisation production, and topical authority builds.",
+                    "Paid media campaign setup, creative production, and weekly optimisation.",
+                    "Video editing, motion graphics, and short-form social cuts.",
+                    "Brand identity production, deck design, sales collateral, and event assets.",
+                    "User-experience research, usability testing, and design system documentation.",
+                    "Training material, e-learning module production, and learner-journey assets."
+                  ].map((p, pIdx) => (
+                    <li key={pIdx} className="flex items-start gap-4">
+                      <Check className="mt-1 text-blue-400 flex-shrink-0" size={16} />
+                      <span className="text-white/95 text-sm md:text-base leading-relaxed">{p}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
-          ))}
+          </div>
+
+          {/* Tiles 2 & 3: In-house Marketing Teams & Growth and Founder-Led Teams */}
+          <div className="lg:col-span-5 flex flex-col gap-8">
+            <div className="flex-1 p-10 rounded-2xl border border-white/10 bg-gradient-to-br from-[#081A33] via-[#0a203d] to-[#102d54] text-white flex flex-col justify-center shadow-xl backdrop-blur-sm">
+              <h3 className="font-serif text-2xl font-bold mb-4">In-house Marketing Teams</h3>
+              <p className="text-white/95 text-base leading-relaxed">
+                If you sit inside the business, OrbitSol works as an embedded growth desk that joins your stand-ups, sits on your Slack, and owns a quarterly roadmap. You set the strategy and the priorities, and we handle the production rhythm, the publishing cadence, and the reporting back.
+              </p>
+            </div>
+
+            <div className="flex-1 p-10 rounded-2xl border border-white/10 bg-gradient-to-br from-[#081A33] via-[#0a203d] to-[#102d54] text-white flex flex-col justify-center shadow-xl backdrop-blur-sm">
+              <h3 className="font-serif text-2xl font-bold mb-4">Growth and Founder-Led Teams</h3>
+              <p className="text-white/95 text-base leading-relaxed">
+                Smaller teams that need a marketing function without building one in-house can engage OrbitSol as a fractional desk, scaled up or down based on the quarter's priorities. The same project leader, specialists, and reporting cadence apply, with a leaner footprint.
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -212,7 +216,7 @@ const MarketingGrowthView = ({ onNavigate }: { onNavigate: (path: ViewPath) => v
             { t: "In-house specialists", d: "We hire and train specialists in-house rather than maintaining a freelancer roster, which keeps the quality consistent across briefs." },
             { t: "Documented standards", d: "We document the way you like the work to be done, so the team gets faster on your account over time rather than re-learning every brief." }
           ].map((item, idx) => (
-            <div key={idx} className="flex gap-6 p-8 bg-[#081A33] text-white rounded-2xl border border-white/10 shadow-xl backdrop-blur-sm">
+            <div key={idx} className="flex gap-6 p-8 bg-gradient-to-br from-[#081A33] via-[#0a203d] to-[#102d54] text-white rounded-2xl border border-white/10 shadow-xl backdrop-blur-sm">
               <div className="text-blue-400 font-serif text-2xl font-bold">0{idx + 1}</div>
               <div>
                 <h4 className="font-bold mb-3 text-base md:text-lg">{item.t}</h4>
@@ -240,7 +244,7 @@ const MarketingGrowthView = ({ onNavigate }: { onNavigate: (path: ViewPath) => v
                whileInView={{ opacity: 1, y: 0 }}
                viewport={{ once: true }}
                transition={{ duration: 0.5, delay: idx * 0.1 }}
-               className="bg-[#081A33] p-10 rounded-2xl relative shadow-2xl flex flex-col h-full overflow-hidden border border-white/10 hover:border-blue-400/30 hover:bg-[#0c203c] transition-all duration-300"
+               className="bg-gradient-to-br from-[#081A33] via-[#0a203d] to-[#102d54] p-10 rounded-2xl relative shadow-2xl flex flex-col h-full overflow-hidden border border-white/10 hover:border-blue-400/30 hover:from-[#0c203c] hover:to-[#173e6d] transition-all duration-300"
              >
                <div className="absolute top-6 right-8 text-7xl font-serif font-black text-white/10 pointer-events-none select-none">0{idx + 1}</div>
                <h4 className={`font-serif ${idx === 2 ? 'text-[27px]' : 'text-[28px]'} font-bold text-white mb-8 relative z-10 pr-16 leading-tight`}>{model.t}</h4>
@@ -350,7 +354,7 @@ const RemoteOperationsView = ({ onNavigate }: { onNavigate: (path: ViewPath) => 
               typical: "dedicated, long-horizon."
             }
           ].map((item, idx) => (
-            <div key={idx} className="group p-8 rounded-2xl bg-[#081A33] text-white border border-white/10 hover:shadow-2xl hover:translate-y-[-4px] transition-all duration-300 flex flex-col h-full uppercase tracking-tight">
+            <div key={idx} className="group p-8 rounded-2xl bg-gradient-to-br from-[#081A33] via-[#0a203d] to-[#102d54] text-white border border-white/10 hover:shadow-2xl hover:translate-y-[-4px] transition-all duration-300 flex flex-col h-full uppercase tracking-tight">
               <div className="text-[12px] font-bold text-blue-400 tracking-[0.2em] mb-5">{item.level}</div>
               <h3 className="font-serif text-2xl font-bold mb-5 tracking-tight">{item.title}</h3>
               <p className="text-white/95 text-base leading-relaxed mb-8 flex-grow normal-case">{item.desc}</p>
@@ -380,7 +384,7 @@ const RemoteOperationsView = ({ onNavigate }: { onNavigate: (path: ViewPath) => 
             { t: "02 - We can hire for any task, not just the standard ones", d: "We practically operate as a staffing solutions agency. We recruit, train, and manage virtual assistants and specialists on your behalf. So if a new role comes up that does not fit any of our standard desks, we will scope it, find the right person, and put them to work for you." },
             { t: "03 - We manage our own team", d: "Project leaders, quality control protocols, backups, training, and reporting all sit with OrbitSol, so you manage outcomes rather than a scattered freelancer or virtual assistant bench." }
           ].map((point, idx) => (
-            <div key={idx} className="bg-[#081A33] text-white p-8 rounded-2xl border border-white/10 shadow-xl backdrop-blur-sm">
+            <div key={idx} className="bg-gradient-to-br from-[#081A33] via-[#0a203d] to-[#102d54] text-white p-8 rounded-2xl border border-white/10 shadow-xl backdrop-blur-sm">
               <h4 className="font-bold mb-4 font-serif text-xl text-white">{point.t}</h4>
               <p className="text-white/95 text-sm md:text-base leading-relaxed">{point.d}</p>
             </div>
@@ -504,8 +508,8 @@ const SMEsFoundersView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void
     <section className="py-24 bg-white border-b border-slate-100 font-sans">
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid lg:grid-cols-2 gap-16 items-start">
-          <div className="bg-[#081A33] text-white p-10 rounded-2xl shadow-xl border border-white/10 backdrop-blur-sm">
-            <h2 className="text-[11px] font-bold uppercase tracking-[0.2em] text-white/70 mb-8 border-b border-white/10 pb-6">Scope of Support</h2>
+          <div className="bg-gradient-to-br from-[#081A33] via-[#0a203d] to-[#102d54] text-white p-10 rounded-2xl shadow-xl border border-white/10 backdrop-blur-sm">
+            <h2 className="text-[12px] font-bold uppercase tracking-[0.2em] text-white/70 mb-8 border-b border-white/10 pb-6">Scope of Support</h2>
             <ul className="space-y-4 text-[18px]">
               {[
                 "Inbox triage, calendar management, and travel coordination.",
@@ -574,7 +578,7 @@ const SMEsFoundersView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: idx * 0.1 }}
-              className="bg-[#081A33] p-10 rounded-2xl relative shadow-2xl flex flex-col h-full overflow-hidden border border-white/10 hover:border-blue-400/30 hover:bg-[#0c203c] transition-all duration-300"
+              className="bg-gradient-to-br from-[#081A33] via-[#0a203d] to-[#102d54] p-10 rounded-2xl relative shadow-2xl flex flex-col h-full overflow-hidden border border-white/10 hover:border-blue-400/30 hover:from-[#0c203c] hover:to-[#173e6d] transition-all duration-300"
             >
               <div className="absolute top-6 right-8 text-7xl font-serif font-black text-white/10 pointer-events-none select-none">{item.step}</div>
               <h4 className="font-serif text-3xl font-bold text-white mb-8 relative z-10 pr-16 leading-tight">{item.title}</h4>
@@ -782,7 +786,7 @@ const DigitalMarketingView = ({ onNavigate }: { onNavigate: (path: ViewPath) => 
                whileInView={{ opacity: 1, y: 0 }}
                viewport={{ once: true }}
                transition={{ duration: 0.5, delay: idx * 0.1 }}
-               className="p-10 rounded-2xl bg-[#081A33] border border-white/10 shadow-xl flex flex-col h-full hover:shadow-2xl hover:bg-[#0c203c] hover:border-blue-400/30 transition-all"
+               className="p-10 rounded-2xl bg-gradient-to-br from-[#081A33] via-[#0a203d] to-[#102d54] border border-white/10 shadow-xl flex flex-col h-full hover:shadow-2xl hover:from-[#0c203c] hover:to-[#173e6d] hover:border-blue-400/30 transition-all"
              >
                <div className="flex justify-between items-start mb-6">
                  <h4 className="font-serif text-2xl font-bold text-white pr-12 leading-tight">{item.t}</h4>
@@ -879,7 +883,7 @@ const ProcessAutomationView = ({ onNavigate }: { onNavigate: (path: ViewPath) =>
             { t: "AI-assisted tooling", d: "Practical AI workflows with sensible checks for security and accuracy." },
             { t: "Vendor accountability tracking", d: "Service-level tracking for the third parties your operation depends on." }
           ].map((card, idx) => (
-            <div key={idx} className="p-12 rounded-2xl border border-white/10 bg-[#081A33] text-white shadow-xl hover:border-blue-400/50 transition-all flex flex-col h-full hover:shadow-2xl backdrop-blur-sm group">
+            <div key={idx} className="p-12 rounded-2xl border border-white/10 bg-gradient-to-br from-[#081A33] via-[#0a203d] to-[#102d54] text-white shadow-xl hover:border-blue-400/50 transition-all flex flex-col h-full hover:shadow-2xl backdrop-blur-sm group">
               <h4 className="font-serif text-2xl font-bold mb-8 tracking-tight uppercase text-white">{card.t}</h4>
               <p className="text-white/95 text-base leading-relaxed">{card.d}</p>
             </div>
@@ -1023,7 +1027,7 @@ const StrataManagementView = ({ onNavigate }: { onNavigate: (path: ViewPath) => 
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: idx * 0.1 }}
-              className="bg-[#081A33] p-10 rounded-2xl border border-white/10 shadow-xl relative group overflow-hidden hover:shadow-2xl hover:bg-[#0c203c] hover:border-blue-400/30 transition-all backdrop-blur-sm"
+              className="bg-gradient-to-br from-[#081A33] via-[#0a203d] to-[#102d54] p-10 rounded-2xl border border-white/10 shadow-xl relative group overflow-hidden hover:shadow-2xl hover:from-[#0c203c] hover:to-[#173e6d] hover:border-blue-400/30 transition-all backdrop-blur-sm"
             >
               <div className="text-7xl font-serif font-black absolute right-8 top-6 opacity-10 group-hover:opacity-20 transition-opacity text-white pointer-events-none select-none">{item.step}</div>
               <h4 className="font-serif text-3xl font-bold mb-8 text-white relative z-10 pr-16 leading-tight">{item.title}</h4>
@@ -1171,7 +1175,7 @@ const PropertyRealEstateView = ({ onNavigate }: { onNavigate: (path: ViewPath) =
               ]
             }
           ].map((block, idx) => (
-            <div key={idx} className="p-12 rounded-2xl border border-white/10 bg-[#081A33] text-white flex flex-col h-full shadow-2xl backdrop-blur-sm hover:shadow-3xl transition-all">
+            <div key={idx} className="p-12 rounded-2xl border border-white/10 bg-gradient-to-br from-[#081A33] via-[#0a203d] to-[#102d54] text-white flex flex-col h-full shadow-2xl backdrop-blur-sm hover:shadow-3xl transition-all">
               <h3 className="font-serif text-3xl font-bold mb-8 tracking-tight">{block.title}</h3>
               <p className="text-white/95 text-[15px] leading-relaxed mb-12">{block.desc}</p>
               <div className="mt-auto pt-10 border-t border-white/10">
@@ -1237,7 +1241,7 @@ const PropertyRealEstateView = ({ onNavigate }: { onNavigate: (path: ViewPath) =
             </div>
           </div>
         </div>
-        <div className="bg-[#081A33] p-10 rounded text-white shadow-2xl relative overflow-hidden">
+        <div className="bg-gradient-to-br from-[#081A33] via-[#0a203d] to-[#102d54] p-10 rounded text-white shadow-2xl relative overflow-hidden">
            <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full blur-3xl -mr-16 -mt-16"></div>
            <h3 className="font-serif text-xl font-bold mb-6">Speed Benchmarks</h3>
            <ul className="space-y-4 text-sm text-blue-100/90">
@@ -1290,7 +1294,7 @@ const PropertyRealEstateView = ({ onNavigate }: { onNavigate: (path: ViewPath) =
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: idx * 0.1 }}
-              className="bg-[#081A33] p-10 rounded-2xl border border-white/10 shadow-sm relative group overflow-hidden hover:shadow-2xl hover:bg-[#0c203c] hover:border-blue-400/30 transition-all"
+              className="bg-gradient-to-br from-[#081A33] via-[#0a203d] to-[#102d54] p-10 rounded-2xl border border-white/10 shadow-sm relative group overflow-hidden hover:shadow-2xl hover:from-[#0c203c] hover:to-[#173e6d] hover:border-blue-400/30 transition-all"
             >
               <div className="text-7xl font-serif font-black absolute right-8 top-6 opacity-10 group-hover:opacity-20 transition-opacity tracking-tighter text-white pointer-events-none select-none">{item.step}</div>
               <h4 className="font-serif text-3xl font-bold text-white mb-8 relative z-10 pr-16 leading-tight">{item.title}</h4>
@@ -2528,7 +2532,7 @@ const SpeechContentDataView = ({ onNavigate }: { onNavigate: (path: ViewPath) =>
               { t: "Structure document-heavy workflows", d: "Classify, index, extract, and validate information from forms, reports, contracts, inspection files, research documents, and operational records.", icon: <Database size={20} /> },
               { t: "Prepare content for wider audiences", d: "Support captions, subtitles, translation-ready text, accessibility workflows, and training content, so information can be used by more people in more contexts.", icon: <Globe size={20} /> }
             ].map((item, idx) => (
-              <div key={idx} className="group p-8 bg-[#081A33] border border-white/10 rounded-2xl hover:border-blue-400/30 transition-all shadow-sm hover:shadow-md">
+              <div key={idx} className="group p-8 bg-gradient-to-br from-[#081A33] via-[#0a203d] to-[#102d54] border border-white/10 rounded-2xl hover:border-blue-400/30 transition-all shadow-sm hover:shadow-md">
                  <div className="text-white mb-4 opacity-40 group-hover:opacity-100 transition-opacity">
                     {item.icon}
                  </div>
@@ -3854,7 +3858,7 @@ const PropertyInspectionView = ({ onNavigate }: { onNavigate: (path: ViewPath) =
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: idx * 0.1 }}
-              className="group p-10 rounded-2xl bg-[#081A33] text-white border border-white/10 hover:border-blue-400/30 hover:bg-[#0c203c] shadow-xl hover:shadow-2xl transition-all duration-300 flex flex-col h-full backdrop-blur-sm"
+              className="group p-10 rounded-2xl bg-gradient-to-br from-[#081A33] via-[#0a203d] to-[#102d54] text-white border border-white/10 hover:border-blue-400/30 hover:from-[#0c203c] hover:to-[#173e6d] shadow-xl hover:shadow-2xl transition-all duration-300 flex flex-col h-full backdrop-blur-sm"
             >
                <div className="w-14 h-14 rounded-xl bg-white/5 text-blue-400 flex items-center justify-center mb-8 group-hover:scale-110 transition-transform duration-300 border border-white/10">
                   <FileCheck size={28} />
@@ -4015,7 +4019,7 @@ const LegalProfessionalServicesView = ({ onNavigate }: { onNavigate: (path: View
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid lg:grid-cols-12 gap-12 items-start">
           {/* Left: Scope List */}
-          <div className="lg:col-span-5 bg-[#081A33] text-white p-12 rounded-2xl shadow-xl border border-white/10 backdrop-blur-sm">
+          <div className="lg:col-span-5 bg-gradient-to-br from-[#081A33] via-[#0a203d] to-[#102d54] text-white p-12 rounded-2xl shadow-xl border border-white/10 backdrop-blur-sm">
             <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-white/70 mb-8 border-b border-white/10 pb-6">Scope of Services</h2>
             <ul className="space-y-6">
               {[
@@ -4084,7 +4088,7 @@ const LegalProfessionalServicesView = ({ onNavigate }: { onNavigate: (path: View
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: idx * 0.1 }}
-              className="bg-[#081A33] p-10 rounded-2xl relative shadow-2xl flex flex-col h-full overflow-hidden border border-white/10 hover:border-blue-400/30 hover:bg-[#0c203c] transition-all duration-300"
+              className="bg-gradient-to-br from-[#081A33] via-[#0a203d] to-[#102d54] p-10 rounded-2xl relative shadow-2xl flex flex-col h-full overflow-hidden border border-white/10 hover:border-blue-400/30 hover:from-[#0c203c] hover:to-[#173e6d] transition-all duration-300"
             >
               <div className="absolute top-6 right-8 text-7xl font-serif font-black text-white/10 pointer-events-none select-none">{card.id}</div>
               <h4 className="font-serif text-3xl font-bold text-white mb-8 relative z-10 pr-16 leading-tight">{card.title}</h4>
