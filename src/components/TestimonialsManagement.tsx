@@ -47,6 +47,15 @@ export const TestimonialsManagement = () => {
   const [submitting, setSubmitting] = useState(false);
   const [editingTestimonial, setEditingTestimonial] = useState<Partial<Testimonial> | null>(null);
   const [isFormOpen, setIsFormOpen] = useState(false);
+  const [testimonialToDelete, setTestimonialToDelete] = useState<Testimonial | null>(null);
+  const [successToast, setSuccessToast] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (successToast) {
+      const timer = setTimeout(() => setSuccessToast(null), 4000);
+      return () => clearTimeout(timer);
+    }
+  }, [successToast]);
 
   useEffect(() => {
     fetchTestimonials();
@@ -117,6 +126,7 @@ export const TestimonialsManagement = () => {
       await adminService.saveTestimonial(testimonialData);
       setIsFormOpen(false);
       setEditingTestimonial(null);
+      setSuccessToast("Testimonial saved successfully.");
       await fetchTestimonials();
     } catch (error) {
       console.error("Save testimonial error:", error);
@@ -126,18 +136,26 @@ export const TestimonialsManagement = () => {
     }
   };
 
-  const handleDelete = async (id: string) => {
-    if (window.confirm("Are you sure you want to delete this testimonial?")) {
-      try {
-        setLoading(true);
-        await adminService.deleteTestimonial(id);
-        await fetchTestimonials();
-      } catch (error) {
-        console.error("Delete testimonial error:", error);
-        alert("Failed to delete testimonial.");
-      } finally {
-        setLoading(false);
-      }
+  const handleDelete = (id: string) => {
+    const found = testimonials.find(t => t.id === id);
+    if (found) {
+      setTestimonialToDelete(found);
+    }
+  };
+
+  const confirmDeleteTestimonial = async () => {
+    if (!testimonialToDelete || !testimonialToDelete.id) return;
+    try {
+      setLoading(true);
+      await adminService.deleteTestimonial(testimonialToDelete.id);
+      setSuccessToast("Testimonial deleted successfully.");
+      setTestimonialToDelete(null);
+      await fetchTestimonials();
+    } catch (error) {
+      console.error("Delete testimonial error:", error);
+      alert("Failed to delete testimonial.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -364,6 +382,74 @@ export const TestimonialsManagement = () => {
               </form>
             </motion.div>
           </div>
+        )}
+      </AnimatePresence>
+
+      {/* Delete Testimonial Custom Confirmation Modal */}
+      <AnimatePresence>
+        {testimonialToDelete && (
+          <div className="fixed inset-0 z-[110] flex items-center justify-center p-6 sm:p-10">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setTestimonialToDelete(null)}
+              className="absolute inset-0 bg-[#081A33]/70 backdrop-blur-sm"
+            />
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0, y: 10 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.95, opacity: 0, y: 10 }}
+              className="relative bg-white rounded-2xl shadow-xl max-w-md w-full p-8 border border-slate-100 flex flex-col items-center text-center z-10"
+            >
+              <div className="w-16 h-16 rounded-full bg-red-50 flex items-center justify-center text-red-500 mb-6 font-bold shadow-inner animate-bounce">
+                <Trash2 size={24} />
+              </div>
+              <h3 className="font-serif text-xl font-bold text-[#081A33] mb-2">Delete Testimonial</h3>
+              <p className="text-slate-500 text-sm mb-8 leading-relaxed">
+                Are you sure you want to delete the testimonial from <span className="font-semibold text-slate-800">"{testimonialToDelete.author} ({testimonialToDelete.company})"</span>? This action cannot be undone.
+              </p>
+              <div className="flex gap-4 w-full">
+                <button
+                  type="button"
+                  onClick={() => setTestimonialToDelete(null)}
+                  className="flex-1 px-5 py-3 border border-slate-100 font-bold uppercase tracking-widest text-[10px] text-slate-400 rounded-xl hover:bg-slate-50 hover:text-slate-600 transition-colors cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  onClick={confirmDeleteTestimonial}
+                  className="flex-1 px-5 py-3 bg-red-500 text-white font-bold uppercase tracking-widest text-[10px] rounded-xl hover:bg-red-600 transition-colors shadow-md flex items-center justify-center gap-2 cursor-pointer"
+                  disabled={loading}
+                >
+                  {loading ? 'Deleting...' : 'Delete'}
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* Success SuccessToast notification on Testimonies */}
+      <AnimatePresence>
+        {successToast && (
+          <motion.div
+            initial={{ opacity: 0, y: -50, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -50, scale: 0.9 }}
+            className="fixed top-24 right-6 z-[200] max-w-md bg-emerald-500 text-white px-6 py-4 rounded-xl shadow-lg border border-emerald-400 flex items-center gap-3"
+          >
+            <div className="p-1 bg-white/20 rounded-full">
+              <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <div>
+               <span className="font-bold text-xs uppercase tracking-wider block">Success</span>
+               <p className="text-[11px] opacity-90 font-medium">{successToast}</p>
+            </div>
+          </motion.div>
         )}
       </AnimatePresence>
     </div>

@@ -2877,6 +2877,15 @@ const TeamManagement = () => {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [cropImage, setCropImage] = useState<string | null>(null);
   const [currentPhoto, setCurrentPhoto] = useState<string>('');
+  const [memberToDelete, setMemberToDelete] = useState<TeamMember | null>(null);
+  const [successToast, setSuccessToast] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (successToast) {
+      const timer = setTimeout(() => setSuccessToast(null), 4000);
+      return () => clearTimeout(timer);
+    }
+  }, [successToast]);
 
   useEffect(() => {
     fetchTeam();
@@ -2952,18 +2961,26 @@ const TeamManagement = () => {
     }
   };
 
-  const handleDeleteMember = async (id: string) => {
-    if (window.confirm("Are you sure you want to delete this staff member?")) {
-      try {
-        setSubmitting(true);
-        await adminService.deleteTeamMember(id);
-        await fetchTeam();
-      } catch (error) {
-        console.error("Delete error:", error);
-        alert("Failed to delete member.");
-      } finally {
-        setSubmitting(false);
-      }
+  const handleDeleteMember = (id: string) => {
+    const found = team.find(m => m.id === id);
+    if (found) {
+      setMemberToDelete(found);
+    }
+  };
+
+  const confirmDeleteMember = async () => {
+    if (!memberToDelete || !memberToDelete.id) return;
+    try {
+      setSubmitting(true);
+      await adminService.deleteTeamMember(memberToDelete.id);
+      setSuccessToast("Staff member deleted successfully.");
+      setMemberToDelete(null);
+      await fetchTeam();
+    } catch (error) {
+      console.error("Delete error:", error);
+      alert("Failed to delete member.");
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -3172,6 +3189,74 @@ const TeamManagement = () => {
           title="Crop Staff Photo"
         />
       )}
+
+      {/* Delete Staff Member Custom Confirmation Modal */}
+      <AnimatePresence>
+        {memberToDelete && (
+          <div className="fixed inset-0 z-[110] flex items-center justify-center p-6 sm:p-10">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setMemberToDelete(null)}
+              className="absolute inset-0 bg-[#081A33]/70 backdrop-blur-sm"
+            />
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0, y: 10 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.95, opacity: 0, y: 10 }}
+              className="relative bg-white rounded-2xl shadow-xl max-w-md w-full p-8 border border-slate-100 flex flex-col items-center text-center z-10"
+            >
+              <div className="w-16 h-16 rounded-full bg-red-50 flex items-center justify-center text-red-500 mb-6 font-bold shadow-inner animate-bounce">
+                <Trash2 size={24} />
+              </div>
+              <h3 className="font-serif text-xl font-bold text-[#081A33] mb-2">Delete Staff Member</h3>
+              <p className="text-slate-500 text-sm mb-8 leading-relaxed">
+                Are you sure you want to delete <span className="font-semibold text-slate-800">"{memberToDelete.name}"</span>? This action cannot be undone.
+              </p>
+              <div className="flex gap-4 w-full">
+                <button
+                  type="button"
+                  onClick={() => setMemberToDelete(null)}
+                  className="flex-1 px-5 py-3 border border-slate-100 font-bold uppercase tracking-widest text-[10px] text-slate-400 rounded-xl hover:bg-slate-50 hover:text-slate-600 transition-colors cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  onClick={confirmDeleteMember}
+                  className="flex-1 px-5 py-3 bg-red-500 text-white font-bold uppercase tracking-widest text-[10px] rounded-xl hover:bg-red-600 transition-colors shadow-md flex items-center justify-center gap-2 cursor-pointer"
+                  disabled={submitting}
+                >
+                  {submitting ? 'Deleting...' : 'Delete'}
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* Team Success Toast */}
+      <AnimatePresence>
+        {successToast && (
+          <motion.div
+            initial={{ opacity: 0, y: -50, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -50, scale: 0.9 }}
+            className="fixed top-24 right-6 z-[200] max-w-md bg-emerald-500 text-white px-6 py-4 rounded-xl shadow-lg border border-emerald-400 flex items-center gap-3"
+          >
+            <div className="p-1 bg-white/20 rounded-full">
+              <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <div>
+               <span className="font-bold text-xs uppercase tracking-wider block">Success</span>
+               <p className="text-[11px] opacity-90 font-medium">{successToast}</p>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
@@ -3189,6 +3274,18 @@ const AdminView = ({ onNavigate, onSettingsUpdate }: { onNavigate: (path: ViewPa
   const [pageSettings, setPageSettings] = useState<any>({});
   const [savingSettings, setSavingSettings] = useState(false);
   const [cropImage, setCropImage] = useState<string | null>(null);
+  const [insightToDelete, setInsightToDelete] = useState<Insight | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [successToast, setSuccessToast] = useState<string | null>(null);
+  const [submitStatus, setSubmitStatus] = useState<'draft' | 'published'>('draft');
+
+  // Auto-clear success toast
+  useEffect(() => {
+    if (successToast) {
+      const timer = setTimeout(() => setSuccessToast(null), 4000);
+      return () => clearTimeout(timer);
+    }
+  }, [successToast]);
 
   useEffect(() => {
     if (activeTab === 'settings') {
@@ -3357,30 +3454,45 @@ const AdminView = ({ onNavigate, onSettingsUpdate }: { onNavigate: (path: ViewPa
     }
   };
 
+  const [isSavingInsight, setIsSavingInsight] = useState(false);
+
   const handleSaveInsight = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
+    const finalStatus = submitStatus || editingInsight?.status || 'draft';
+    
+    const titleVal = (formData.get('title') as string || '').trim();
+    if (!titleVal) {
+      alert("Please provide a title.");
+      return;
+    }
+
     const insightData: Partial<Insight> = {
-      title: formData.get('title') as string,
+      title: titleVal,
       summary: formData.get('summary') as string,
       content: richContent,
-      author: formData.get('author') as string,
+      author: formData.get('author') as string || 'OrbitSol Team',
       date: formData.get('date') as string || new Date().toISOString().split('T')[0],
-      image: formData.get('image') as string,
-      tag: formData.get('tag') as string,
-      status: formData.get('status') as 'draft' | 'published'
+      image: formData.get('image') as string || '',
+      tag: formData.get('tag') as string || 'Business',
+      status: finalStatus
     };
 
     if (editingInsight?.id) insightData.id = editingInsight.id;
 
     try {
+      setIsSavingInsight(true);
       await adminService.saveInsight(insightData);
       setIsFormOpen(false);
       setEditingInsight(null);
       setRichContent('');
+      setSuccessToast(editingInsight ? "Insight updated successfully!" : "Insight successfully created/published!");
       fetchInsights();
-    } catch (error) {
+    } catch (error: any) {
+      console.error("Save insight failed:", error);
       alert("Failed to save insight. Check console for details.");
+    } finally {
+      setIsSavingInsight(false);
     }
   };
 
@@ -3389,8 +3501,10 @@ const AdminView = ({ onNavigate, onSettingsUpdate }: { onNavigate: (path: ViewPa
   useEffect(() => {
     if (editingInsight) {
       setRichContent(editingInsight.content || '');
+      setSubmitStatus(editingInsight.status || 'draft');
     } else {
       setRichContent('');
+      setSubmitStatus('draft');
     }
   }, [editingInsight, isFormOpen]);
 
@@ -3407,10 +3521,41 @@ const AdminView = ({ onNavigate, onSettingsUpdate }: { onNavigate: (path: ViewPa
     ],
   };
 
-  const handleDeleteInsight = async (id: string) => {
-    if (window.confirm("Are you sure you want to delete this insight?")) {
-      await adminService.deleteInsight(id);
+  const handleDeleteInsight = (id: string) => {
+    if (!id) {
+      alert("Error: Cannot delete because the insight ID is missing.");
+      return;
+    }
+    const found = insights.find(i => i.id === id);
+    if (found) {
+      setInsightToDelete(found);
+    }
+  };
+
+  const confirmDeleteInsight = async () => {
+    if (!insightToDelete || !insightToDelete.id) return;
+    try {
+      setIsDeleting(true);
+      await adminService.deleteInsight(insightToDelete.id);
+      setSuccessToast("Insight deleted successfully.");
+      setInsightToDelete(null);
       fetchInsights();
+    } catch (error: any) {
+      console.error("Delete insight failed:", error);
+      let errorMsg = "Failed to delete insight.";
+      try {
+        if (error.message && error.message.startsWith('{')) {
+          const parsed = JSON.parse(error.message);
+          errorMsg = `Delete failed: ${parsed.error}`;
+        } else {
+          errorMsg = `Delete failed: ${error.message || error}`;
+        }
+      } catch (e) {
+        errorMsg = `Delete failed: ${error.message || error}`;
+      }
+      alert(errorMsg);
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -3769,16 +3914,40 @@ const AdminView = ({ onNavigate, onSettingsUpdate }: { onNavigate: (path: ViewPa
               initial={{ scale: 0.9, opacity: 0, y: 20 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.9, opacity: 0, y: 20 }}
-              className="relative w-full max-w-4xl bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]"
+              className="relative w-full max-w-4xl bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col h-[85vh] max-h-[90vh]"
             >
               <form onSubmit={handleSaveInsight} className="flex flex-col h-full">
-               <div className="px-8 py-6 border-b border-[#FFF0E6] flex justify-between items-center bg-[#FFF7EA]/50">
-                  <h3 className="font-serif text-xl font-bold text-[#081A33]">
-                    {editingInsight ? 'Edit Insight' : 'Create New Insight'}
-                  </h3>
-                  <button type="button" onClick={() => setIsFormOpen(false)} className="text-slate-400 hover:text-[#081A33] transition-colors">
-                    <X size={24} />
-                  </button>
+                <div className="px-8 py-6 border-b border-[#FFF0E6] flex justify-between items-center bg-[#FFF7EA]/50">
+                  <div className="flex flex-col">
+                    <span className="text-[10px] font-bold text-[#F97316] uppercase tracking-widest mb-1">
+                      {editingInsight ? `Editing Insight` : 'NEW INSIGHT'}
+                    </span>
+                    <h3 className="font-serif text-xl font-bold text-[#081A33]">
+                      {editingInsight ? 'Edit Post' : 'Create New Insight'}
+                    </h3>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <button 
+                      type="submit" 
+                      onClick={() => setSubmitStatus('draft')} 
+                      className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold uppercase tracking-[0.08em] text-[9px] rounded-lg transition-all shadow-sm cursor-pointer"
+                      disabled={isSavingInsight}
+                    >
+                      Save Draft
+                    </button>
+                    <button 
+                      type="submit" 
+                      onClick={() => setSubmitStatus('published')} 
+                      className="px-4 py-2 bg-[#2368D6] hover:bg-opacity-90 text-white font-bold uppercase tracking-[0.08em] text-[9px] rounded-lg transition-all shadow-md flex items-center gap-1.5 cursor-pointer"
+                      disabled={isSavingInsight}
+                    >
+                      <Save size={10} /> {editingInsight?.status === 'published' ? 'Save & Publish' : 'Publish Now'}
+                    </button>
+                    <div className="h-6 w-[1px] bg-slate-200 mx-1" />
+                    <button type="button" onClick={() => setIsFormOpen(false)} className="text-slate-400 hover:text-[#081A33] transition-colors p-1 rounded-lg hover:bg-slate-100 cursor-pointer">
+                      <X size={20} />
+                    </button>
+                  </div>
                 </div>
                 
                 <div className="flex-grow overflow-y-auto p-8 space-y-6">
@@ -3841,7 +4010,7 @@ const AdminView = ({ onNavigate, onSettingsUpdate }: { onNavigate: (path: ViewPa
 
                   <div className="space-y-2 pb-12">
                     <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Content</label>
-                    <div className="h-[400px] mb-12">
+                    <div className="h-[250px] mb-12">
                       <ReactQuill 
                         theme="snow"
                         value={richContent}
@@ -3862,38 +4031,122 @@ const AdminView = ({ onNavigate, onSettingsUpdate }: { onNavigate: (path: ViewPa
                         className="w-full p-4 bg-slate-50 border border-slate-100 rounded-xl outline-none focus:border-brand-blue transition-all"
                       />
                     </div>
-                    <div className="space-y-2">
-                      <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Status</label>
-                      <select 
-                        name="status" 
-                        defaultValue={editingInsight?.status || 'draft'} 
-                        className="w-full p-4 bg-slate-50 border border-slate-100 rounded-xl outline-none focus:border-brand-blue transition-all appearance-none"
-                      >
-                        <option value="draft">Draft</option>
-                        <option value="published">Published</option>
-                      </select>
+                    <div className="space-y-2 flex flex-col justify-center">
+                      <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5 block">Current Status</span>
+                      <div className="flex items-center gap-2">
+                        <span className={`inline-flex px-3 py-1 text-[10px] rounded-lg font-bold uppercase tracking-widest ${
+                          (editingInsight?.status || 'draft') === 'published' 
+                            ? 'bg-green-50 text-green-600 border border-green-200' 
+                            : 'bg-orange-50 text-orange-600 border border-orange-200'
+                        }`}>
+                          ● {editingInsight?.status || 'draft'}
+                        </span>
+                        <span className="text-[10px] text-slate-400">
+                          (Submission buttons below sets status)
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </div>
 
-                <div className="px-8 py-6 border-t border-brand-warm-cream bg-brand-cream/50 flex justify-end gap-4">
+                <div className="px-8 py-6 border-t border-brand-warm-cream bg-brand-cream/50 flex justify-between items-center">
                   <button 
                     type="button" 
                     onClick={() => setIsFormOpen(false)}
-                    className="px-6 py-3 text-slate-400 font-bold uppercase tracking-[0.1em] text-[10px] hover:text-brand-deep-navy transition-colors"
+                    className="px-6 py-3 text-slate-400 font-bold uppercase tracking-[0.1em] text-[10px] hover:text-brand-deep-navy transition-colors cursor-pointer"
                   >
                     Cancel
                   </button>
-                  <button 
-                    type="submit"
-                    className="bg-brand-deep-navy hover:bg-slate-800 text-white px-8 py-3 rounded-xl font-bold uppercase tracking-[0.1em] text-[10px] shadow-lg transition-all flex items-center gap-2"
-                  >
-                    <Save size={14} /> Save Changes
-                  </button>
+                  <div className="flex gap-3">
+                    <button 
+                      type="submit" 
+                      onClick={() => setSubmitStatus('draft')}
+                      className="px-6 py-3 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 font-bold uppercase tracking-[0.08em] text-[10px] rounded-xl transition-all shadow-sm cursor-pointer"
+                      disabled={isSavingInsight}
+                    >
+                      {isSavingInsight && submitStatus === 'draft' ? 'Saving...' : 'Save as Draft'}
+                    </button>
+                    <button 
+                      type="submit"
+                      onClick={() => setSubmitStatus('published')}
+                      className="bg-[#2368D6] hover:bg-opacity-90 text-white px-7 py-3 rounded-xl font-bold uppercase tracking-[0.08em] text-[10px] shadow-lg transition-all flex items-center gap-2 cursor-pointer"
+                      disabled={isSavingInsight}
+                    >
+                      <Save size={12} /> {isSavingInsight && submitStatus === 'published' ? 'Saving...' : editingInsight?.status === 'published' ? 'Update & Keep Published' : 'Publish to Website'}
+                    </button>
+                  </div>
                 </div>
               </form>
             </motion.div>
           </div>
+        )}
+      </AnimatePresence>
+
+      {/* Delete Insight Custom Confirmation Modal */}
+      <AnimatePresence>
+        {insightToDelete && (
+          <div className="fixed inset-0 z-[110] flex items-center justify-center p-6 sm:p-10">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setInsightToDelete(null)}
+              className="absolute inset-0 bg-[#081A33]/70 backdrop-blur-sm"
+            />
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0, y: 10 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.95, opacity: 0, y: 10 }}
+              className="relative bg-white rounded-2xl shadow-xl max-w-md w-full p-8 border border-slate-100 flex flex-col items-center text-center z-10"
+            >
+              <div className="w-16 h-16 rounded-full bg-red-50 flex items-center justify-center text-red-500 mb-6 font-bold shadow-inner animate-bounce">
+                <Trash2 size={24} />
+              </div>
+              <h3 className="font-serif text-xl font-bold text-[#081A33] mb-2">Delete Insight</h3>
+              <p className="text-slate-500 text-sm mb-8 leading-relaxed">
+                Are you sure you want to delete <span className="font-semibold text-slate-800">"{insightToDelete.title}"</span>? This action cannot be undone.
+              </p>
+              <div className="flex gap-4 w-full">
+                <button
+                  type="button"
+                  onClick={() => setInsightToDelete(null)}
+                  className="flex-1 px-5 py-3 border border-slate-100 font-bold uppercase tracking-widest text-[10px] text-slate-400 rounded-xl hover:bg-slate-50 hover:text-slate-600 transition-colors cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  onClick={confirmDeleteInsight}
+                  className="flex-1 px-5 py-3 bg-red-500 text-white font-bold uppercase tracking-widest text-[10px] rounded-xl hover:bg-red-600 transition-colors shadow-md flex items-center justify-center gap-2 cursor-pointer"
+                  disabled={isDeleting}
+                >
+                  {isDeleting ? 'Deleting...' : 'Delete'}
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* Modern Slice/Toast Success Notification Overlay */}
+      <AnimatePresence>
+        {successToast && (
+          <motion.div
+            initial={{ opacity: 0, y: -50, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -50, scale: 0.9 }}
+            className="fixed top-24 right-6 z-[200] max-w-md bg-emerald-500 text-white px-6 py-4 rounded-xl shadow-lg border border-emerald-400 flex items-center gap-3"
+          >
+            <div className="p-1 bg-white/20 rounded-full">
+              <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <div>
+               <span className="font-bold text-xs uppercase tracking-wider block">Success</span>
+               <p className="text-[11px] opacity-90 font-medium">{successToast}</p>
+            </div>
+          </motion.div>
         )}
       </AnimatePresence>
     </div>
