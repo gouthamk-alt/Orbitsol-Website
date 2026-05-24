@@ -1358,7 +1358,7 @@ const BlogSidebar = ({
   onSelectInsight: (insight: Insight) => void;
   onClearFilters: () => void;
 }) => (
-  <aside className="lg:col-span-4 space-y-12">
+  <aside className="lg:col-span-4 space-y-12 min-w-0 w-full">
     <div>
       <div className="relative mb-12">
         <input 
@@ -1475,9 +1475,9 @@ const InsightsView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) 
     const prevPost = currentIndex < insights.length - 1 ? insights[currentIndex + 1] : null;
 
     return (
-      <div className="bg-white min-h-screen pt-32 pb-24 font-sans">
-        <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-12 gap-16">
-          <div className="lg:col-span-8">
+      <div className="bg-white min-h-screen pt-32 pb-24 font-sans overflow-x-hidden w-full">
+        <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-12 gap-16 w-full">
+          <div className="lg:col-span-8 min-w-0 w-full overflow-hidden">
             <button 
               onClick={() => setSelectedInsight(null)}
               className="text-[#2368D6] font-bold text-sm md:text-base uppercase tracking-[0.2em] flex items-center gap-3 mb-10 hover:translate-x-[-4px] transition-transform"
@@ -1501,12 +1501,12 @@ const InsightsView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) 
               <span className="text-slate-500 text-sm md:text-base font-medium">{selectedInsight.date}</span>
             </div>
 
-            <h1 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-[#081A33] mb-8 leading-tight">
+            <h1 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-[#081A33] mb-8 leading-tight break-words">
               {selectedInsight.title}
             </h1>
 
             <div 
-              className="prose prose-slate prose-lg max-w-none prose-headings:font-serif prose-headings:text-[#081A33] prose-h1:text-4xl prose-h2:text-3xl prose-h3:text-2xl prose-p:text-slate-600 prose-p:leading-relaxed prose-a:text-[#2368D6] prose-strong:text-[#081A33] mb-24"
+              className="prose prose-slate prose-lg max-w-full break-words w-full prose-headings:font-serif prose-headings:text-[#081A33] prose-h1:text-4xl prose-h2:text-3xl prose-h3:text-2xl prose-p:text-slate-600 prose-p:leading-relaxed prose-a:text-[#2368D6] prose-strong:text-[#081A33] mb-24"
               dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(selectedInsight.content) }}
             />
 
@@ -1572,9 +1572,9 @@ const InsightsView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) 
         </div>
       </section>
 
-      <section className="py-24 bg-white font-sans min-h-[400px]">
-        <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-12 gap-16">
-          <div className="lg:col-span-8">
+      <section className="py-24 bg-white font-sans min-h-[400px] overflow-x-hidden w-full">
+        <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-12 gap-16 w-full">
+          <div className="lg:col-span-8 min-w-0 w-full overflow-hidden">
             {loading ? (
               <div className="flex justify-center items-center py-20">
                 <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#2368D6]"></div>
