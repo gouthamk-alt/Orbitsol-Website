@@ -1492,7 +1492,7 @@ const InsightsView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) 
               <span className="text-slate-500 text-sm md:text-base font-medium">{selectedInsight.date}</span>
             </div>
 
-            <h1 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-[#081A33] mb-8 leading-tight">
+            <h1 className="font-serif text-2xl md:text-3xl lg:text-4xl font-bold text-[#081A33] mb-8 leading-tight">
               {selectedInsight.title}
             </h1>
 
@@ -1605,7 +1605,7 @@ const InsightsView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) 
                       <span className="w-1.5 h-1.5 rounded-full bg-slate-200"></span>
                       <span className="text-slate-500 text-sm font-medium">{post.date}</span>
                     </div>
-                    <h2 className="font-serif text-2xl md:text-4xl font-bold text-[#081A33] mb-8 group-hover:text-[#2368D6] transition-colors leading-tight tracking-tight">
+                    <h2 className="font-serif text-xl md:text-3xl font-bold text-[#081A33] mb-8 group-hover:text-[#2368D6] transition-colors leading-tight tracking-tight">
                       {post.title}
                     </h2>
                     <p className="text-slate-600 text-[15px] md:text-base leading-relaxed mb-10 max-w-4xl">
@@ -2333,7 +2333,6 @@ const HomeView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => {
           <div 
             onClick={handleStatClick}
             className="grid grid-cols-2 md:grid-cols-4 gap-8 pt-10 border-t border-white/10 text-sm font-sans tracking-tight cursor-pointer select-none"
-            title="Click to replay stat animations"
           >
             <div className="transition-opacity duration-300 hover:opacity-80">
               <strong className="block text-3xl font-serif mb-1 text-white">
