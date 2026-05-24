@@ -1358,7 +1358,7 @@ const BlogSidebar = ({
   onSelectInsight: (insight: Insight) => void;
   onClearFilters: () => void;
 }) => (
-  <aside className="lg:col-span-4 space-y-12 min-w-0 w-full">
+  <aside className="lg:col-span-3 space-y-12 min-w-0 w-full">
     <div>
       <div className="relative mb-12">
         <input 
@@ -1419,16 +1419,7 @@ const BlogSidebar = ({
       </div>
     </div>
 
-    <div className="bg-[#FFF7EA] border border-[#FFF0E6]/50 p-8 rounded-2xl">
-      <h3 className="text-[12px] font-bold text-[#081A33] uppercase tracking-[0.2em] mb-6">Orbit Newsletter</h3>
-      <p className="text-slate-600 text-base leading-relaxed mb-10">Practical, monthly operational insights delivered to your inbox.</p>
-      <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
-        <input type="email" placeholder="Email address" className="w-full p-4 bg-white border border-slate-200/60 rounded-xl outline-none focus:border-[#2368D6] text-base transition-all shadow-sm" required />
-        <button type="submit" className="w-full bg-[#2368D6] hover:opacity-90 text-white p-5 rounded-xl font-bold uppercase tracking-widest text-[11px] transition-all shadow-md">
-          Join the List
-        </button>
-      </form>
-    </div>
+
   </aside>
 );
 
@@ -1477,7 +1468,7 @@ const InsightsView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) 
     return (
       <div className="bg-white min-h-screen pt-32 pb-24 font-sans overflow-x-hidden w-full">
         <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-12 gap-16 w-full">
-          <div className="lg:col-span-8 min-w-0 w-full overflow-hidden">
+          <div className="lg:col-span-9 min-w-0 w-full overflow-hidden">
             <button 
               onClick={() => setSelectedInsight(null)}
               className="text-[#2368D6] font-bold text-sm md:text-base uppercase tracking-[0.2em] flex items-center gap-3 mb-10 hover:translate-x-[-4px] transition-transform"
@@ -1501,13 +1492,15 @@ const InsightsView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) 
               <span className="text-slate-500 text-sm md:text-base font-medium">{selectedInsight.date}</span>
             </div>
 
-            <h1 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-[#081A33] mb-8 leading-tight break-words">
+            <h1 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-[#081A33] mb-8 leading-tight">
               {selectedInsight.title}
             </h1>
 
             <div 
-              className="prose prose-slate prose-lg max-w-full break-words w-full prose-headings:font-serif prose-headings:text-[#081A33] prose-h1:text-4xl prose-h2:text-3xl prose-h3:text-2xl prose-p:text-slate-600 prose-p:leading-relaxed prose-a:text-[#2368D6] prose-strong:text-[#081A33] mb-24"
-              dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(selectedInsight.content) }}
+              className="prose prose-slate prose-lg max-w-none break-words w-full prose-headings:font-serif prose-headings:text-[#081A33] prose-h1:text-4xl prose-h2:text-3xl prose-h3:text-2xl prose-p:text-slate-600 prose-p:leading-relaxed prose-a:text-[#2368D6] prose-strong:text-[#081A33] mb-24"
+              dangerouslySetInnerHTML={{ 
+                __html: DOMPurify.sanitize((selectedInsight.content || '').replace(/&nbsp;/g, ' ').replace(/\u00A0/g, ' ')) 
+              }}
             />
 
             {/* Post Navigation */}
@@ -1574,7 +1567,7 @@ const InsightsView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) 
 
       <section className="py-24 bg-white font-sans min-h-[400px] overflow-x-hidden w-full">
         <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-12 gap-16 w-full">
-          <div className="lg:col-span-8 min-w-0 w-full overflow-hidden">
+          <div className="lg:col-span-9 min-w-0 w-full overflow-hidden">
             {loading ? (
               <div className="flex justify-center items-center py-20">
                 <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#2368D6]"></div>
