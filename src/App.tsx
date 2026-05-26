@@ -703,9 +703,15 @@ const DigitalMarketingView = ({ onNavigate }: { onNavigate: (path: ViewPath) => 
             },
             {
               id: "video",
-              title: "Video and Motion",
-              desc: "Short-form social edits, explainers, interview cuts, and motion graphics. The hardest part of video is keeping a pipeline running every week, and that is what we are good at.",
-              items: ["Short-form social video for Instagram, TikTok, and LinkedIn.", "Explainer videos and product demonstrations.", "Interview editing and podcast cuts.", "Motion graphics and brand-consistent templates."]
+              title: "Video, Motion & AI Production",
+              desc: "From being just a one-off brand asset, video has become an ongoing layer that turns listings, teams, neighbourhoods, client education, and recruitment into repeatable social content. We handle the editing, motion graphics, captions, versioning, and AI-supported production so your team does not need to hire a full internal studio.",
+              items: [
+                "Short-form reels for Instagram, TikTok, YouTube Shorts, Facebook, and LinkedIn.",
+                "Listing teasers, agent-led updates, vendor education, recruitment videos, and local area content.",
+                "Motion graphics, lower thirds, animated statistics, map callouts, subtitles, thumbnails, and branded templates.",
+                "AI-supported ad commercials, UGC-style videos, vertical web series, reality-style films, cinematic trailers, and concept-led brand videos.",
+                "Batch production, content calendar support, platform-specific exports, and revision management."
+              ]
             },
             {
               id: "design",
@@ -752,8 +758,8 @@ const DigitalMarketingView = ({ onNavigate }: { onNavigate: (path: ViewPath) => 
           ].map((service) => (
             <div key={service.id} id={service.id} className="scroll-mt-32 h-full flex flex-col">
               <h3 className="font-serif text-2xl font-bold text-[#081A33] mb-5">{service.title}</h3>
-              <p className="text-slate-600 text-sm leading-relaxed mb-8">{service.desc}</p>
-              <ul className="space-y-4 mt-auto">
+              <p className="text-slate-600 text-sm leading-relaxed mb-6 lg:min-h-[115px]">{service.desc}</p>
+              <ul className="space-y-4">
                 {service.items.map((item, idx) => (
                   <li key={idx} className="flex items-start gap-4">
                     <Check className="mt-1 text-[#2368D6] flex-shrink-0" size={16} />
@@ -2365,7 +2371,7 @@ const HomeView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => {
 
     <section className="bg-[#F5F7FA] border-b border-slate-100 py-6">
       <div className="max-w-7xl mx-auto px-6 text-center text-xs font-semibold text-slate-400 uppercase tracking-widest leading-relaxed">
-        Property report production <span className="mx-3 opacity-20">|</span> Strata administration <span className="mx-3 opacity-20">|</span> Lettings inventories <span className="mx-3 opacity-20">|</span> Legal transcription <span className="mx-3 opacity-20">|</span> Remote operations
+        Property report production <span className="mx-3 opacity-20">|</span> Strata administration <span className="mx-3 opacity-20">|</span> Lettings inventories <span className="mx-3 opacity-20">|</span> Audio transcription <span className="mx-3 opacity-20">|</span> Process automation <span className="mx-3 opacity-20">|</span> Digital marketing <span className="mx-3 opacity-20">|</span> Remote operations
       </div>
     </section>
 
