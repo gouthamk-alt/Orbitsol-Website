@@ -26,7 +26,9 @@ import {
   Layers,
   Table,
   Database,
-  Globe
+  Globe,
+  Instagram,
+  Linkedin
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { adminService, Insight, TeamMember, Testimonial } from './services/adminService';
@@ -1999,6 +2001,87 @@ const ContactView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) =
       // First try to save to Firestore (our new source of truth)
       await addDoc(collection(db, 'enquiries'), data);
       
+      // Send email alert via Web3Forms if an access key is set in Site Settings
+      const web3Key = getContent('global.web3formsKey', '');
+      if (web3Key && web3Key.trim() !== '') {
+        try {
+          await fetch("https://api.web3forms.com/submit", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Accept": "application/json"
+            },
+            body: JSON.stringify({
+              access_key: web3Key.trim(),
+              from_name: `OrbitSol Website (${getContent('global.siteName', 'OrbitSol')})`,
+              subject: `New Enquiry: ${data.name} (${data.service || "General"})`,
+              name: data.name,
+              email: data.email,
+              company: data.company,
+              country: data.country,
+              service: data.service,
+              message: data.message,
+              source: data.source,
+              replyto: data.email,
+            })
+          });
+        } catch (emailErr) {
+          console.error("Error sending email notification via Web3Forms:", emailErr);
+        }
+      }
+
+      // Send Discord alerts if set (100% free instant push alerts)
+      const discordUrl = getContent('global.discordWebhookUrl', '');
+      if (discordUrl && discordUrl.trim() !== '') {
+        try {
+          await fetch(discordUrl.trim(), {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              username: `${getContent('global.siteName', 'OrbitSol')} Watcher`,
+              content: `🔔 **New website enquiry received!**`,
+              embeds: [
+                {
+                  title: `Enquiry from ${data.name}`,
+                  color: 1461122, // Elegant Navy
+                  fields: [
+                    { name: 'Email', value: data.email || 'N/A', inline: true },
+                    { name: 'Company', value: data.company || 'N/A', inline: true },
+                    { name: 'Country', value: data.country || 'N/A', inline: true },
+                    { name: 'Service Requested', value: data.service || 'N/A', inline: true },
+                    { name: 'Message', value: data.message || 'N/A' },
+                    { name: 'Submitted From', value: data.source || 'N/A' }
+                  ],
+                  timestamp: new Date().toISOString()
+                }
+              ]
+            })
+          });
+        } catch (discordErr) {
+          console.error("Error sending Discord webhook alert:", discordErr);
+        }
+      }
+
+      // Send Google Chat alerts if set (100% free instant space alerts)
+      const googleChatUrl = getContent('global.googleChatWebhookUrl', '');
+      if (googleChatUrl && googleChatUrl.trim() !== '') {
+        try {
+          await fetch(googleChatUrl.trim(), {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              text: `🔔 *New Web Enquiry Received on ${getContent('global.siteName', 'OrbitSol')}!*\n\n*Name:* ${data.name}\n*Email:* ${data.email}\n*Company:* ${data.company || 'N/A'}\n*Country:* ${data.country || 'N/A'}\n*Service:* ${data.service || 'General'}\n*Message:* ${data.message}\n*Source URL:* ${data.source || 'N/A'}`
+            })
+          });
+        } catch (chatErr) {
+          console.error("Error sending Google Chat webhook alert:", chatErr);
+        }
+      }
+      
       // Also try Netlify if it exists, but don't fail if it doesn't
       try {
         await fetch("/", {
@@ -2197,14 +2280,29 @@ const Footer = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => {
             </ul>
           </div>
         </div>
-        <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-8 text-sm">
-          <div className="flex flex-col md:flex-row items-center gap-8">
-            <div>© {new Date().getFullYear()} OrbitSol. All rights reserved.</div>
-          </div>
-          <div className="flex gap-6">
-            <button className="hover:text-white">Privacy policy</button>
-            <button className="hover:text-white">Terms of service</button>
-            <button className="hover:text-white">Cookie settings</button>
+        <div className="border-t border-white/10 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-white/70">
+          <div>© {new Date().getFullYear()} OrbitSol. All rights reserved.</div>
+          <div className="flex items-center gap-4">
+            <a 
+              href="https://www.instagram.com/orbitsol" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="text-white/70 hover:text-white hover:scale-105 transition-all p-1"
+              aria-label="Instagram"
+              id="footer-instagram-link"
+            >
+              <Instagram size={18} />
+            </a>
+            <a 
+              href="https://www.linkedin.com/company/orbit-sol/" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="text-white/70 hover:text-white hover:scale-105 transition-all p-1"
+              aria-label="LinkedIn"
+              id="footer-linkedin-link"
+            >
+              <Linkedin size={18} />
+            </a>
           </div>
         </div>
       </div>
@@ -3410,6 +3508,11 @@ const AdminView = ({ onNavigate, onSettingsUpdate }: { onNavigate: (path: ViewPa
           { id: 'contactEmail', label: 'Contact Email', type: 'text', default: 'info@orbitsol.com' },
           { id: 'phone', label: 'Phone Number', type: 'text', default: '+1-833-384-1500' },
           { id: 'address', label: 'Office Address', type: 'textarea', default: 'Kochi, Kerala, India' },
+          { id: 'web3formsKey', label: 'Web3Forms Access Key (for Email Notifications)', type: 'text', default: '' },
+          { id: 'emailServiceInfo', label: 'Setup Email Notifications', type: 'info', content: 'Receive instant email alerts on any enquiries submitted on your website:\n1. Go to https://web3forms.com and enter your email.\n2. Paste the free Access Key they email you in the field above.\n3. Click Save Page!' },
+          { id: 'discordWebhookUrl', label: 'Discord Webhook URL (for instant phone alerts)', type: 'text', default: '' },
+          { id: 'googleChatWebhookUrl', label: 'Google Chat Webhook URL (for Google Chat Space alerts)', type: 'text', default: '' },
+          { id: 'webhookServiceInfo', label: 'Setup Discord & Google Chat Alerts (100% Free)', type: 'info', content: 'To get push notifications on your phone or desktop whenever someone submits an enquiry:\n\nDiscord Setup:\n1. In your Discord server, open Channel Settings -> Integrations -> Webhooks.\n2. Create a webhook, copy the Webhook URL, and paste it above.\n\nGoogle Chat Setup:\n1. Open Google Chat in your browser.\n2. Go to the Chat Space where you want alerts, click the space name header dropdown, and choose "Apps & integrations" (or "Webhooks").\n3. Click "Add webhooks", type "OrbitSol Alerts" and click Save.\n4. Copy the webhook URL and paste it in the field above.' },
         ];
       case 'contact':
         return [
