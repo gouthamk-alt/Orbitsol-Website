@@ -32,6 +32,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { adminService, Insight, TeamMember, Testimonial } from './services/adminService';
 import { TestimonialCarousel } from './components/TestimonialCarousel';
 import { TestimonialsManagement } from './components/TestimonialsManagement';
+import { AdminManagement } from './components/AdminManagement';
 import { auth, signInWithGoogle, db } from './lib/firebase';
 import { onAuthStateChanged, User } from 'firebase/auth';
 import { collection, addDoc, serverTimestamp, query, orderBy, getDocs } from 'firebase/firestore';
@@ -58,6 +59,13 @@ type Enquiry = {
 };
 
 const SITE_NAME = 'OrbitSol';
+
+// Configure authorized administrative email addresses here
+const ADMIN_EMAILS = [
+  'gouthamk@orbitsol.com',
+  // Add other administrator email addresses here, e.g.:
+  // 'another.email@example.com',
+];
 
 const DEFAULT_TEAM: Partial<TeamMember>[] = [
   { name: "Ann Mary Jerin", role: "Founder and Managing Director", photo: "", order: 1 },
@@ -2371,7 +2379,7 @@ const HomeView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => {
 
     <section className="bg-[#F5F7FA] border-b border-slate-100 py-6">
       <div className="max-w-7xl mx-auto px-6 text-center text-xs font-semibold text-slate-400 uppercase tracking-widest leading-relaxed">
-        Property report production <span className="mx-3 opacity-20">|</span> Strata administration <span className="mx-3 opacity-20">|</span> Lettings inventories <span className="mx-3 opacity-20">|</span> Audio transcription <span className="mx-3 opacity-20">|</span> Process automation <span className="mx-3 opacity-20">|</span> Digital marketing <span className="mx-3 opacity-20">|</span> Remote operations
+        <span className="whitespace-nowrap">Property report production</span> <span className="mx-3 opacity-20">|</span> <span className="whitespace-nowrap">Strata administration</span> <span className="mx-3 opacity-20">|</span> <span className="whitespace-nowrap">Lettings inventories</span> <span className="mx-3 opacity-20">|</span> <span className="whitespace-nowrap">Audio transcription</span> <span className="mx-3 opacity-20">|</span> <span className="whitespace-nowrap">Process automation</span> <span className="mx-3 opacity-20">|</span> <span className="whitespace-nowrap">Digital marketing</span> <span className="mx-3 opacity-20">|</span> <span className="whitespace-nowrap">Remote operations</span>
       </div>
     </section>
 
@@ -3267,7 +3275,7 @@ const AdminView = ({ onNavigate, onSettingsUpdate }: { onNavigate: (path: ViewPa
   const [enquiries, setEnquiries] = useState<Enquiry[]>([]);
   const [editingInsight, setEditingInsight] = useState<Insight | null>(null);
   const [isFormOpen, setIsFormOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState<'insights' | 'settings' | 'enquiries' | 'team' | 'testimonials'>('insights');
+  const [activeTab, setActiveTab] = useState<'insights' | 'settings' | 'enquiries' | 'team' | 'testimonials' | 'admins'>('insights');
   const [selectedPage, setSelectedPage] = useState('home');
   const [pageSettings, setPageSettings] = useState<any>({});
   const [savingSettings, setSavingSettings] = useState(false);
@@ -3419,7 +3427,7 @@ const AdminView = ({ onNavigate, onSettingsUpdate }: { onNavigate: (path: ViewPa
       setUser(u);
       if (u) {
         const adminStatus = await adminService.checkIfAdmin(u.uid);
-        setIsAdmin(adminStatus || u.email === 'gouthamk@orbitsol.com');
+        setIsAdmin(adminStatus || (u.email ? ADMIN_EMAILS.includes(u.email) : false));
       } else {
         setIsAdmin(false);
       }
@@ -3582,9 +3590,10 @@ const AdminView = ({ onNavigate, onSettingsUpdate }: { onNavigate: (path: ViewPa
            ) : (
              <div className="space-y-4">
                 <p className="text-red-500 text-sm font-medium">Account {user.email} is not authorized.</p>
+
                 <button 
                   onClick={() => auth.signOut()}
-                  className="text-slate-400 hover:text-[#081A33] font-bold text-xs uppercase tracking-widest"
+                  className="text-slate-400 hover:text-[#081A33] font-bold text-xs uppercase tracking-widest block mx-auto text-center mt-4 border border-slate-200 hover:border-slate-300 px-4 py-2 rounded-xl transition-all"
                 >
                   Sign Out
                 </button>
@@ -3635,6 +3644,12 @@ const AdminView = ({ onNavigate, onSettingsUpdate }: { onNavigate: (path: ViewPa
                 className={`px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-widest transition-all ${activeTab === 'enquiries' ? 'bg-[#081A33] text-white shadow-md' : 'text-slate-400 hover:text-[#081A33]'}`}
               >
                 Enquiries
+              </button>
+              <button 
+                onClick={() => setActiveTab('admins')}
+                className={`px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-widest transition-all ${activeTab === 'admins' ? 'bg-[#081A33] text-white shadow-md' : 'text-slate-400 hover:text-[#081A33]'}`}
+              >
+                Admins
               </button>
             </div>
             {activeTab === 'insights' && (

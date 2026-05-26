@@ -230,6 +230,40 @@ export const adminService = {
     }
   },
 
+  async getAdmins() {
+    const path = 'admins';
+    try {
+      const snapshot = await getDocs(collection(db, 'admins'));
+      return snapshot.docs.map(doc => ({ uid: doc.id, ...doc.data() }));
+    } catch (error) {
+      handleFirestoreError(error, OperationType.LIST, path);
+    }
+  },
+
+  async addAdmin(uid: string, email: string, name?: string) {
+    const path = `admins/${uid}`;
+    try {
+      const docRef = doc(db, 'admins', uid);
+      await setDoc(docRef, {
+        email: email.trim().toLowerCase(),
+        name: name?.trim() || '',
+        addedAt: serverTimestamp()
+      });
+    } catch (error) {
+      handleFirestoreError(error, OperationType.WRITE, path);
+    }
+  },
+
+  async deleteAdmin(uid: string) {
+    const path = `admins/${uid}`;
+    try {
+      const docRef = doc(db, 'admins', uid);
+      await deleteDoc(docRef);
+    } catch (error) {
+      handleFirestoreError(error, OperationType.DELETE, path);
+    }
+  },
+
   // Team Members
   async getTeamMembers() {
     const path = 'team';
