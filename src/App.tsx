@@ -2369,24 +2369,24 @@ const HomeView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => {
       </div>
     </section>
 
-    <section id="who-we-serve" className="py-24 bg-white font-sans">
+    <section id="what-we-do" className="py-24 bg-white font-sans">
       <div className="max-w-7xl mx-auto px-6">
         <div className="mb-20">
-          <p className="text-[#2368D6] font-bold tracking-widest uppercase text-[10px] mb-4">Who we serve.</p>
+          <p className="text-[#2368D6] font-bold tracking-widest uppercase text-[10px] mb-4">What we do.</p>
           <h2 className="font-serif text-3xl md:text-5xl lg:text-6xl font-bold text-[#081A33] mb-8 leading-[1.1] tracking-tight max-w-4xl">
-            {getContent('home.homeWhoWeServeTitle', 'Built for teams whose work depends on accurate, repeatable operations.')}
+            {getContent('home.homeWhatWeDoTitle', 'Multiple managed workflow lines, one operating partner.')}
           </h2>
           <p className="text-base md:text-lg text-slate-500 leading-relaxed max-w-4xl">
-            {getContent('home.homeWhoWeServeDesc', 'OrbitSol supports teams that need work completed consistently inside their existing tools, templates, and service standards. The work is scoped, documented, assigned to trained operators, and managed through handpicked project leads.')}
+            {getContent('home.homeWhatWeDoDesc', 'Each OrbitSol service line follows the same delivery logic: scope the workflow, document the process, and assign trained operators.')}
           </p>
         </div>
         <div className="grid md:grid-cols-3 gap-8">
           {[
-            { title: 'Strata Management', path: '/who-we-work-with/strata-management/' },
-            { title: 'Property and Real Estate', path: '/who-we-work-with/property-and-real-estate/' },
-            { title: 'Legal & Professional Services', path: '/who-we-work-with/legal-professional-services/' },
-            { title: 'SMEs and Founder-Led Businesses', path: '/who-we-work-with/smes-founders/' },
-            { title: 'Marketing & Growth Teams', path: '/who-we-work-with/marketing-and-growth-teams/' }
+            { title: 'Property Inspection Reports', path: '/what-we-do/property-inspection-reports/', desc: 'Inspection reports, inventories, and routines produced from dictation or photos.' },
+            { title: 'Process and Automation', path: '/what-we-do/process-automation/', desc: 'SOP documentation, workflow audits, and custom dashboard build-outs.' },
+            { title: 'Digital Marketing & Creative', path: '/what-we-do/digital-marketing/', desc: 'Managed creative production including web, content, SEO, and paid media.' },
+            { title: 'Speech, Content, & Data', path: '/what-we-do/speech-content-data-intelligence/', desc: 'Audio transcription, video, and documents turned into workflow-ready outputs.' },
+            { title: 'Managed Remote Operations', path: '/what-we-do/managed-remote-operations/', desc: 'Virtual assistants and dedicated operational desks to handle your daily business admin.' }
           ].map((service) => (
             <div
               key={service.path}
@@ -2396,11 +2396,11 @@ const HomeView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => {
               <div className="flex-grow">
                 <h3 className="font-serif text-2xl font-bold text-[#081A33] mb-6 group-hover:text-[#2368D6] transition-colors">{service.title}</h3>
                 <p className="text-slate-500 text-[15px] leading-relaxed mb-10 font-sans">
-                  {getContent('home.homeSectorCardDesc', 'Dedicated offshore support tailored to your industry\'s specific workflow requirements.')}
+                  {service.desc}
                 </p>
               </div>
               <div className="flex items-center gap-2 text-[#2368D6] text-sm font-bold font-sans">
-                <span>Explore services</span>
+                <span>View Capability</span>
                 <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
               </div>
             </div>
@@ -2409,7 +2409,7 @@ const HomeView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => {
           {/* Custom Desk Card */}
           <div className="bg-[#F5F7FA] p-10 rounded-2xl flex flex-col items-center justify-center text-center shadow-[0_4px_20px_rgba(0,0,0,0.01)] border border-slate-100/50">
              <h3 className="font-serif text-2xl font-bold text-[#081A33] mb-4">
-               {getContent('home.homeCustomDeskTitle', "Don't see your sector?")}
+               {getContent('home.homeCustomDeskTitle', "Don't see your required service?")}
              </h3>
              <p className="text-slate-500 text-sm mb-10 font-sans">
                {getContent('home.homeCustomDeskDesc', 'We build custom desks for unique workflows.')}
@@ -2425,7 +2425,7 @@ const HomeView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => {
       </div>
     </section>
 
-    <section id="what-we-do" className="relative py-24 bg-[#081A33] text-white font-sans overflow-hidden">
+    <section id="who-we-serve" className="relative py-24 bg-[#081A33] text-white font-sans overflow-hidden">
       <img 
         src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2672&auto=format&fit=crop" 
         className="absolute inset-0 w-full h-full object-cover opacity-5 pointer-events-none" 
@@ -2434,21 +2434,21 @@ const HomeView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => {
       />
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         <header className="mb-20">
-          <span className="block text-white font-bold tracking-widest uppercase text-[10px] mb-6 underline decoration-white/30 underline-offset-8">What we do.</span>
+          <span className="block text-white font-bold tracking-widest uppercase text-[10px] mb-6 underline decoration-white/30 underline-offset-8">Who we serve.</span>
           <h2 className="font-serif text-3xl md:text-5xl lg:text-6xl font-bold mb-8 leading-[1.1] tracking-tight max-w-4xl">
-            {getContent('home.homeWhatWeDoTitle', 'Multiple managed workflow lines, one operating partner.')}
+            {getContent('home.homeWhoWeServeTitle', 'Built for teams whose work depends on accurate, repeatable operations.')}
           </h2>
           <p className="text-base md:text-lg text-blue-100/60 leading-relaxed max-w-3xl">
-            {getContent('home.homeWhatWeDoDesc', 'Each OrbitSol service line follows the same delivery logic: scope the workflow, document the process, and assign trained operators.')}
+            {getContent('home.homeWhoWeServeDesc', 'OrbitSol supports teams that need work completed consistently inside their existing tools, templates, and service standards. The work is scoped, documented, assigned to trained operators, and managed through handpicked project leads.')}
           </p>
         </header>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {[
-            { id: '01', title: 'Property Inspection Reports', path: '/what-we-do/property-inspection-reports/', desc: 'Inspection reports, inventories, and routines produced from dictation or photos.' },
-            { id: '02', title: 'Process and Automation', path: '/what-we-do/process-automation/', desc: 'SOP documentation, workflow audits, and custom dashboard build-outs.' },
-            { id: '03', title: 'Digital Marketing & Creative', path: '/what-we-do/digital-marketing/', desc: 'Managed creative production including web, content, SEO, and paid media.' },
-            { id: '04', title: 'Speech, Content, & Data', path: '/what-we-do/speech-content-data-intelligence/', desc: 'Audio transcription, video, and documents turned into workflow-ready outputs.' },
-            { id: '05', title: 'Managed Remote Operations', path: '/what-we-do/managed-remote-operations/', desc: 'Virtual assistants and dedicated operational desks to handle your daily business admin.' }
+            { id: '01', title: 'Strata Management', path: '/who-we-work-with/strata-management/', desc: 'Dedicated offshore support tailored to Strata Management workflow requirements.' },
+            { id: '02', title: 'Property and Real Estate', path: '/who-we-work-with/property-and-real-estate/', desc: 'Fast, secure, and compliant data entries for property developers and real estate property clerks.' },
+            { id: '03', title: 'Legal & Professional Services', path: '/who-we-work-with/legal-professional-services/', desc: 'Complete transcription and administrative assistance for legal documents and compliance reports.' },
+            { id: '04', title: 'SMEs and Founder-Led Businesses', path: '/who-we-work-with/smes-founders/', desc: 'Reliable backend support, daily bookkeeping, and process tracking options.' },
+            { id: '05', title: 'Marketing & Growth Teams', path: '/who-we-work-with/marketing-and-growth-teams/', desc: 'Media assets management, customer CRM updates, and content distribution support.' }
           ].map((item, idx) => (
             <div
               key={item.id}
@@ -2466,7 +2466,7 @@ const HomeView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => {
                 <p className="text-white/70 text-[15px] leading-relaxed mb-6 font-sans">{item.desc}</p>
               </div>
               <div className="flex items-center gap-2 text-white text-xs font-bold uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-all transform translate-x-[-10px] group-hover:translate-x-0 font-sans">
-                <span>View Capability</span>
+                <span>Explore services</span>
                 <ArrowRight size={14} />
               </div>
             </div>
