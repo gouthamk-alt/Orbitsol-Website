@@ -3730,6 +3730,8 @@ const AdminView = ({ onNavigate, onSettingsUpdate }: { onNavigate: (path: ViewPa
           <TeamManagement />
         ) : activeTab === 'testimonials' ? (
           <TestimonialsManagement />
+        ) : activeTab === 'admins' ? (
+          <AdminManagement />
         ) : activeTab === 'enquiries' ? (
           <div className="bg-white rounded-2xl shadow-sm border border-brand-warm-cream overflow-hidden">
              <div className="border-b border-brand-warm-cream bg-brand-cream/50 px-8 py-6">
