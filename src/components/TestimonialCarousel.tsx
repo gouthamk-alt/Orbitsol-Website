@@ -95,7 +95,7 @@ export const TestimonialCarousel = () => {
 
   return (
     <section className="py-24 bg-white font-sans border-t border-slate-100 overflow-hidden">
-      <div className="max-w-5xl mx-auto px-6 relative">
+      <div className="max-w-7xl mx-auto px-6 relative">
         <div className="text-center mb-16">
           <p className="text-[#2368D6] font-bold tracking-widest uppercase text-[10px] mb-4">Client Success Stories</p>
           <h2 className="font-serif text-3xl md:text-5xl font-bold text-[#081A33] tracking-tight">
@@ -111,7 +111,7 @@ export const TestimonialCarousel = () => {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -50 }}
               transition={{ duration: 0.4, ease: "easeInOut" }}
-              className="text-center max-w-3xl mx-auto px-4 md:px-12"
+              className="text-center max-w-5xl mx-auto px-4 md:px-12"
             >
               <div className="flex justify-center text-[#2368D6]/15 mb-8">
                 <Quote size={56} className="transform rotate-180" />
