@@ -98,17 +98,25 @@ export const adminService = {
       
       // Filter out drafts if requested
       if (!includeDrafts) {
-        list = list.filter(item => item.status === 'published');
+        list = list.filter(item => item.status !== 'draft');
       }
       
-      // Sort client-side by createdAt descending (fallback to date, then fallback to epoch)
+      // Sort client-side by createdAt descending (fallback to date, then fallback to epoch) with safety checks
       list.sort((a, b) => {
-        const timeA = a.createdAt?.seconds 
-          ? a.createdAt.seconds * 1000 
-          : (a.createdAt instanceof Date ? a.createdAt.getTime() : new Date(a.date || 0).getTime());
-        const timeB = b.createdAt?.seconds 
-          ? b.createdAt.seconds * 1000 
-          : (b.createdAt instanceof Date ? b.createdAt.getTime() : new Date(b.date || 0).getTime());
+        const getMs = (item: Insight) => {
+          if (item.createdAt?.seconds) return item.createdAt.seconds * 1000;
+          if (item.createdAt?.toDate) {
+            try { return item.createdAt.toDate().getTime(); } catch(e) {}
+          }
+          if (item.createdAt instanceof Date) return item.createdAt.getTime();
+          if (item.date) {
+            const parsed = Date.parse(item.date);
+            if (!isNaN(parsed)) return parsed;
+          }
+          return 0;
+        };
+        const timeA = getMs(a);
+        const timeB = getMs(b);
         return timeB - timeA;
       });
       

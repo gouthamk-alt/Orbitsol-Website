@@ -24,7 +24,7 @@ service cloud.firestore {
 
     // Insights
     match /insights/{postId} {
-      allow read: if resource.data.status == 'published' || isAdmin();
+      allow read: if !('status' in resource.data) || resource.data.status == 'published' || isAdmin();
       
       function isValidInsight(data) {
         return data.title is string && data.title.size() <= 256 &&
