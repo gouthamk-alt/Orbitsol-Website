@@ -28,7 +28,11 @@ import {
   Database,
   Globe,
   Instagram,
-  Linkedin
+  Linkedin,
+  Share2,
+  Twitter,
+  Facebook,
+  Link
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { adminService, Insight, TeamMember, Testimonial } from './services/adminService';
@@ -118,6 +122,16 @@ type ViewPath =
 // --- Utilities ---
 const getAssetUrl = (url: string) => {
   if (!url) return '';
+  
+  // Resolve WordPress hotlinking restricted images to their direct, CORS-friendly Pexels CDN hosts
+  if (typeof url === 'string' && url.includes('orbitsol.com/wp-content/uploads') && url.includes('pexels-')) {
+    const match = url.match(/pexels-.*?(\d{7,8})/);
+    if (match && match[1]) {
+      const pexelsId = match[1];
+      return `https://images.pexels.com/photos/${pexelsId}/pexels-photo-${pexelsId}.jpeg?auto=compress&cs=tinysrgb&w=1200&fit=crop`;
+    }
+  }
+
   if (url.startsWith('http') || url.startsWith('data:')) return url;
   const baseUrl = (import.meta.env.BASE_URL || '/').replace(/\/$/, '');
   
@@ -126,6 +140,17 @@ const getAssetUrl = (url: string) => {
   
   const cleanUrl = url.startsWith('/') ? url : `/${url}`;
   return `${baseUrl}${cleanUrl}`;
+};
+
+const generateSlug = (title: string): string => {
+  if (!title) return '';
+  return title
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, '') // remove non-alphanumeric except spaces/dashes
+    .replace(/\s+/g, '-')          // replace spaces with single dashes
+    .replace(/-+/g, '-')          // replace multiple dashes with single dash
+    .trim()
+    .replace(/^-+|-+$/g, '');     // trim leading/trailing dashes
 };
 
 // --- Components ---
@@ -1439,13 +1464,63 @@ const BlogSidebar = ({
   </aside>
 );
 
-const InsightsView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => {
+const InsightsView = ({ onNavigate, fallbackSlug }: { onNavigate: (path: ViewPath) => void, fallbackSlug?: string }) => {
   const { getContent } = React.useContext(SiteSettingsContext);
   const [insights, setInsights] = useState<Insight[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedInsight, setSelectedInsight] = useState<Insight | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
+
+  // Function to create a clean, shareable absolute URL for the blog post
+  const getShareUrl = () => {
+    if (!selectedInsight) return '';
+    const slug = generateSlug(selectedInsight.title);
+    return `https://orbitsol.com/${slug}/`;
+  };
+
+  const handleCopyLink = async () => {
+    const url = getShareUrl();
+    if (!url) return;
+    try {
+      await navigator.clipboard.writeText(url);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error('Failed to copy link to clipboard', err);
+    }
+  };
+
+  const handleSelectInsight = (post: Insight) => {
+    setSelectedInsight(post);
+    window.scrollTo(0, 0);
+    
+    // Update the browser's URL path and query parameters to look perfect!
+    const slug = generateSlug(post.title);
+    const base = 'Orbitsol-Website';
+    const isGitHubPages = window.location.pathname.includes(base);
+    
+    let path = `/${slug}/`;
+    if (isGitHubPages) {
+      path = `/${base}/${slug}/`;
+    }
+    
+    window.history.pushState({}, '', `${path}?id=${post.id}`);
+  };
+
+  const handleCloseInsight = () => {
+    setSelectedInsight(null);
+    
+    // Revert the URL search parameter and path back to the main insights page
+    const base = 'Orbitsol-Website';
+    const isGitHubPages = window.location.pathname.includes(base);
+    let path = '/insights';
+    if (isGitHubPages) {
+      path = `/${base}/insights`;
+    }
+    window.history.pushState({}, '', path);
+  };
 
   useEffect(() => {
     const fetchInsights = async () => {
@@ -1453,6 +1528,39 @@ const InsightsView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) 
         const data = await adminService.getInsights();
         console.log("Loaded insights from Firestore database:", data?.map(i => ({ title: i.title, image: i.image })));
         setInsights(data || []);
+
+        // A. Load deep link on mount if query string contains post ID
+        const queryParams = new URLSearchParams(window.location.search);
+        const urlId = queryParams.get('id') || queryParams.get('post');
+        if (urlId && data) {
+          const matched = data.find(i => i.id === urlId);
+          if (matched) {
+            setSelectedInsight(matched);
+            setTimeout(() => window.scrollTo(0, 0), 100);
+            return;
+          }
+        }
+
+        // B. Load deep link via fallbackSlug or pathname slug on mount
+        const currentPathname = window.location.pathname;
+        const slugToCheck = fallbackSlug || currentPathname;
+        if (slugToCheck && data) {
+          const base = 'Orbitsol-Website'.toLowerCase();
+          let cleanSlug = slugToCheck.toLowerCase();
+          if (cleanSlug.includes(base)) {
+            const index = cleanSlug.indexOf(base);
+            cleanSlug = cleanSlug.substring(index + base.length);
+          }
+          cleanSlug = cleanSlug.replace(/^\/+|\/+$/g, '');
+          
+          if (cleanSlug && cleanSlug !== 'insights') {
+            const matchedBySlug = data.find(i => generateSlug(i.title) === cleanSlug);
+            if (matchedBySlug) {
+              setSelectedInsight(matchedBySlug);
+              setTimeout(() => window.scrollTo(0, 0), 100);
+            }
+          }
+        }
       } catch (error) {
         console.error("Failed to fetch insights", error);
       } finally {
@@ -1460,7 +1568,44 @@ const InsightsView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) 
       }
     };
     fetchInsights();
-  }, []);
+  }, [fallbackSlug]);
+
+  // Listen to popstate event (browser back/forward navigation) to sync selectedInsight
+  useEffect(() => {
+    const handlePopStateSync = () => {
+      const queryParams = new URLSearchParams(window.location.search);
+      const urlId = queryParams.get('id') || queryParams.get('post');
+      
+      const currentPathname = window.location.pathname;
+      const base = 'Orbitsol-Website'.toLowerCase();
+      let cleanSlug = currentPathname.toLowerCase();
+      if (cleanSlug.includes(base)) {
+        const index = cleanSlug.indexOf(base);
+        cleanSlug = cleanSlug.substring(index + base.length);
+      }
+      cleanSlug = cleanSlug.replace(/^\/+|\/+$/g, '');
+
+      if (urlId && insights.length > 0) {
+        const matched = insights.find(i => i.id === urlId);
+        if (matched) {
+          setSelectedInsight(matched);
+          return;
+        }
+      }
+      
+      if (cleanSlug && cleanSlug !== 'insights' && insights.length > 0) {
+        const matchedBySlug = insights.find(i => generateSlug(i.title) === cleanSlug);
+        if (matchedBySlug) {
+          setSelectedInsight(matchedBySlug);
+          return;
+        }
+      }
+      
+      setSelectedInsight(null);
+    };
+    window.addEventListener('popstate', handlePopStateSync);
+    return () => window.removeEventListener('popstate', handlePopStateSync);
+  }, [insights]);
 
   const categories = Array.from(new Set(insights.map(i => i.tag))).filter(Boolean) as string[];
 
@@ -1487,7 +1632,7 @@ const InsightsView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) 
         <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-12 gap-16 w-full">
           <div className="lg:col-span-9 min-w-0 w-full overflow-hidden">
             <button 
-              onClick={() => setSelectedInsight(null)}
+              onClick={handleCloseInsight}
               className="text-[#2368D6] font-bold text-sm md:text-base uppercase tracking-[0.2em] flex items-center gap-3 mb-10 hover:translate-x-[-4px] transition-transform"
             >
               <ArrowRight className="rotate-180" size={18} /> Back to Insights
@@ -1514,18 +1659,73 @@ const InsightsView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) 
             </h1>
 
             <div 
-              className="prose prose-slate prose-lg max-w-none break-words w-full prose-headings:font-serif prose-headings:text-[#081A33] prose-h1:text-4xl prose-h2:text-3xl prose-h3:text-2xl prose-p:text-slate-600 prose-p:leading-relaxed prose-a:text-[#2368D6] prose-strong:text-[#081A33] mb-24"
+              className="prose prose-slate prose-lg max-w-none break-words w-full prose-headings:font-serif prose-headings:text-[#081A33] prose-h1:text-4xl prose-h2:text-3xl prose-h3:text-2xl prose-p:text-slate-600 prose-p:leading-relaxed prose-a:text-[#2368D6] prose-strong:text-[#081A33] mb-12"
               dangerouslySetInnerHTML={{ 
                 __html: DOMPurify.sanitize((selectedInsight.content || '').replace(/&nbsp;/g, ' ').replace(/\u00A0/g, ' ')) 
               }}
             />
+
+            {/* Social Share Panel */}
+            <div className="my-16 p-8 rounded-2xl bg-slate-50 border border-slate-100 flex flex-col md:flex-row md:items-center justify-between gap-6">
+              <div>
+                <h3 className="font-serif text-lg font-bold text-[#081A33] mb-1">Share this Insight</h3>
+                <p className="text-sm text-slate-500">Spread valuable knowledge with your colleagues and professional network.</p>
+              </div>
+              <div className="flex flex-wrap items-center gap-2.5">
+                <a
+                  href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(getShareUrl())}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 bg-white hover:bg-slate-50 border border-slate-200 hover:border-slate-300 text-slate-700 px-4 py-2 rounded-xl font-medium text-sm transition-all shadow-sm cursor-pointer"
+                >
+                  <Linkedin size={15} className="text-[#0A66C2]" />
+                  <span>LinkedIn</span>
+                </a>
+                <a
+                  href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(getShareUrl())}&text=${encodeURIComponent(selectedInsight.title)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 bg-white hover:bg-slate-50 border border-slate-200 hover:border-slate-300 text-slate-700 px-4 py-2 rounded-xl font-medium text-sm transition-all shadow-sm cursor-pointer"
+                >
+                  <Twitter size={15} className="text-black" />
+                  <span>X / Twitter</span>
+                </a>
+                <a
+                  href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(getShareUrl())}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 bg-white hover:bg-slate-50 border border-slate-200 hover:border-slate-300 text-slate-700 px-4 py-2 rounded-xl font-medium text-sm transition-all shadow-sm cursor-pointer"
+                >
+                  <Facebook size={15} className="text-[#1877F2]" />
+                  <span>Facebook</span>
+                </a>
+                <button
+                  onClick={handleCopyLink}
+                  className={`flex items-center gap-2 border px-4 py-2 rounded-xl font-medium text-sm transition-all shadow-sm cursor-pointer ${
+                    copied ? 'bg-green-50 border-green-200 text-green-700 font-semibold' : 'bg-white hover:bg-slate-50 border-slate-200 hover:border-slate-300 text-slate-700'
+                  }`}
+                >
+                  {copied ? (
+                    <>
+                      <Check size={15} className="text-green-600" />
+                      <span>Link Copied!</span>
+                    </>
+                  ) : (
+                    <>
+                      <Link size={15} className="text-slate-500" />
+                      <span>Copy Link</span>
+                    </>
+                  )}
+                </button>
+              </div>
+            </div>
 
             {/* Post Navigation */}
             <div className="pt-12 border-t border-slate-100 grid sm:grid-cols-2 gap-8">
               {prevPost ? (
                 <div 
                   className="group cursor-pointer p-10 rounded-2xl border border-slate-100 hover:border-[#FFF0E6] hover:bg-[#FFF7EA] transition-all"
-                  onClick={() => { setSelectedInsight(prevPost); window.scrollTo(0, 0); }}
+                  onClick={() => handleSelectInsight(prevPost)}
                 >
                   <p className="text-[12px] font-bold text-slate-500 uppercase tracking-[0.2em] mb-5 flex items-center gap-2">
                     <ArrowRight className="rotate-180" size={16} /> Previous Post
@@ -1537,7 +1737,7 @@ const InsightsView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) 
               {nextPost ? (
                 <div 
                   className="group cursor-pointer p-10 rounded-2xl border border-slate-100 hover:border-[#FFF0E6] hover:bg-[#FFF7EA] transition-all text-right"
-                  onClick={() => { setSelectedInsight(nextPost); window.scrollTo(0, 0); }}
+                  onClick={() => handleSelectInsight(nextPost)}
                 >
                   <p className="text-[12px] font-bold text-slate-500 uppercase tracking-[0.2em] mb-5 flex items-center gap-2 justify-end">
                     Next Post <ArrowRight size={16} />
@@ -1560,7 +1760,7 @@ const InsightsView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) 
             }}
             insights={insights}
             currentInsightId={selectedInsight.id}
-            onSelectInsight={setSelectedInsight}
+            onSelectInsight={handleSelectInsight}
             onClearFilters={clearFilters}
           />
         </div>
@@ -1606,7 +1806,7 @@ const InsightsView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) 
                   </div>
                 )}
                 {filteredInsights.map((post) => (
-                  <div key={post.id} className="group cursor-pointer pb-20 border-b border-slate-100 last:border-0" onClick={() => setSelectedInsight(post)}>
+                  <div key={post.id} className="group cursor-pointer pb-20 border-b border-slate-100 last:border-0" onClick={() => handleSelectInsight(post)}>
                     {post.image && (
                       <div className="overflow-hidden rounded-3xl mb-10 shadow-lg">
                         <img 
@@ -3383,6 +3583,19 @@ const AdminView = ({ onNavigate, onSettingsUpdate }: { onNavigate: (path: ViewPa
   const [isDeleting, setIsDeleting] = useState(false);
   const [successToast, setSuccessToast] = useState<string | null>(null);
   const [submitStatus, setSubmitStatus] = useState<'draft' | 'published'>('draft');
+  const [copiedInsightId, setCopiedInsightId] = useState<string | null>(null);
+
+  const handleCopyShareLink = async (insight: Insight) => {
+    const slug = generateSlug(insight.title);
+    const shareUrl = `https://orbitsol.com/${slug}/`;
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      setCopiedInsightId(insight.id || null);
+      setTimeout(() => setCopiedInsightId(null), 2000);
+    } catch (err) {
+      console.error('Failed to copy share link', err);
+    }
+  };
 
   // Auto-clear success toast
   useEffect(() => {
@@ -3810,6 +4023,17 @@ const AdminView = ({ onNavigate, onSettingsUpdate }: { onNavigate: (path: ViewPa
                        </td>
                        <td className="px-8 py-5 text-right">
                          <div className="flex justify-end gap-2">
+                            <button 
+                               onClick={() => handleCopyShareLink(insight)}
+                               className={`p-2 rounded-lg transition-all flex items-center justify-center \${
+                                 copiedInsightId === insight.id 
+                                   ? 'text-green-600 bg-green-50' 
+                                   : 'text-slate-400 hover:text-green-500 hover:bg-slate-50'
+                               }`}
+                               title={insight.status === 'published' ? "Copy shareable live blog link for socials" : "Copy preview slug link"}
+                            >
+                              {copiedInsightId === insight.id ? <Check size={16} /> : <Link size={16} />}
+                            </button>
                            <button 
                               onClick={() => { setEditingInsight(insight); setIsFormOpen(true); }}
                               className="p-2 text-slate-400 hover:text-brand-blue transition-colors"
@@ -4705,7 +4929,12 @@ export default function App() {
   useEffect(() => {
     // Handle initial potentially deep path on load
     const initial = getInitialPath();
-    if (initial !== currentPath) {
+    const queryParams = new URLSearchParams(window.location.search);
+    const hasPostId = queryParams.has('id') || queryParams.has('post');
+    
+    if (hasPostId && initial !== '/insights') {
+      setCurrentPath('/insights');
+    } else if (initial !== currentPath) {
       setCurrentPath(initial);
     }
   }, []);
@@ -4855,6 +5084,9 @@ export default function App() {
       case '/contact':
         return <ContactView onNavigate={onNavigate} />;
       default:
+        if (finalPath && finalPath !== '/' && finalPath !== '/index.html') {
+          return <InsightsView fallbackSlug={finalPath} onNavigate={onNavigate} />;
+        }
         return (
           <div className="py-32 text-center max-w-2xl mx-auto min-h-[60vh] font-sans">
             <h2 className="text-4xl font-serif text-brand-deep-navy mb-4">Page Currently in Build</h2>
