@@ -4642,15 +4642,8 @@ const PropertyInspectionView = ({ onNavigate }: { onNavigate: (path: ViewPath) =
              <div className="absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-[#F5F7FA]/90 to-transparent z-10 pointer-events-none" />
              <div className="absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-[#F5F7FA]/90 to-transparent z-10 pointer-events-none" />
 
-             <motion.div 
-               className="flex gap-16 items-center w-max"
-               animate={{ x: ["0%", "-50%"] }}
-               transition={{
-                 ease: "linear",
-                 duration: 25,
-                 repeat: Infinity,
-                 repeatType: "loop"
-               }}
+             <div 
+               className="flex gap-16 items-center w-max animate-marquee pause-on-hover"
              >
                 {[
                   ...[
@@ -4679,7 +4672,7 @@ const PropertyInspectionView = ({ onNavigate }: { onNavigate: (path: ViewPath) =
                      />
                   </div>
                 ))}
-             </motion.div>
+             </div>
           </div>
           <div className="hidden">
              {[

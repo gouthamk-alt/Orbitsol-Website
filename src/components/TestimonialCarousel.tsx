@@ -45,6 +45,7 @@ export const TestimonialCarousel = () => {
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
     const fetchTestimonials = async () => {
@@ -66,12 +67,12 @@ export const TestimonialCarousel = () => {
   }, []);
 
   useEffect(() => {
-    if (testimonials.length <= 1) return;
+    if (testimonials.length <= 1 || isHovered) return;
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev === testimonials.length - 1 ? 0 : prev + 1));
-    }, 5000);
+    }, 6000); // 6 seconds
     return () => clearInterval(interval);
-  }, [testimonials.length, currentIndex]);
+  }, [testimonials.length, currentIndex, isHovered]);
 
   const handlePrev = () => {
     setCurrentIndex((prev) => (prev === 0 ? testimonials.length - 1 : prev - 1));
@@ -94,7 +95,11 @@ export const TestimonialCarousel = () => {
   const current = testimonials[currentIndex];
 
   return (
-    <section className="py-24 bg-white font-sans border-t border-slate-100 overflow-hidden">
+    <section 
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      className="py-24 bg-white font-sans border-t border-slate-100 overflow-hidden"
+    >
       <div className="max-w-7xl mx-auto px-6 relative">
         <div className="text-center mb-16">
           <p className="text-[#2368D6] font-bold tracking-widest uppercase text-[10px] mb-4">Client Success Stories</p>
