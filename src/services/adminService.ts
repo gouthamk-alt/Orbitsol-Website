@@ -92,14 +92,35 @@ export const adminService = {
   async getInsights(includeDrafts = false) {
     const path = 'insights';
     try {
-      let q = query(collection(db, path), orderBy('createdAt', 'desc'));
+      // Fetch all docs to avoid missing index errors and be robust against missing/null properties
+      const snapshot = await getDocs(collection(db, path));
+      let list = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Insight));
+      
+      // Filter out drafts if requested
       if (!includeDrafts) {
-        q = query(collection(db, path), where('status', '==', 'published'), orderBy('createdAt', 'desc'));
+        list = list.filter(item => item.status === 'published');
       }
-      const snapshot = await getDocs(q);
-      return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Insight));
+      
+      // Sort client-side by createdAt descending (fallback to date, then fallback to epoch)
+      list.sort((a, b) => {
+        const timeA = a.createdAt?.seconds 
+          ? a.createdAt.seconds * 1000 
+          : (a.createdAt instanceof Date ? a.createdAt.getTime() : new Date(a.date || 0).getTime());
+        const timeB = b.createdAt?.seconds 
+          ? b.createdAt.seconds * 1000 
+          : (b.createdAt instanceof Date ? b.createdAt.getTime() : new Date(b.date || 0).getTime());
+        return timeB - timeA;
+      });
+      
+      return list;
     } catch (error) {
-      handleFirestoreError(error, OperationType.LIST, path);
+      console.warn("getInsights failed with primary strategy, using raw fallback", error);
+      try {
+        const snapshot = await getDocs(collection(db, path));
+        return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Insight));
+      } catch (innerError) {
+        handleFirestoreError(innerError, OperationType.LIST, path);
+      }
     }
   },
 

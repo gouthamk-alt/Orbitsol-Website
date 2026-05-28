@@ -1648,9 +1648,16 @@ const InsightsView = ({ onNavigate, fallbackSlug }: { onNavigate: (path: ViewPat
             )}
             
             <div className="flex items-center gap-6 mb-8">
-              <span className="px-4 py-2 bg-[#FFF0E6] text-orange-600 text-[12px] font-bold rounded-lg uppercase tracking-[0.2em]">
+              <button 
+                onClick={() => {
+                  setSelectedCategory(selectedInsight.tag || null);
+                  handleCloseInsight();
+                }}
+                className="px-4 py-2 bg-[#FFF0E6] text-orange-600 hover:bg-orange-100/80 transition-colors text-[12px] font-bold rounded-lg uppercase tracking-[0.2em] cursor-pointer"
+                title={`Filter by ${selectedInsight.tag}`}
+              >
                 {selectedInsight.tag}
-              </span>
+              </button>
               <span className="text-slate-500 text-sm md:text-base font-medium">{selectedInsight.date}</span>
             </div>
 
@@ -1783,6 +1790,26 @@ const InsightsView = ({ onNavigate, fallbackSlug }: { onNavigate: (path: ViewPat
       </section>
 
       <section className="py-24 bg-white font-sans min-h-[400px] overflow-x-hidden w-full">
+        <div className="max-w-7xl mx-auto px-6 w-full mb-12">
+          <div className="flex flex-wrap items-center gap-3 border-b border-slate-100 pb-8">
+            <span className="text-xs font-bold uppercase tracking-widest text-[#081A33] opacity-65 mr-2">Tags / Categories:</span>
+            <button 
+              onClick={clearFilters}
+              className={`px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all border cursor-pointer ${!selectedCategory ? 'bg-[#081A33] text-white border-[#081A33] shadow-sm' : 'bg-slate-50 text-[#081A33] border-slate-200 hover:bg-slate-100'}`}
+            >
+              All
+            </button>
+            {categories.map((cat) => (
+              <button 
+                key={cat}
+                onClick={() => setSelectedCategory(cat)}
+                className={`px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all border cursor-pointer ${selectedCategory === cat ? 'bg-[#2368D6] text-white border-[#2368D6] shadow-sm' : 'bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100 hover:text-[#2368D6]'}`}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+        </div>
         <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-12 gap-16 w-full">
           <div className="lg:col-span-9 min-w-0 w-full overflow-hidden">
             {loading ? (
@@ -1818,7 +1845,17 @@ const InsightsView = ({ onNavigate, fallbackSlug }: { onNavigate: (path: ViewPat
                       </div>
                     )}
                     <div className="flex items-center gap-5 mb-6">
-                      <span className="text-[#2368D6] font-bold text-[10px] uppercase tracking-[0.2em]">{post.tag}</span>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedCategory(post.tag || null);
+                          window.scrollTo(0, 0);
+                        }}
+                        className="text-[#2368D6] bg-blue-50/50 hover:bg-[#FFF0E6] hover:text-orange-600 px-3 py-1 rounded-md transition-colors font-bold text-[10px] uppercase tracking-[0.2em] cursor-pointer"
+                        title={`Filter by ${post.tag}`}
+                      >
+                        {post.tag}
+                      </button>
                       <span className="w-1.5 h-1.5 rounded-full bg-slate-200"></span>
                       <span className="text-slate-500 text-sm font-medium">{post.date}</span>
                     </div>
@@ -3760,13 +3797,23 @@ const AdminView = ({ onNavigate, onSettingsUpdate }: { onNavigate: (path: ViewPa
   }, [isAdmin]);
 
   const fetchInsights = async () => {
-    const data = await adminService.getInsights(true);
-    setInsights(data || []);
+    try {
+      const data = await adminService.getInsights(true);
+      setInsights(data || []);
+    } catch (error) {
+      console.error("Error fetching insights in AdminView:", error);
+      setInsights([]);
+    }
   };
 
   const fetchEnquiries = async () => {
-    const data = await adminService.getEnquiries();
-    setEnquiries(data || []);
+    try {
+      const data = await adminService.getEnquiries();
+      setEnquiries(data || []);
+    } catch (error) {
+      console.error("Error fetching enquiries in AdminView:", error);
+      setEnquiries([]);
+    }
   };
 
   const handleLogin = async () => {
@@ -4025,7 +4072,7 @@ const AdminView = ({ onNavigate, onSettingsUpdate }: { onNavigate: (path: ViewPa
                          <div className="flex justify-end gap-2">
                             <button 
                                onClick={() => handleCopyShareLink(insight)}
-                               className={`p-2 rounded-lg transition-all flex items-center justify-center \${
+                               className={`p-2 rounded-lg transition-all flex items-center justify-center ${
                                  copiedInsightId === insight.id 
                                    ? 'text-green-600 bg-green-50' 
                                    : 'text-slate-400 hover:text-green-500 hover:bg-slate-50'
