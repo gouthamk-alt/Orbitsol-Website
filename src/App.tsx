@@ -4609,6 +4609,7 @@ const PropertyInspectionView = ({ onNavigate }: { onNavigate: (path: ViewPath) =
                   ...[
                     { name: "InventoryBase", logo: "/logo-inventorybase.jpg" },
                     { name: "Inspection Express", logo: "/logo-inspectionexpress.jpg" },
+                     { name: "Inspection Manager", logo: "/logo-inspectionmanager.png" },
                     { name: "PropertyMe", logo: "/logo-propertyme.jpg" },
                     { name: "Kaptur", logo: "/logo-kaptur.jpg" },
                     { name: "MRI Software", logo: "/logo-mrisoftware.webp" }
@@ -4616,6 +4617,7 @@ const PropertyInspectionView = ({ onNavigate }: { onNavigate: (path: ViewPath) =
                   ...[
                     { name: "InventoryBase", logo: "/logo-inventorybase.jpg" },
                     { name: "Inspection Express", logo: "/logo-inspectionexpress.jpg" },
+                     { name: "Inspection Manager", logo: "/logo-inspectionmanager.png" },
                     { name: "PropertyMe", logo: "/logo-propertyme.jpg" },
                     { name: "Kaptur", logo: "/logo-kaptur.jpg" },
                     { name: "MRI Software", logo: "/logo-mrisoftware.webp" }
@@ -4636,6 +4638,7 @@ const PropertyInspectionView = ({ onNavigate }: { onNavigate: (path: ViewPath) =
              {[
                { name: "InventoryBase", logo: "/logo-inventorybase.jpg" },
                { name: "Inspection Express", logo: "/logo-inspectionexpress.jpg" },
+                     { name: "Inspection Manager", logo: "/logo-inspectionmanager.png" },
                { name: "PropertyMe", logo: "/logo-propertyme.jpg" },
                { name: "Kaptur", logo: "/logo-kaptur.jpg" },
                { name: "MRI Software", logo: "/logo-mrisoftware.webp" }
