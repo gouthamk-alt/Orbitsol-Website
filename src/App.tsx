@@ -1420,7 +1420,7 @@ const BlogSidebar = ({
             <div className="flex gap-4">
               {post.image && (
                 <div className="w-20 h-20 flex-shrink-0">
-                  <img src={post.image} alt="" className="w-full h-full object-cover rounded-lg" referrerPolicy="no-referrer" />
+                  <img src={getAssetUrl(post.image)} alt="" className="w-full h-full object-cover rounded-lg" referrerPolicy="no-referrer" />
                 </div>
               )}
               <div>
@@ -1451,6 +1451,7 @@ const InsightsView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) 
     const fetchInsights = async () => {
       try {
         const data = await adminService.getInsights();
+        console.log("Loaded insights from Firestore database:", data?.map(i => ({ title: i.title, image: i.image })));
         setInsights(data || []);
       } catch (error) {
         console.error("Failed to fetch insights", error);
@@ -1494,7 +1495,7 @@ const InsightsView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) 
             
             {selectedInsight.image && (
               <img 
-                src={selectedInsight.image} 
+                src={getAssetUrl(selectedInsight.image)} 
                 alt={selectedInsight.title} 
                 className="w-full aspect-[21/9] object-cover rounded-3xl mb-12 shadow-sm"
                 referrerPolicy="no-referrer"
@@ -1609,7 +1610,7 @@ const InsightsView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) 
                     {post.image && (
                       <div className="overflow-hidden rounded-3xl mb-10 shadow-lg">
                         <img 
-                          src={post.image} 
+                          src={getAssetUrl(post.image)} 
                           alt={post.title} 
                           className="w-full aspect-[21/9] object-cover mix-blend-multiply group-hover:scale-[1.02] transition-transform duration-700"
                           referrerPolicy="no-referrer"
@@ -1927,7 +1928,7 @@ const AboutView = ({ onNavigate }: { onNavigate: (path: ViewPath) => void }) => 
             <div key={member.id || idx} className="text-center group">
                <div className="w-full aspect-square bg-[#FFF7EA] rounded-full mb-6 border border-[#FFF0E6] flex items-center justify-center transition-all overflow-hidden shadow-sm group-hover:scale-[1.02]">
                   {member.photo ? (
-                    <img src={member.photo} alt={member.name} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                    <img src={getAssetUrl(member.photo)} alt={member.name} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
                   ) : (
                     <span className="text-[#2368D6] opacity-10"><FileText size={64} /></span>
                   )}
@@ -3150,7 +3151,7 @@ const TeamManagement = () => {
             <div key={member.id} className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex flex-col items-center text-center group hover:shadow-md transition-all">
               <div className="w-24 h-24 rounded-full overflow-hidden mb-4 bg-slate-100 border border-slate-100 ring-4 ring-slate-50 group-hover:ring-blue-50 transition-all">
                 {member.photo ? (
-                  <img src={member.photo} alt={member.name} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                  <img src={getAssetUrl(member.photo)} alt={member.name} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center text-slate-300">
                     <span className="text-xs font-bold opacity-30">{member.name.split(' ').map(n => n[0]).join('')}</span>
