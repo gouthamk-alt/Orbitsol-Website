@@ -1499,7 +1499,7 @@ const InsightsView = ({ onNavigate, fallbackSlug }: { onNavigate: (path: ViewPat
     // Update the browser's URL path and query parameters to look perfect!
     const slug = generateSlug(post.title);
     const base = 'Orbitsol-Website';
-    const isGitHubPages = window.location.pathname.includes(base);
+    const isGitHubPages = window.location.pathname.toLowerCase().includes('orbitsol-website');
     
     let path = `/${slug}/`;
     if (isGitHubPages) {
@@ -1514,7 +1514,7 @@ const InsightsView = ({ onNavigate, fallbackSlug }: { onNavigate: (path: ViewPat
     
     // Revert the URL search parameter and path back to the main insights page
     const base = 'Orbitsol-Website';
-    const isGitHubPages = window.location.pathname.includes(base);
+    const isGitHubPages = window.location.pathname.toLowerCase().includes('orbitsol-website');
     let path = '/insights';
     if (isGitHubPages) {
       path = `/${base}/insights`;
@@ -5010,13 +5010,15 @@ export default function App() {
 
   const onNavigate = (path: ViewPath) => {
     const base = 'Orbitsol-Website';
+    const isGitHubPagesSubpath = window.location.pathname.toLowerCase().includes('orbitsol-website');
     
     if (path.startsWith('/#')) {
       // Internal scrolling
       const id = path.replace('/#', '');
       if (currentPath !== '/') {
         setCurrentPath('/');
-        window.history.pushState({}, '', `${base}/#${id}`);
+        const hashPath = isGitHubPagesSubpath ? `/${base}/#${id}` : `/#${id}`;
+        window.history.pushState({}, '', hashPath);
         setTimeout(() => {
           document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
         }, 100);
@@ -5036,9 +5038,8 @@ export default function App() {
       
       // Update URL for refreshes to work on GitHub Pages
       const cleanTargetPath = targetPath.startsWith('/') ? targetPath : '/' + targetPath;
-      const normalizedBase = base.replace(/^\/+/, '').replace(/\/+$/, '');
-      const fullPath = normalizedBase.length > 0 
-        ? (cleanTargetPath === '/' ? `/${normalizedBase}/` : `/${normalizedBase}${cleanTargetPath}`)
+      const fullPath = isGitHubPagesSubpath 
+        ? (cleanTargetPath === '/' ? `/${base}/` : `/${base}${cleanTargetPath}`)
         : cleanTargetPath;
       window.history.pushState({}, '', fullPath);
     }
