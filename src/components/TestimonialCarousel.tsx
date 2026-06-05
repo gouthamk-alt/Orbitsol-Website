@@ -125,12 +125,39 @@ export const TestimonialCarousel = () => {
                 "{current.quote}"
               </blockquote>
               <div className="pt-4">
-                <cite className="not-italic block font-bold text-base text-[#081A33] font-sans">
-                  {current.author}
-                </cite>
-                <span className="text-slate-500 text-sm font-sans">
-                  {current.role} &mdash; <strong className="font-semibold text-[#2368D6]">{current.company}</strong>
-                </span>
+                {current.author?.trim() ? (
+                  <>
+                    <cite className="not-italic block font-bold text-base text-[#081A33] font-sans">
+                      {current.author}
+                    </cite>
+                    <span className="text-slate-500 text-sm font-sans block mt-1">
+                      {current.role?.trim() && current.company?.trim() ? (
+                        <>
+                          {current.role} &mdash; <strong className="font-semibold text-[#2368D6]">{current.company}</strong>
+                        </>
+                      ) : current.role?.trim() ? (
+                        current.role
+                      ) : current.company?.trim() ? (
+                        <strong className="font-semibold text-[#2368D6]">{current.company}</strong>
+                      ) : null}
+                    </span>
+                  </>
+                ) : current.role?.trim() ? (
+                  <>
+                    <cite className="not-italic block font-bold text-base text-[#081A33] font-sans">
+                      {current.role}
+                    </cite>
+                    {current.company?.trim() && (
+                      <span className="text-slate-500 text-sm font-sans block mt-1">
+                        <strong className="font-semibold text-[#2368D6]">{current.company}</strong>
+                      </span>
+                    )}
+                  </>
+                ) : current.company?.trim() ? (
+                  <cite className="not-italic block font-bold text-base text-[#2368D6] font-sans">
+                    {current.company}
+                  </cite>
+                ) : null}
               </div>
             </motion.div>
           </AnimatePresence>

@@ -100,14 +100,18 @@ export const TestimonialsManagement = () => {
     try {
       setSubmitting(true);
       const formData = new FormData(e.currentTarget);
-      const quote = formData.get('quote') as string;
-      const author = formData.get('author') as string;
-      const role = formData.get('role') as string;
-      const company = formData.get('company') as string;
+      const quote = (formData.get('quote') as string || '').trim();
+      const author = (formData.get('author') as string || '').trim();
+      const role = (formData.get('role') as string || '').trim();
+      const company = (formData.get('company') as string || '').trim();
       const order = Number(formData.get('order')) || (testimonials.length + 1);
 
-      if (!quote || !author || !role || !company) {
-        alert("Please fill out all fields.");
+      if (!quote) {
+        alert("Please fill out the Quote field.");
+        return;
+      }
+      if (!company) {
+        alert("Please fill out the Company Name field.");
         return;
       }
 
@@ -231,8 +235,12 @@ export const TestimonialsManagement = () => {
                       </p>
                     </td>
                     <td className="px-8 py-5">
-                      <div className="font-bold text-[#081A33] text-sm">{item.author}</div>
-                      <div className="text-slate-400 text-xs mt-0.5">{item.role}</div>
+                      <div className="font-bold text-[#081A33] text-sm">
+                        {item.author.trim() ? item.author : <span className="text-slate-400 font-normal italic">Anonymous / Undisclosed</span>}
+                      </div>
+                      <div className="text-slate-400 text-xs mt-0.5">
+                        {item.role.trim() ? item.role : <span className="text-slate-300 italic">No job title/role specified</span>}
+                      </div>
                     </td>
                     <td className="px-8 py-5">
                       <div className="text-xs font-bold text-[#2368D6] uppercase tracking-wider">{item.company}</div>
@@ -317,13 +325,14 @@ export const TestimonialsManagement = () => {
 
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <label className="text-xs font-bold text-slate-400 uppercase tracking-widest block">Author Name</label>
+                      <label className="text-xs font-bold text-slate-400 uppercase tracking-widest block">
+                        Author Name <span className="text-[10px] text-slate-400 font-normal lowercase italic">(Optional)</span>
+                      </label>
                       <input
                         name="author"
                         defaultValue={editingTestimonial.author}
-                        required
                         className="w-full p-4 bg-slate-50 border border-slate-100 rounded-xl outline-none focus:border-[#2368D6] transition-all text-sm"
-                        placeholder="e.g. Jane Doe"
+                        placeholder="Leave blank to remain anonymous"
                       />
                     </div>
                     <div className="space-y-2">
@@ -341,13 +350,14 @@ export const TestimonialsManagement = () => {
 
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <label className="text-xs font-bold text-slate-400 uppercase tracking-widest block">Job Title / Role</label>
+                      <label className="text-xs font-bold text-slate-400 uppercase tracking-widest block">
+                        Job Title / Role <span className="text-[10px] text-slate-400 font-normal lowercase italic">(Optional)</span>
+                      </label>
                       <input
                         name="role"
                         defaultValue={editingTestimonial.role}
-                        required
                         className="w-full p-4 bg-slate-50 border border-slate-100 rounded-xl outline-none focus:border-[#2368D6] transition-all text-sm"
-                        placeholder="e.g. CEO"
+                        placeholder="Leave blank if not applicable"
                       />
                     </div>
                     <div className="space-y-2">
