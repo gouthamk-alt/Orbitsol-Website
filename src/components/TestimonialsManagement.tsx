@@ -50,6 +50,14 @@ export const TestimonialsManagement = () => {
   const [testimonialToDelete, setTestimonialToDelete] = useState<Testimonial | null>(null);
   const [successToast, setSuccessToast] = useState<string | null>(null);
 
+  // Sector capability quote state
+  const [sectorLoading, setSectorLoading] = useState(false);
+  const [sectorSaving, setSectorSaving] = useState(false);
+  const [sectorPill, setSectorPill] = useState('');
+  const [sectorQuote, setSectorQuote] = useState('');
+  const [sectorAuthor, setSectorAuthor] = useState('');
+  const [sectorCompany, setSectorCompany] = useState('');
+
   useEffect(() => {
     if (successToast) {
       const timer = setTimeout(() => setSuccessToast(null), 4000);
@@ -59,7 +67,52 @@ export const TestimonialsManagement = () => {
 
   useEffect(() => {
     fetchTestimonials();
+    fetchSectorCapability();
   }, []);
+
+  const fetchSectorCapability = async () => {
+    try {
+      setSectorLoading(true);
+      const servicesSettings = await adminService.getSettings('services');
+      if (servicesSettings) {
+        setSectorPill(servicesSettings.strataSectorPill || 'Sector Capability');
+        setSectorQuote(servicesSettings.strataSectorQuote || "OrbitSol's strata associates operate as an extension of our portfolio management team, working directly in our systems to handle the administrative volume that previously overwhelmed our strata managers.");
+        setSectorAuthor(servicesSettings.strataSectorAuthor || 'Strata Principal');
+        setSectorCompany(servicesSettings.strataSectorCompany || 'Strata Management Group');
+      } else {
+        setSectorPill('Sector Capability');
+        setSectorQuote("OrbitSol's strata associates operate as an extension of our portfolio management team, working directly in our systems to handle the administrative volume that previously overwhelmed our strata managers.");
+        setSectorAuthor('Strata Principal');
+        setSectorCompany('Strata Management Group');
+      }
+    } catch (e) {
+      console.error("Error loading sector capability settings", e);
+    } finally {
+      setSectorLoading(false);
+    }
+  };
+
+  const handleSaveSectorCapability = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      setSectorSaving(true);
+      const existingSettings = await adminService.getSettings('services') || {};
+      const updated = {
+        ...existingSettings,
+        strataSectorPill: sectorPill,
+        strataSectorQuote: sectorQuote,
+        strataSectorAuthor: sectorAuthor,
+        strataSectorCompany: sectorCompany
+      };
+      await adminService.updateSettings('services', updated);
+      setSuccessToast("Strata sector capability quote saved successfully!");
+    } catch (e) {
+      console.error("Error saving sector capability", e);
+      alert("Failed to save sector capability settings. Check console.");
+    } finally {
+      setSectorSaving(false);
+    }
+  };
 
   const fetchTestimonials = async () => {
     try {
@@ -277,6 +330,83 @@ export const TestimonialsManagement = () => {
           </div>
         </div>
       )}
+
+      {/* Sector Capability Dynamic Section Settings */}
+      <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-8">
+        <div className="flex items-center gap-3 mb-6">
+          <div className="p-2.5 bg-blue-50 text-[#2368D6] rounded-xl animate-pulse">
+            <Quote size={20} />
+          </div>
+          <div>
+            <h3 className="font-serif text-base font-bold text-[#081A33]">Strata Sector Capability Quote</h3>
+            <p className="text-xs text-slate-500">Edit the large dedicated quote featured prominently on the Strata Management page.</p>
+          </div>
+        </div>
+
+        {sectorLoading ? (
+          <div className="py-8 flex justify-center">
+            <div className="w-6 h-6 border-2 border-[#2368D6] border-t-transparent rounded-full animate-spin"></div>
+          </div>
+        ) : (
+          <form onSubmit={handleSaveSectorCapability} className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <label className="text-xs font-bold text-slate-400 uppercase tracking-widest block font-sans">Section Label / Pill</label>
+                <input
+                  type="text"
+                  value={sectorPill}
+                  onChange={(e) => setSectorPill(e.target.value)}
+                  className="w-full p-4 bg-slate-50 border border-slate-100 rounded-xl outline-none focus:border-[#2368D6] transition-all text-sm font-sans"
+                  placeholder="e.g. Sector Capability"
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-xs font-bold text-slate-400 uppercase tracking-widest block font-sans">Author Name / Role</label>
+                <input
+                  type="text"
+                  value={sectorAuthor}
+                  onChange={(e) => setSectorAuthor(e.target.value)}
+                  className="w-full p-4 bg-slate-50 border border-slate-100 rounded-xl outline-none focus:border-[#2368D6] transition-all text-sm font-sans"
+                  placeholder="e.g. Strata Principal"
+                />
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-xs font-bold text-slate-400 uppercase tracking-widest block font-sans">Quote Text</label>
+              <textarea
+                value={sectorQuote}
+                onChange={(e) => setSectorQuote(e.target.value)}
+                rows={3}
+                className="w-full p-4 bg-slate-50 border border-slate-100 rounded-xl outline-none focus:border-[#2368D6] transition-all text-sm leading-relaxed font-sans"
+                placeholder="Quote text..."
+              />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-end">
+              <div className="space-y-2">
+                <label className="text-xs font-bold text-slate-400 uppercase tracking-widest block font-sans">Company Name</label>
+                <input
+                  type="text"
+                  value={sectorCompany}
+                  onChange={(e) => setSectorCompany(e.target.value)}
+                  className="w-full p-4 bg-slate-50 border border-slate-100 rounded-xl outline-none focus:border-[#2368D6] transition-all text-sm font-sans"
+                  placeholder="e.g. Strata Management Group"
+                />
+              </div>
+              <div className="flex justify-end">
+                <button
+                  type="submit"
+                  disabled={sectorSaving}
+                  className="bg-[#2368D6] hover:opacity-90 disabled:opacity-50 text-white px-6 py-4 rounded-xl font-bold uppercase tracking-widest text-xs shadow-md transition-all flex items-center gap-2 cursor-pointer w-full md:w-auto justify-center font-sans"
+                >
+                  {sectorSaving ? 'Saving...' : 'Save Sector Capability'}
+                </button>
+              </div>
+            </div>
+          </form>
+        )}
+      </div>
 
       {/* Editor Modal */}
       <AnimatePresence>

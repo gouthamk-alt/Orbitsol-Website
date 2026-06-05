@@ -1083,16 +1083,22 @@ const StrataManagementView = ({ onNavigate }: { onNavigate: (path: ViewPath) => 
     <section className="py-24 bg-white font-sans overflow-hidden">
        <div className="max-w-4xl mx-auto px-6 text-center">
           <div className="inline-block p-1 bg-slate-100 rounded-full mb-8">
-             <div className="px-6 py-2 bg-white border border-slate-200 rounded-full text-[10px] font-bold text-[#2368D6] uppercase tracking-[0.2em]">Sector Capability</div>
+             <div className="px-6 py-2 bg-white border border-slate-200 rounded-full text-[10px] font-bold text-[#2368D6] uppercase tracking-[0.2em]">
+                {getContent('services.strataSectorPill', 'Sector Capability')}
+             </div>
           </div>
           <p className="text-xl md:text-2xl font-serif text-[#081A33] leading-snug italic mb-10">
-             "OrbitSol's strata associates operate as an extension of our portfolio management team, working directly in our systems to handle the administrative volume that previously overwhelmed our strata managers."
+             "{getContent('services.strataSectorQuote', "OrbitSol's strata associates operate as an extension of our portfolio management team, working directly in our systems to handle the administrative volume that previously overwhelmed our strata managers.")}"
           </p>
           <div className="flex items-center justify-center gap-4">
              <div className="w-12 h-12 rounded-full bg-slate-200"></div>
              <div className="text-left">
-                <div className="font-bold text-[#081A33] text-base">Strata Principal</div>
-                <div className="text-slate-400 text-xs tracking-widest uppercase">Strata Management Group</div>
+                <div className="font-bold text-[#081A33] text-base">
+                   {getContent('services.strataSectorAuthor', 'Strata Principal')}
+                </div>
+                <div className="text-slate-400 text-xs tracking-widest uppercase">
+                   {getContent('services.strataSectorCompany', 'Strata Management Group')}
+                </div>
              </div>
           </div>
        </div>
@@ -3740,6 +3746,10 @@ const AdminView = ({ onNavigate, onSettingsUpdate }: { onNavigate: (path: ViewPa
           { id: 'propertyHeroDesc', label: 'Property & Real Estate Hero Description', type: 'textarea', default: 'OrbitSol supports lettings agencies, property inventory and inspection firms, and real estate agencies through a single managed offshore desk.' },
           { id: 'strataHeroTitle', label: 'Strata Management Hero Title', type: 'text', default: 'A managed offshore strata desk that understands the pressure.' },
           { id: 'strataHeroDesc', label: 'Strata Management Hero Description', type: 'textarea', default: 'OrbitSol supports strata firms with correspondence, meeting preparation, and file management.' },
+          { id: 'strataSectorPill', label: 'Strata Page Sector Capability Pill', type: 'text', default: 'Sector Capability' },
+          { id: 'strataSectorQuote', label: 'Strata Page Sector Capability Quote', type: 'textarea', default: "OrbitSol's strata associates operate as an extension of our portfolio management team, working directly in our systems to handle the administrative volume that previously overwhelmed our strata managers." },
+          { id: 'strataSectorAuthor', label: 'Strata Page Sector Capability Author Name', type: 'text', default: 'Strata Principal' },
+          { id: 'strataSectorCompany', label: 'Strata Page Sector Capability Company/Group', type: 'text', default: 'Strata Management Group' },
           { id: 'legalHeroTitle', label: 'Legal Services Hero Title', type: 'text', default: 'A reliable second pair of hands for professional services firms.' },
           { id: 'legalHeroDesc', label: 'Legal Services Hero Description', type: 'textarea', default: 'OrbitSol supports firms with transcription, file preparation, matter administration, data entry, and document support when they need capacity without adding salary, space, and daily supervision.' },
           { id: 'smeHeroTitle', label: 'SME Support Hero Title', type: 'text', default: 'Hire a virtual chief of staff.' },
