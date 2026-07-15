@@ -123,6 +123,30 @@ type ViewPath =
 const getAssetUrl = (url: string) => {
   if (!url) return '';
   
+  // Resolve Google Drive URLs to the stable, direct, cookie-free lh3.googleusercontent.com/d/{id} embed format
+  if (typeof url === 'string') {
+    const isGDrive = url.includes('drive.google.com') || url.includes('docs.google.com');
+    if (isGDrive) {
+      let fileId = '';
+      
+      // Match /file/d/{id} format
+      const fileDMatch = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+      if (fileDMatch && fileDMatch[1]) {
+        fileId = fileDMatch[1];
+      } else {
+        // Match id={id} query parameter
+        const idMatch = url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+        if (idMatch && idMatch[1]) {
+          fileId = idMatch[1];
+        }
+      }
+
+      if (fileId) {
+        return `https://lh3.googleusercontent.com/d/${fileId}`;
+      }
+    }
+  }
+
   // Resolve WordPress hotlinking restricted images to their direct, CORS-friendly Pexels CDN hosts
   if (typeof url === 'string' && url.includes('orbitsol.com/wp-content/uploads') && url.includes('pexels-')) {
     const match = url.match(/pexels-.*?(\d{7,8})/);
