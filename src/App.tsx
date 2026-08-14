@@ -32,7 +32,8 @@ import {
   Share2,
   Twitter,
   Facebook,
-  Link
+  Link,
+  Upload
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { adminService, Insight, TeamMember, Testimonial } from './services/adminService';
@@ -1669,12 +1670,14 @@ const InsightsView = ({ onNavigate, fallbackSlug }: { onNavigate: (path: ViewPat
             </button>
             
             {selectedInsight.image && (
-              <img 
-                src={getAssetUrl(selectedInsight.image)} 
-                alt={selectedInsight.title} 
-                className="w-full aspect-[21/9] object-cover rounded-3xl mb-12 shadow-sm"
-                referrerPolicy="no-referrer"
-              />
+              <div className="w-full overflow-hidden rounded-3xl mb-12 shadow-sm border border-slate-100 bg-white">
+                <img 
+                  src={getAssetUrl(selectedInsight.image)} 
+                  alt={selectedInsight.title} 
+                  className="w-full h-auto block rounded-3xl"
+                  referrerPolicy="no-referrer"
+                />
+              </div>
             )}
             
             <div className="flex items-center gap-6 mb-8">
@@ -1865,11 +1868,11 @@ const InsightsView = ({ onNavigate, fallbackSlug }: { onNavigate: (path: ViewPat
                 {filteredInsights.map((post) => (
                   <div key={post.id} className="group cursor-pointer pb-20 border-b border-slate-100 last:border-0" onClick={() => handleSelectInsight(post)}>
                     {post.image && (
-                      <div className="overflow-hidden rounded-3xl mb-10 shadow-lg">
+                      <div className="w-full overflow-hidden rounded-3xl mb-10 shadow-lg border border-slate-100 bg-white">
                         <img 
                           src={getAssetUrl(post.image)} 
                           alt={post.title} 
-                          className="w-full aspect-[21/9] object-cover mix-blend-multiply group-hover:scale-[1.02] transition-transform duration-700"
+                          className="w-full h-auto block rounded-3xl group-hover:scale-[1.01] transition-transform duration-500"
                           referrerPolicy="no-referrer"
                         />
                       </div>
@@ -3651,6 +3654,7 @@ const AdminView = ({ onNavigate, onSettingsUpdate }: { onNavigate: (path: ViewPa
   const [successToast, setSuccessToast] = useState<string | null>(null);
   const [submitStatus, setSubmitStatus] = useState<'draft' | 'published'>('draft');
   const [copiedInsightId, setCopiedInsightId] = useState<string | null>(null);
+  const [formImageUrl, setFormImageUrl] = useState<string>('');
 
   const handleCopyShareLink = async (insight: Insight) => {
     const slug = generateSlug(insight.title);
@@ -3877,7 +3881,7 @@ const AdminView = ({ onNavigate, onSettingsUpdate }: { onNavigate: (path: ViewPa
       content: richContent,
       author: formData.get('author') as string || 'OrbitSol Team',
       date: formData.get('date') as string || new Date().toISOString().split('T')[0],
-      image: formData.get('image') as string || '',
+      image: formImageUrl || (formData.get('image') as string) || '',
       tag: formData.get('tag') as string || 'Business',
       status: finalStatus
     };
@@ -3890,6 +3894,7 @@ const AdminView = ({ onNavigate, onSettingsUpdate }: { onNavigate: (path: ViewPa
       setIsFormOpen(false);
       setEditingInsight(null);
       setRichContent('');
+      setFormImageUrl('');
       setSuccessToast(editingInsight ? "Insight updated successfully!" : "Insight successfully created/published!");
       fetchInsights();
     } catch (error: any) {
@@ -3906,24 +3911,37 @@ const AdminView = ({ onNavigate, onSettingsUpdate }: { onNavigate: (path: ViewPa
     if (editingInsight) {
       setRichContent(editingInsight.content || '');
       setSubmitStatus(editingInsight.status || 'draft');
+      setFormImageUrl(editingInsight.image || '');
     } else {
       setRichContent('');
       setSubmitStatus('draft');
+      setFormImageUrl('');
     }
   }, [editingInsight, isFormOpen]);
 
-  // Quill modules for MS Word type formatting
+  // Quill modules for MS Word type formatting with Alignment and Media
   const quillModules = {
     toolbar: [
       [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
       [{ 'font': [] }],
-      [{ 'size': [] }],
-      ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-      [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
+      [{ 'size': ['small', false, 'large', 'huge'] }],
+      ['bold', 'italic', 'underline', 'strike', 'blockquote', 'code-block'],
+      [{ 'align': [] }], // Text & content alignment: Left, Center, Right, Justify
+      [{ 'color': [] }, { 'background': [] }],
+      [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
       ['link', 'image', 'video'],
       ['clean']
     ],
   };
+
+  const quillFormats = [
+    'header', 'font', 'size',
+    'bold', 'italic', 'underline', 'strike', 'blockquote', 'code-block',
+    'align',
+    'color', 'background',
+    'list', 'bullet', 'indent',
+    'link', 'image', 'video'
+  ];
 
   const handleDeleteInsight = (id: string) => {
     if (!id) {
@@ -4088,8 +4106,21 @@ const AdminView = ({ onNavigate, onSettingsUpdate }: { onNavigate: (path: ViewPa
                    {insights.map((insight) => (
                      <tr key={insight.id} className="hover:bg-brand-cream/50 transition-colors">
                        <td className="px-8 py-5">
-                         <div className="font-bold text-brand-deep-navy text-sm">{insight.title}</div>
-                         <div className="text-slate-400 text-[10px] mt-1 truncate max-w-[300px]">{insight.summary}</div>
+                         <div className="flex items-center gap-3">
+                           {insight.image ? (
+                             <div className="w-12 h-12 rounded-xl overflow-hidden bg-slate-100 flex-shrink-0 border border-slate-100">
+                               <img src={getAssetUrl(insight.image)} alt="" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                             </div>
+                           ) : (
+                             <div className="w-12 h-12 rounded-xl bg-slate-100 flex items-center justify-center text-slate-400 flex-shrink-0 border border-slate-100">
+                               <FileText size={18} />
+                             </div>
+                           )}
+                           <div className="min-w-0">
+                             <div className="font-bold text-brand-deep-navy text-sm truncate max-w-[280px]">{insight.title}</div>
+                             <div className="text-slate-400 text-[10px] mt-1 truncate max-w-[280px]">{insight.summary}</div>
+                           </div>
+                         </div>
                        </td>
                        <td className="px-8 py-5">
                          <span className="px-2 py-1 bg-[#FFF0E6] text-[#F97316] text-[9px] font-bold rounded uppercase tracking-widest">{insight.tag}</span>
@@ -4400,13 +4431,77 @@ const AdminView = ({ onNavigate, onSettingsUpdate }: { onNavigate: (path: ViewPa
 
                   <div className="grid md:grid-cols-2 gap-6">
                     <div className="space-y-2">
-                      <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Featured Image URL</label>
-                      <input 
-                        name="image" 
-                        defaultValue={editingInsight?.image} 
-                        className="w-full p-4 bg-slate-50 border border-slate-100 rounded-xl outline-none focus:border-brand-blue transition-all"
-                        placeholder="https://..."
-                      />
+                      <div className="flex items-center justify-between">
+                        <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                          Featured Image (Fills & Fits Header Holder)
+                        </label>
+                        {formImageUrl && (
+                          <button 
+                            type="button" 
+                            onClick={() => setFormImageUrl('')}
+                            className="text-[10px] text-red-500 hover:text-red-700 font-bold uppercase tracking-wider transition-colors flex items-center gap-1 cursor-pointer"
+                          >
+                            <Trash2 size={12} /> Remove
+                          </button>
+                        )}
+                      </div>
+                      <div className="flex gap-2">
+                        <input 
+                          name="image" 
+                          value={formImageUrl}
+                          onChange={(e) => {
+                            const val = e.target.value;
+                            const driveMatch = val.match(/\/(?:file\/d\/|open\?id=)([\w-]+)/) || val.match(/[?&]id=([\w-]+)/);
+                            if (driveMatch && driveMatch[1]) {
+                              setFormImageUrl(`https://lh3.googleusercontent.com/d/${driveMatch[1]}`);
+                            } else {
+                              setFormImageUrl(val);
+                            }
+                          }}
+                          className="w-full p-3.5 bg-slate-50 border border-slate-100 rounded-xl outline-none focus:border-[#2368D6] transition-all text-xs"
+                          placeholder="Paste image URL or Drive link..."
+                        />
+                        <label className="cursor-pointer bg-slate-50 hover:bg-slate-100 border border-dashed border-slate-300 hover:border-[#2368D6] px-3.5 py-2.5 rounded-xl text-center text-[10px] uppercase font-bold text-slate-600 transition-all flex items-center justify-center gap-1.5 shrink-0">
+                          <Upload size={14} className="text-[#2368D6]" />
+                          <span className="hidden sm:inline">Upload</span>
+                          <input 
+                            type="file" 
+                            accept="image/*" 
+                            className="hidden" 
+                            onChange={async (e) => {
+                              const file = e.target.files?.[0];
+                              if (file) {
+                                const reader = new FileReader();
+                                reader.onload = () => {
+                                  if (reader.result) {
+                                    setFormImageUrl(reader.result as string);
+                                  }
+                                };
+                                reader.readAsDataURL(file);
+                              }
+                            }} 
+                          />
+                        </label>
+                      </div>
+
+                      {/* Live Image Fit Preview */}
+                      {formImageUrl ? (
+                        <div className="mt-2 relative w-full overflow-hidden rounded-xl bg-slate-50 border border-slate-200 shadow-sm p-1">
+                          <img 
+                            src={getAssetUrl(formImageUrl)} 
+                            alt="Preview" 
+                            className="w-full h-auto max-h-52 object-contain rounded-lg block mx-auto"
+                            referrerPolicy="no-referrer"
+                          />
+                          <div className="absolute top-2.5 left-2.5 z-20 px-2 py-0.5 bg-slate-900/80 backdrop-blur-sm rounded text-white text-[8px] font-bold uppercase tracking-wider">
+                            Full Width Fit
+                          </div>
+                        </div>
+                      ) : (
+                        <p className="text-[10px] text-slate-400 italic">
+                          Uploaded images will fill the placeholder cleanly with full visibility and no dark borders.
+                        </p>
+                      )}
                     </div>
                     <div className="space-y-2">
                       <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Publication Date</label>
@@ -4415,7 +4510,7 @@ const AdminView = ({ onNavigate, onSettingsUpdate }: { onNavigate: (path: ViewPa
                         type="date"
                         defaultValue={editingInsight?.date || new Date().toISOString().split('T')[0]} 
                         required 
-                        className="w-full p-4 bg-slate-50 border border-slate-100 rounded-xl outline-none focus:border-brand-blue transition-all"
+                        className="w-full p-3.5 bg-slate-50 border border-slate-100 rounded-xl outline-none focus:border-[#2368D6] transition-all text-sm"
                       />
                     </div>
                   </div>
@@ -4433,14 +4528,19 @@ const AdminView = ({ onNavigate, onSettingsUpdate }: { onNavigate: (path: ViewPa
                   </div>
 
                   <div className="space-y-2 pb-12">
-                    <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Content</label>
-                    <div className="h-[250px] mb-12">
+                    <div className="flex items-center justify-between">
+                      <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Content</label>
+                      <span className="text-[10px] text-slate-400 font-medium">Use toolbar alignment controls for text, headers & images</span>
+                    </div>
+                    <div className="h-[260px] mb-14">
                       <ReactQuill 
                         theme="snow"
                         value={richContent}
                         onChange={setRichContent}
                         modules={quillModules}
+                        formats={quillFormats}
                         className="h-full"
+                        placeholder="Write your insight content here..."
                       />
                     </div>
                   </div>

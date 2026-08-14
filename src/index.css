@@ -91,3 +91,60 @@ body {
   animation-play-state: paused;
 }
 
+/* Quill alignment support for rich text rendering */
+.ql-align-center {
+  text-align: center !important;
+}
+
+.ql-align-right {
+  text-align: right !important;
+}
+
+.ql-align-justify {
+  text-align: justify !important;
+}
+
+.ql-align-left {
+  text-align: left !important;
+}
+
+/* Responsive rich text images with alignment support */
+.prose img {
+  border-radius: 1rem;
+  max-width: 100%;
+  height: auto;
+}
+
+.prose .ql-align-center img,
+.prose p.ql-align-center img {
+  margin-left: auto !important;
+  margin-right: auto !important;
+  display: block;
+}
+
+.prose .ql-align-right img,
+.prose p.ql-align-right img {
+  margin-left: auto !important;
+  margin-right: 0 !important;
+  display: block;
+}
+
+.prose .ql-align-left img,
+.prose p.ql-align-left img {
+  margin-left: 0 !important;
+  margin-right: auto !important;
+  display: block;
+}
+
+/* Quill editor styles enhancement */
+.ql-editor {
+  min-height: 180px;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.ql-editor.ql-blank::before {
+  color: #94a3b8;
+  font-style: normal;
+}
+
